@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hospital_System.Models
 {
-    internal class Physician
+    public class Physician
     {
         private string _specialization;
         public string Specialization

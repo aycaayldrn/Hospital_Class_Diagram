@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace Hospital_System.Models
 {
-    internal class Prescription
+    public class Prescription
     {
         public int Id { get; set; }
 

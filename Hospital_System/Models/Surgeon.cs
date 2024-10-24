@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hospital_System.Models
 {
-    internal class Surgeon
+    public class Surgeon
     {
         public List<string> Surgeries { get; set; }
         public static readonly int MaxSurgeriesPerShift = 2;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hospital_System.Models
 {
-    internal class Fellow
+    public class Fellow
     {
         public string? ResearchProject { get; set; }
 

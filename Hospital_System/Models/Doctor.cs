@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hospital_System.Models
 {
-    internal interface Doctor 
+    public interface Doctor 
     {
 
 

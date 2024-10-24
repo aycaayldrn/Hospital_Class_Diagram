@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Hospital_System.Models
 {
-    internal class Staff
+    public class Staff
     {
         public int Id { get; set; }
         private string _name;

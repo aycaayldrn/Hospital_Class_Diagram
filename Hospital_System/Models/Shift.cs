@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hospital_System.Models
 {
-    internal class Shift
+    public class Shift
     {
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }

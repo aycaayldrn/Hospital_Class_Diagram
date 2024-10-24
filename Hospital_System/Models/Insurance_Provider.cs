@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hospital_System.Models
 {
-    internal class Insurance_Provider
+    public class Insurance_Provider
     {
         public int Id { get; set; }
         private string _name;

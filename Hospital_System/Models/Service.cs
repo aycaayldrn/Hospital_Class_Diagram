@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hospital_System.Models
 {
-    internal class Service
+    public class Service
     {
         private string _serviceName;
         public string Name
@@ -38,7 +38,7 @@ namespace Hospital_System.Models
 
         public Service(string serviceName, double price) 
         {
-            _serviceName = serviceName;
+            Name = serviceName;
             Price = price;
         }
 

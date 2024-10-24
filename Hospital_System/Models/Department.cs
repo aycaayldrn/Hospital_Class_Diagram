@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hospital_System.Models
 {
-    internal class Department
+    public class Department
     {
         private string _name;
         public string Name

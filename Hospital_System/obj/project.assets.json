@@ -8,32 +8,24 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\aycay\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\kerya\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\aycay\\source\\repos\\Hospital_System\\Hospital_System\\Hospital_System.csproj",
+      "projectUniqueName": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram\\Hospital_System\\Hospital_System.csproj",
       "projectName": "Hospital_System",
-      "projectPath": "C:\\Users\\aycay\\source\\repos\\Hospital_System\\Hospital_System\\Hospital_System.csproj",
-      "packagesPath": "C:\\Users\\aycay\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\aycay\\source\\repos\\Hospital_System\\Hospital_System\\obj\\",
+      "projectPath": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram\\Hospital_System\\Hospital_System.csproj",
+      "packagesPath": "C:\\Users\\kerya\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram\\Hospital_System\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\aycay\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\kerya\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

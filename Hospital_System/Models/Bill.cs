@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hospital_System.Models
 {
-    internal class Bill
+    public class Bill
     {
         public int Number {  get; set; }
         private static double _taxRate = 0.15;

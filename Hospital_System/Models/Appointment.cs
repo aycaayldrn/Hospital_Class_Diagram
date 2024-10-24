@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hospital_System.Models
 {
-    internal class Appointment
+    public class Appointment
     {
         private DateOnly _date;
         public DateOnly Date

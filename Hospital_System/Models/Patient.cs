@@ -7,7 +7,7 @@ using System.Xml.Linq;
 
 namespace Hospital_System.Models
 {
-    internal class Patient
+    public class Patient
     {
         public int Id { get; set; }
         private string _name;

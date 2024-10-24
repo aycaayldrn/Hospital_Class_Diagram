@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hospital_System.Models
 {
-    internal class Equipment
+    public class Equipment
     {
         public int Id { get; set; }
         private string _type;
