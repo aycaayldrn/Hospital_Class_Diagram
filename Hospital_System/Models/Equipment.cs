@@ -23,5 +23,17 @@ namespace Hospital_System.Models
             }
         }
         public List<string> MaintenanceHistory { get; set; }
+
+        public Equipment(int id, string type)
+        {
+            if(id <= 0)
+            {
+                throw new ArgumentException("Id must be greater than 0");
+            }
+
+            Id = id;
+            Type = type;
+            MaintenanceHistory = new List<string>();
+        }
     }
 }

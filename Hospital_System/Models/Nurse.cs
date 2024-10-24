@@ -24,20 +24,33 @@ namespace Hospital_System.Models
         }
         public List<string> Certifications { get; set; }
 
-        public Nurse()
+        public Nurse(int id, string name, List<string>? certifications = null)
         {
-            Certifications = new List<string>();
+            Id = id;
+            Name = name;
+            Certifications = certifications ?? new List<string>();
         }
+
+
 
         public void DisplayNurseInfo()
         {
             Console.WriteLine($"Nurse ID: {Id}");
             Console.WriteLine($"Name: {Name}");
-            Console.WriteLine($"Certifications: {Id}");
-            foreach (var cert in Certifications)
+            Console.WriteLine($"Certifications: {Certifications}");
+            
+            if (Certifications.Count > 0)
             {
-                Console.WriteLine($"- {cert}");
+                foreach (var cert in Certifications)
+                {
+                    Console.WriteLine($"{cert} - ");
+                }
             }
+            else
+            {
+                Console.WriteLine("No certifications available");
+            }
+
         }
     }
 }

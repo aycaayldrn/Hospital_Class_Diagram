@@ -8,7 +8,7 @@ namespace Hospital_System.Models
 {
     internal class Fellow
     {
-        public string ResearchProject { get; set; }
+        public string? ResearchProject { get; set; }
 
         private string _specialization;
         public string Specialization
@@ -22,6 +22,12 @@ namespace Hospital_System.Models
                 }
                 _specialization = value;
             }
+        }
+
+        public Fellow(string specialization, string? researchProject = null) 
+        {
+            Specialization = specialization;
+            ResearchProject = researchProject;
         }
     }
         

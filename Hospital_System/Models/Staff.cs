@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -36,7 +37,15 @@ namespace Hospital_System.Models
                 _position = value;
             }
         }
-        public int MaxWorkingHours { get; set; }
+
+        private static readonly int MaxWorkingHours = 12;
+
+        public Staff(int id, string name, string position)
+        {
+            Id = id;
+            Name = name;
+            Position = position;
+        }
 
     }
 }

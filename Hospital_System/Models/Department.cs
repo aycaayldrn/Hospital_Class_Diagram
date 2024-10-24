@@ -22,5 +22,9 @@ namespace Hospital_System.Models
             }
         }
 
+        public Department(string name)
+        {
+            Name = name;
+        }
     }
 }

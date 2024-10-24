@@ -23,5 +23,15 @@ namespace Hospital_System.Models
             }
         }
 
+        public Insurance_Provider(int id, string name)
+        {
+            if(id < 0)
+            {
+                throw new ArgumentException("Id must be greater than 0");
+            }
+
+            Id = id;
+            Name = name;
+        }
     }
 }

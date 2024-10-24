@@ -36,6 +36,18 @@ namespace Hospital_System.Models
                 _availability = value;
             }
         }
+
+        public Room(int number, string type, string availability)
+        {
+            if(number <= 0)
+            {
+                throw new ArgumentException("Room number must be grater than zero");
+            }
+
+            Number = number;   
+            Type = type;
+            Availability = availability;
+        }
         
     }
 }

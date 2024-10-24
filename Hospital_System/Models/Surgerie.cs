@@ -21,5 +21,10 @@ namespace Hospital_System.Models
                 _type = value;
             }
         }
+
+        public Surgerie(string type) 
+        {
+            Type = type;
+        }
     }
 }

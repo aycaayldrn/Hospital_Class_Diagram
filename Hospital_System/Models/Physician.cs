@@ -21,5 +21,10 @@ namespace Hospital_System.Models
                 _specialization = value;
             }
         }
+
+        public Physician(string specialization)
+        {
+            Specialization = specialization;
+        }
     }
 }

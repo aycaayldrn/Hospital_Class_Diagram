@@ -21,7 +21,26 @@ namespace Hospital_System.Models
                 _serviceName = value;
             }
         }
-        public double Price { get; set; }
+
+        private double _price;
+        public double Price
+        {
+            get => _price;
+            set
+            {
+                if (value <= 0)
+                {
+                    throw new ArgumentException("Price must be greater than zero");
+                }
+                _price = value;
+            }
+        }
+
+        public Service(string serviceName, double price) 
+        {
+            _serviceName = serviceName;
+            Price = price;
+        }
 
     }
 }

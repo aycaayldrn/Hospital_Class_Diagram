@@ -24,10 +24,37 @@ namespace Hospital_System.Models
             }
         }
         public DateTime BirthDate { get; set; }
+        public int Age => CalculateAge();
         public List<string> Diagnoses { get; set; }
         public List<string> Allergies { get; set; }
         public List<string> Treatments { get; set; }
         public bool HasHealthInsurance { get; set; }
+
+        private int CalculateAge()
+        {
+            DateTime today = DateTime.Today;
+            int age = today.Year - BirthDate.Year;
+
+            if (BirthDate > today.AddYears(-age))
+            {
+                age--;
+            }
+
+            return age;
+        }
+
+        public Patient(int id, string name, DateTime birthDate, bool hasHealthInsurance)
+        {
+            Id = id;
+            Name = name;
+            BirthDate = birthDate;
+            HasHealthInsurance = hasHealthInsurance;
+
+            Diagnoses = new List<string>();
+            Allergies = new List<string>();
+            Treatments = new List<string>();
+        }
+
 
     }
 }

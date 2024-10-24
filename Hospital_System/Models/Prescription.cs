@@ -10,8 +10,9 @@ namespace Hospital_System.Models
     internal class Prescription
     {
         public int Id { get; set; }
+
         private string _medicationName;
-        public string Medication_Name
+        public string MedicationName
         {
             get => _medicationName;
             set
@@ -26,5 +27,14 @@ namespace Hospital_System.Models
         public float Dosage { get; set; }
         public int Duration { get; set; }
         public bool RedPrescription { get; set; }
+
+        public Prescription(int id, string medicationName, float dosage, int duration, bool redPrescription)
+        {
+            Id = id;
+            MedicationName = medicationName;
+            Dosage = dosage;
+            Duration = duration;
+            RedPrescription = redPrescription;
+        }
     }
 }
