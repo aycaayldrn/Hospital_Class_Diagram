@@ -1,0 +1,11 @@
+/Users/maciejmordal/Downloads/BUBU/BYT/BYT_Ćwiczenia/Projekt/Hospital_Class_Diagram/Hospital_System/bin/Debug/net8.0/Hospital_System
+/Users/maciejmordal/Downloads/BUBU/BYT/BYT_Ćwiczenia/Projekt/Hospital_Class_Diagram/Hospital_System/bin/Debug/net8.0/Hospital_System.dll
+/Users/maciejmordal/Downloads/BUBU/BYT/BYT_Ćwiczenia/Projekt/Hospital_Class_Diagram/Hospital_System/bin/Debug/net8.0/Hospital_System.pdb
+/Users/maciejmordal/Downloads/BUBU/BYT/BYT_Ćwiczenia/Projekt/Hospital_Class_Diagram/Hospital_System/obj/Debug/net8.0/Hospital_System.GeneratedMSBuildEditorConfig.editorconfig
+/Users/maciejmordal/Downloads/BUBU/BYT/BYT_Ćwiczenia/Projekt/Hospital_Class_Diagram/Hospital_System/obj/Debug/net8.0/Hospital_System.AssemblyInfoInputs.cache
+/Users/maciejmordal/Downloads/BUBU/BYT/BYT_Ćwiczenia/Projekt/Hospital_Class_Diagram/Hospital_System/obj/Debug/net8.0/Hospital_System.AssemblyInfo.cs
+/Users/maciejmordal/Downloads/BUBU/BYT/BYT_Ćwiczenia/Projekt/Hospital_Class_Diagram/Hospital_System/obj/Debug/net8.0/Hospital_System.csproj.CoreCompileInputs.cache
+/Users/maciejmordal/Downloads/BUBU/BYT/BYT_Ćwiczenia/Projekt/Hospital_Class_Diagram/Hospital_System/obj/Debug/net8.0/Hospital_System.sourcelink.json
+/Users/maciejmordal/Downloads/BUBU/BYT/BYT_Ćwiczenia/Projekt/Hospital_Class_Diagram/Hospital_System/obj/Debug/net8.0/Hospital_System.dll
+/Users/maciejmordal/Downloads/BUBU/BYT/BYT_Ćwiczenia/Projekt/Hospital_Class_Diagram/Hospital_System/obj/Debug/net8.0/refint/Hospital_System.dll
+/Users/maciejmordal/Downloads/BUBU/BYT/BYT_Ćwiczenia/Projekt/Hospital_Class_Diagram/Hospital_System/obj/Debug/net8.0/Hospital_System.pdb
