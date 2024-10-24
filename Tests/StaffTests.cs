@@ -32,4 +32,24 @@ public class StaffTests
             Assert.Pass();
         }        
     }
+    
+    [Test]
+    public void Trying_to_create_Staff_with_specific_position_and_check_if_it_assigned_correctly()
+    {
+        String name = "Joe";
+        Staff s = new Staff(1, name, "Test");
+
+
+        Assert.That(s.Name, Is.EqualTo(name));
+    }
+    
+    [Test]
+    public void Trying_to_create_Staff_with_specific_Name_and_check_if_it_assigned_correctly()
+    {
+        String pos = "type1231";
+        Staff s = new Staff(1, "test", pos);
+
+
+        Assert.That(s.Position, Is.EqualTo(pos));
+    }
 }
