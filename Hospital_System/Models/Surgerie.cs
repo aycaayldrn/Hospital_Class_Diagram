@@ -8,6 +8,18 @@ namespace Hospital_System.Models
 {
     internal class Surgerie
     {
-        public string Type { get; set; }
+        private string _type;
+        public string Type
+        {
+            get => _type;
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException("Surgery type can't be empty");
+                }
+                _type = value;
+            }
+        }
     }
 }

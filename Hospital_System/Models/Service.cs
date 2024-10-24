@@ -8,7 +8,19 @@ namespace Hospital_System.Models
 {
     internal class Service
     {
-        public string Name { get; set; }
+        private string _serviceName;
+        public string Name
+        {
+            get => _serviceName;
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException("Service name can't be empty");
+                }
+                _serviceName = value;
+            }
+        }
         public double Price { get; set; }
 
     }
