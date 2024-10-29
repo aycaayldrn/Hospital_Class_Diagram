@@ -11,7 +11,7 @@ public static class SerializeToFIle
     {
         ContainerForSavingClasses container = new ContainerForSavingClasses
         {
-            // Appointments = Appointment.GetAppointments().ToList(),
+            Appointments = Appointment.GetAppointments().ToList(),
             Bills = Bill.GetBills().ToList(),
             Departments = Department.GetDepartments().ToList(),
             Equipments = Equipment.GetEquipments().ToList(),
