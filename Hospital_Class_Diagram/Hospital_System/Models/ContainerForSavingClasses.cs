@@ -2,7 +2,7 @@ namespace Hospital_System.Models;
 [Serializable]
 public class ContainerForSavingClasses
 {
-    // public List<Appointment> Appointments { get; set; }
+    public List<Appointment> Appointments { get; set; }
     public List<Bill> Bills { get; set; }
     
     public List<Department> Departments { get; set; }
@@ -25,7 +25,7 @@ public class ContainerForSavingClasses
     //
     public ContainerForSavingClasses()
     {
-        // Appointments = new List<Appointment>();
+        Appointments = new List<Appointment>();
         Bills = new List<Bill>();
        
         Departments = new List<Department>();
