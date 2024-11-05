@@ -98,7 +98,7 @@ namespace Hospital_System.Models
         
         public override bool Equals(object? obj)
         {
-            if (obj==null||!(obj is Fellow))
+            if (obj==null||!(obj is Nurse))
             {
                 return false;
             }
