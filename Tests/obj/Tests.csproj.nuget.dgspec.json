@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram\\Tests\\Tests.csproj": {}
+    "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram_main\\Tests\\Tests.csproj": {}
   },
   "projects": {
-    "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram\\Hospital_System\\Hospital_System.csproj": {
+    "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram_main\\Hospital_System\\Hospital_System.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram\\Hospital_System\\Hospital_System.csproj",
+        "projectUniqueName": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram_main\\Hospital_System\\Hospital_System.csproj",
         "projectName": "Hospital_System",
-        "projectPath": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram\\Hospital_System\\Hospital_System.csproj",
+        "projectPath": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram_main\\Hospital_System\\Hospital_System.csproj",
         "packagesPath": "C:\\Users\\kerya\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram\\Hospital_System\\obj\\",
+        "outputPath": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram_main\\Hospital_System\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\kerya\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -62,14 +62,14 @@
         }
       }
     },
-    "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram\\Tests\\Tests.csproj": {
+    "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram_main\\Tests\\Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram\\Tests\\Tests.csproj",
+        "projectUniqueName": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram_main\\Tests\\Tests.csproj",
         "projectName": "Tests",
-        "projectPath": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram\\Tests\\Tests.csproj",
+        "projectPath": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram_main\\Tests\\Tests.csproj",
         "packagesPath": "C:\\Users\\kerya\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram\\Tests\\obj\\",
+        "outputPath": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram_main\\Tests\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\kerya\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -84,8 +84,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram\\Hospital_System\\Hospital_System.csproj": {
-                "projectPath": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram\\Hospital_System\\Hospital_System.csproj"
+              "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram_main\\Hospital_System\\Hospital_System.csproj": {
+                "projectPath": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram_main\\Hospital_System\\Hospital_System.csproj"
               }
             }
           }

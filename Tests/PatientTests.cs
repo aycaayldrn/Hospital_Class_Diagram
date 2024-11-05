@@ -10,7 +10,7 @@ public class PatientTests
         {
             Patient p = new Patient(1, null, new DateTime(2024, 8, 18), false);
 
-            Assert.Fail("Expected ArgumentNullException");
+            Assert.Fail("Expected ArgumentException");
         }
         catch (ArgumentException)
         {
@@ -21,7 +21,7 @@ public class PatientTests
     [Test]
     public void Trying_to_create_Patient_with_specific_name_and_check_if_it_assigned_correctly()
     {
-        String name = "Test";
+        String name = "Test2";
         Patient p = new Patient(1, name, new DateTime(2024, 8, 18), false);
 
         Assert.That(p.Name, Is.EqualTo(name));
@@ -34,5 +34,45 @@ public class PatientTests
         
         Patient p = new Patient(1, "name", date, false);
         Assert.That(p.Age, Is.EqualTo(date.Month > DateTime.Today.Month ? DateTime.Today.Year - date.Year - 1 : DateTime.Today.Year - date.Year));
+    }
+    
+     
+    [Test]
+    public void Trying_to_create_List_of_Patients_and_SetAppointments()
+    {
+        List<Patient> lp = new List<Patient>{new ( 1,"Test1",new DateTime(2005),false), new ( 2,"Test2",new DateTime(2005),false), new (3,"Test3",new DateTime(2005),false)};
+        
+        Patient.SetPatients(lp);
+        
+        Assert.That(Patient.GetPatients(), Is.EqualTo(lp));
+        
+        Patient.SetPatients(new List<Patient>());
+    }
+    
+    [Test]
+    public void Trying_to_create_same_Patient_throws_InvalidOperationException()
+    {
+        Patient b = new Patient(1,"Test1",new DateTime(2005),false);
+        try
+        {
+            Patient b2 = new Patient(1,"Test1",new DateTime(2005),false);
+            Assert.Fail("Should throw InvalidOperationException");
+        }catch(InvalidOperationException o)
+        {
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
+    public void Trying_to_remove_nonExisting_Patient_InvalidOperationException_excepted()
+    {
+        try
+        {
+            Patient.RemovePatient(new Patient());
+            Assert.Fail("Should throw InvalidOperationException");
+        }catch(InvalidOperationException o)
+        {
+            Assert.Pass();
+        }
     }
 }

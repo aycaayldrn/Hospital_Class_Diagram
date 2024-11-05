@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "iK6Umztsnms=",
+  "dgSpecHash": "mgbNxtFgsj8=",
   "success": true,
-  "projectFilePath": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram\\Tests\\Tests.csproj",
+  "projectFilePath": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram_main\\Tests\\Tests.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\kerya\\.nuget\\packages\\coverlet.collector\\6.0.0\\coverlet.collector.6.0.0.nupkg.sha512",
     "C:\\Users\\kerya\\.nuget\\packages\\microsoft.codecoverage\\17.8.0\\microsoft.codecoverage.17.8.0.nupkg.sha512",

@@ -10,7 +10,7 @@ public class ServiceTests
         {
             Service s = new Service(null, 100d);
             
-            Assert.Fail("Expected ArgumentNullException");
+            Assert.Fail("Expected ArgumentException");
         }
         catch (ArgumentException)
         {
@@ -23,9 +23,9 @@ public class ServiceTests
     {
         try
         {
-            Service s = new Service("test", -100d);
+            Service s = new Service("test1", -100d);
             
-            Assert.Fail("Expected ArgumentNullException");
+            Assert.Fail("Expected ArgumentException");
         }
         catch (ArgumentException)
         {
@@ -37,9 +37,10 @@ public class ServiceTests
     public void Trying_to_create_Service_with_specific_Price_and_check_if_it_assigned_correctly()
     {
         int price = 12;
-        Service s = new Service("test", price);
+        Service s = new Service("test2", price);
 
         Assert.That(s.Price, Is.EqualTo(price));
+        Service.RemoveService(s);
     }
     
     [Test]
@@ -49,5 +50,46 @@ public class ServiceTests
         Service s = new Service(name, 123);
 
         Assert.That(s.Name, Is.EqualTo(name));
+        Service.RemoveService(s);
+    }
+    
+     
+    [Test]
+    public void Trying_to_create_List_of_Services_and_SetAppointments()
+    {
+        List<Service> ls = new List<Service>{new ( "Test2", 100d), new ( "Test3", 100d), new ("Test4", 100d)};
+        
+        Service.SetServices(ls);
+        
+        Assert.That(Service.GetServices(), Is.EqualTo(ls));
+        
+        Service.SetServices(new List<Service>());
+    }
+    
+    [Test]
+    public void Trying_to_create_same_Service_throws_InvalidOperationException()
+    {
+        Service b = new Service("Test", 100d);
+        try
+        {
+            Service b2 = new Service("Test", 100d);
+            Assert.Fail("Should throw InvalidOperationException");
+        }catch(InvalidOperationException o)
+        {
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
+    public void Trying_to_remove_nonExisting_Service_InvalidOperationException_excepted()
+    {
+        try
+        {
+            Service.RemoveService(new Service());
+            Assert.Fail("Should throw InvalidOperationException");
+        }catch(InvalidOperationException o)
+        {
+            Assert.Pass();
+        }
     }
 }
