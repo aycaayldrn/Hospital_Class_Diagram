@@ -82,6 +82,7 @@ public class RoomsTests
     [Test]
     public void Trying_to_create_List_of_Rooms_and_SetAppointments()
     {
+        Room.SetRooms(new List<Room>());
         List<Room> lb = new List<Room>{new ( 2,"Test2","test"), new (3,"Test3","test"), new ( 4,"Test4","test")};
         
         Room.SetRooms(lb);
@@ -116,5 +117,21 @@ public class RoomsTests
         {
             Assert.Pass();
         }
+    }
+    
+        
+    [Test]
+    public void Trying_to_create_List_of_Rooms_and_save_them_to_file()
+    {
+        Room.SetRooms(new List<Room>());
+        List<Room> la = new List<Room>{new ( 2,"Test2","test"), new (3,"Test3","test"), new ( 4,"Test4","test")};
+        
+        SerializeToFIle.saveAll();
+        
+        Room.SetRooms(new List<Room>());
+        
+        SerializeToFIle.loadAll();
+        
+        Assert.That(Room.GetRooms(), Is.EqualTo(la));
     }
 }

@@ -58,6 +58,7 @@ public class ShiftTests
     [Test]
     public void Trying_to_create_List_of_Shifts_and_SetAppointments()
     {
+        Shift.SetShifts(new List<Shift>());
         List<Shift> lb = new List<Shift>{new ( new DateTime(2004), new DateTime(2005),"test"), new ( new DateTime(2005), new DateTime(2006),"test"), new ( new DateTime(2006), new DateTime(2007),"test")};
         
         Shift.SetShifts(lb);
@@ -92,5 +93,21 @@ public class ShiftTests
         {
             Assert.Pass();
         }
+    }
+    
+        
+    [Test]
+    public void Trying_to_create_List_of_Shifts_and_save_them_to_file()
+    {
+        Shift.SetShifts(new List<Shift>());
+        List<Shift> la = new List<Shift>{new ( new DateTime(2004), new DateTime(2005),"test"), new ( new DateTime(2005), new DateTime(2006),"test"), new ( new DateTime(2006), new DateTime(2007),"test")};
+        
+        SerializeToFIle.saveAll();
+        
+        Shift.SetShifts(new List<Shift>());
+        
+        SerializeToFIle.loadAll();
+        
+        Assert.That(Shift.GetShifts(), Is.EqualTo(la));
     }
 }

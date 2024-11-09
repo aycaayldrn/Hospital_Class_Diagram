@@ -63,7 +63,7 @@ public static class SerializeToFIle
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(ContainerForSavingClasses));
                 ContainerForSavingClasses container = (ContainerForSavingClasses)xmlSerializer.Deserialize(file);
 
-
+                Appointment.SetAppointments(container.Appointments);
                 Bill.SetBills(container.Bills);
                 Department.SetDepartments(container.Departments);
                 Equipment.SetEquipments(container.Equipments);

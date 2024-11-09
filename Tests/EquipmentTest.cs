@@ -53,6 +53,7 @@ public class EquipmentTest
     [Test]
     public void Trying_to_create_List_of_Equipments_and_SetAppointments()
     {
+        Equipment.SetEquipments(new List<Equipment>());
         List<Equipment> le = new List<Equipment>{new ( 24,"Test1"), new ( 21,"Test2"), new ( 44,"Test3")};
         
         Equipment.SetEquipments(le);
@@ -87,5 +88,20 @@ public class EquipmentTest
         {
             Assert.Pass();
         }
+    }
+    
+    [Test]
+    public void Trying_to_create_List_of_Equipments_and_save_them_to_file()
+    {
+        Equipment.SetEquipments(new List<Equipment>());
+        List<Equipment> la = new List<Equipment>{new ( 24,"Test1"), new ( 21,"Test2"), new ( 44,"Test3")};
+        
+        SerializeToFIle.saveAll();
+        
+        Equipment.SetEquipments(new List<Equipment>());
+        
+        SerializeToFIle.loadAll();
+        
+        Assert.That(Equipment.GetEquipments(), Is.EqualTo(la));
     }
 }

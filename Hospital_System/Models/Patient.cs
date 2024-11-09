@@ -26,7 +26,21 @@ namespace Hospital_System.Models
                 _name = value;
             }
         }
-        public DateTime BirthDate { get; set; }
+
+        private DateTime _birthDate;
+        
+        public DateTime BirthDate
+        {
+            get => _birthDate;
+            set
+            {
+                if (value>DateTime.Now)
+                {
+                    throw new ArgumentException("Birth date can't be in the future");
+                }
+                _birthDate = value;
+            }
+        }
         public int Age => CalculateAge();
         public List<string> Diagnoses { get; set; }
         public List<string> Allergies { get; set; }
@@ -36,9 +50,9 @@ namespace Hospital_System.Models
         private int CalculateAge()
         {
             DateTime today = DateTime.Today;
-            int age = today.Year - BirthDate.Year;
+            int age = today.Year - _birthDate.Year;
 
-            if (BirthDate > today.AddYears(-age))
+            if (_birthDate > today.AddYears(-age))
             {
                 age--;
             }

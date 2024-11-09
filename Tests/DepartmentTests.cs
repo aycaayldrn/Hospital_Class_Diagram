@@ -39,6 +39,7 @@ public class DepartmentTests
     [Test]
     public void Trying_to_create_List_of_Departments_and_SetAppointments()
     {
+        Department.SetDepartments(new List<Department>());
         List<Department> ld = new List<Department>{new ( "Test1"), new ( "Test2"), new ( "Test3")};
         
         Department.SetDepartments(ld);
@@ -73,5 +74,21 @@ public class DepartmentTests
         {
             Assert.Pass();
         }
+    }
+    
+        
+    [Test]
+    public void Trying_to_create_List_of_Departments_and_save_them_to_file()
+    {
+        Department.SetDepartments(new List<Department>());
+        List<Department> la = new List<Department>{new ( "Test1"), new ( "Test2"), new ( "Test3")};
+        
+        SerializeToFIle.saveAll();
+        
+        Department.SetDepartments(new List<Department>());
+        
+        SerializeToFIle.loadAll();
+        
+        Assert.That(Department.GetDepartments(), Is.EqualTo(la));
     }
 }

@@ -14,7 +14,6 @@ namespace Hospital_System.Models
 
         private string _specialization;
         
-        
         public string Specialization
         {
             get => _specialization;

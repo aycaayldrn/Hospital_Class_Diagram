@@ -6,28 +6,41 @@ public class AppointmentTests
     [Test]
     public void Trying_to_create_Appointment()
     {
-        DateTime date = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day,8,30,0);
+        DateTime date = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day,23,59,59);
         Appointment a = new Appointment(date);
         Assert.That(a.Date, Is.EqualTo(date));
         Appointment.removeAppointment(a);
     }
     
     [Test]
+    public void Trying_to_create_Appointment_with_date_earlier_than_today()
+    {
+        try
+        {
+            DateTime date = new DateTime(2005, 3, 12,8,30,0);
+            Appointment a = new Appointment(date);
+            Assert.Fail("Should throw ArgumentException");
+        }catch(ArgumentException o)
+        {
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
     public void Trying_to_create_List_of_Appointments_and_SetAppointments()
     {
-        List<Appointment> la = new List<Appointment>{new ( new DateTime(2005)), new ( new DateTime(2006)), new ( new DateTime(2007))};
-        
-        Appointment.SetAppointments(la);
-        
-        Assert.That(Appointment.GetAppointments(), Is.EqualTo(la));
-        
         Appointment.SetAppointments(new List<Appointment>());
+        List<Appointment> la = new List<Appointment>{new ( new DateTime(3000, 3, 12,8,30,0)), new ( new DateTime(3002,3, 12,8,30,0)), new ( new DateTime(3001, 3, 12,8,30,0))};
+     
+    
+        Assert.That(Appointment.GetAppointments(), Is.EquivalentTo(la));
     }
     
     [Test]
     public void Trying_to_create_same_Appointment_throws_InvalidOperationException()
     {
-        DateTime date = new DateTime(2005, 3, 12,8,30,0);
+        Appointment.SetAppointments(new List<Appointment>());
+        DateTime date = new DateTime(3004, 3, 12,8,30,0);
         Appointment a = new Appointment(date);
         try
         {
@@ -50,5 +63,20 @@ public class AppointmentTests
         {
             Assert.Pass();
         }
+    }
+    
+    [Test]
+    public void Trying_to_create_List_of_Appointments_and_save_them_to_file()
+    {
+        Appointment.SetAppointments(new List<Appointment>());
+        List<Appointment> la = new List<Appointment>{new ( new DateTime(3000, 3, 12,8,30,0)), new ( new DateTime(3002,3, 12,8,30,0)), new ( new DateTime(3001, 3, 12,8,30,0))};
+        
+        SerializeToFIle.saveAll();
+        
+        Appointment.SetAppointments(new List<Appointment>());
+        
+        SerializeToFIle.loadAll();
+        
+        Assert.That(Appointment.GetAppointments(), Is.EqualTo(la));
     }
 }

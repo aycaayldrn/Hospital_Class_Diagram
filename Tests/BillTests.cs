@@ -54,6 +54,7 @@ public class Tests
     [Test]
     public void Trying_to_create_List_of_Bills_and_SetAppointments()
     {
+        Bill.SetBills(new List<Bill>());
         List<Bill> lb = new List<Bill>{new ( 24,4312), new ( 21,4313), new ( 44,4232)};
         
         Bill.SetBills(lb);
@@ -88,5 +89,20 @@ public class Tests
         {
             Assert.Pass();
         }
+    }
+    
+    [Test]
+    public void Trying_to_create_List_of_Bills_and_save_them_to_file()
+    {
+        Bill.SetBills(new List<Bill>());
+        List<Bill> la = new List<Bill>{new ( 24,4312), new ( 21,4313), new ( 44,4232)};
+        
+        SerializeToFIle.saveAll();
+        
+        Bill.SetBills(new List<Bill>());
+        
+        SerializeToFIle.loadAll();
+        
+        Assert.That(Bill.GetBills(), Is.EqualTo(la));
     }
 }

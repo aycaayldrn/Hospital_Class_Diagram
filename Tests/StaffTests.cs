@@ -59,6 +59,7 @@ public class StaffTests
     [Test]
     public void Trying_to_create_List_of_Staffs_and_SetAppointments()
     {
+        Staff.SetStaffMembers(new List<Staff>());
         List<Staff> lb = new List<Staff>{new (2,"Test2","test"), new (3,"Test3","test"), new (4,"Test4","test")};
         
         Staff.SetStaffMembers(lb);
@@ -93,5 +94,21 @@ public class StaffTests
         {
             Assert.Pass();
         }
+    }
+    
+        
+    [Test]
+    public void Trying_to_create_List_of_Staff_and_save_them_to_file()
+    {
+        Staff.SetStaffMembers(new List<Staff>());
+        List<Staff> la = new List<Staff>{new (2,"Test2","test"), new (3,"Test3","test"), new (4,"Test4","test")};
+        
+        SerializeToFIle.saveAll();
+        
+        Staff.SetStaffMembers(new List<Staff>());
+        
+        SerializeToFIle.loadAll();
+        
+        Assert.That(Staff.GetStaffMembers(), Is.EqualTo(la));
     }
 }

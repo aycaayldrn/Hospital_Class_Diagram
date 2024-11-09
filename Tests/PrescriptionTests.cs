@@ -50,6 +50,7 @@ public class PrescriptionTests
     [Test]
     public void Trying_to_create_List_of_Prescriptions_and_SetAppointments()
     {
+        Prescription.SetPrescriptions(new List<Prescription>());
         List<Prescription> lp = new List<Prescription>{new ( 1, "Test1", 1.2f, 4, false), new (2, "Test2", 1.2f, 4, false), new ( 3, "Test3", 1.2f, 4, false)};
         
         Prescription.SetPrescriptions(lp);
@@ -84,5 +85,21 @@ public class PrescriptionTests
         {
             Assert.Pass();
         }
+    }
+    
+        
+    [Test]
+    public void Trying_to_create_List_of_Prescriptions_and_save_them_to_file()
+    {
+        Prescription.SetPrescriptions(new List<Prescription>());
+        List<Prescription> la = new List<Prescription>{new ( 1, "Test1", 1.2f, 4, false), new (2, "Test2", 1.2f, 4, false), new ( 3, "Test3", 1.2f, 4, false)};
+        
+        SerializeToFIle.saveAll();
+        
+        Prescription.SetPrescriptions(new List<Prescription>());
+        
+        SerializeToFIle.loadAll();
+        
+        Assert.That(Prescription.GetPrescriptions(), Is.EqualTo(la));
     }
 }

@@ -51,6 +51,7 @@ public class InsuranceProviderTests
     [Test]
     public void Trying_to_create_List_of_Insurance_Providers_and_SetAppointments()
     {
+        Insurance_Provider.SetProviders(new List<Insurance_Provider>());
         List<Insurance_Provider> li = new List<Insurance_Provider>{new ( 24,"Test1"), new ( 22,"Test2"), new ( 44,"Test3")};
         
         Insurance_Provider.SetProviders(li);
@@ -85,5 +86,21 @@ public class InsuranceProviderTests
         {
             Assert.Pass();
         }
+    }
+    
+        
+    [Test]
+    public void Trying_to_create_List_of_Insurance_Providers_and_save_them_to_file()
+    {
+        Insurance_Provider.SetProviders(new List<Insurance_Provider>());
+        List<Insurance_Provider> la = new List<Insurance_Provider>{new ( 24,"Test1"), new ( 22,"Test2"), new ( 44,"Test3")};
+        
+        SerializeToFIle.saveAll();
+        
+        Insurance_Provider.SetProviders(new List<Insurance_Provider>());
+        
+        SerializeToFIle.loadAll();
+        
+        Assert.That(Insurance_Provider.GetProvider(), Is.EqualTo(la));
     }
 }

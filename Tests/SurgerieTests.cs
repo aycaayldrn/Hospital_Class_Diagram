@@ -32,6 +32,7 @@ public class SurgerieTests
     [Test]
     public void Trying_to_create_List_of_Surgeries_and_SetAppointments()
     {
+        Surgerie.SetSurgeries(new List<Surgerie>());
         List<Surgerie> lb = new List<Surgerie>{new ( "Test1"), new ( "Test2"), new ( "Test3")};
         
         Surgerie.SetSurgeries(lb);
@@ -65,5 +66,21 @@ public class SurgerieTests
         {
             Assert.Pass();
         }
+    }
+    
+        
+    [Test]
+    public void Trying_to_create_List_of_Surgeries_and_save_them_to_file()
+    {
+        Surgerie.SetSurgeries(new List<Surgerie>());
+        List<Surgerie> la = new List<Surgerie>{new ( "Test1"), new ( "Test2"), new ( "Test3")};
+        
+        SerializeToFIle.saveAll();
+        
+        Surgerie.SetSurgeries(new List<Surgerie>());
+        
+        SerializeToFIle.loadAll();
+        
+        Assert.That(Surgerie.GetSurgeries(), Is.EqualTo(la));
     }
 }

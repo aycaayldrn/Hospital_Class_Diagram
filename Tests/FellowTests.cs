@@ -43,6 +43,8 @@ public class FellowTests
     [Test]
     public void Trying_to_create_List_of_Fellows_and_SetAppointments()
     {
+        Fellow.SetFellows(new List<Fellow>());
+
         List<Fellow> lf = new List<Fellow>{new ( "Test1"), new ( "Test2"), new ( "Test3")};
         
         Fellow.SetFellows(lf);
@@ -77,5 +79,21 @@ public class FellowTests
         {
             Assert.Pass();
         }
+    }
+    
+        
+    [Test]
+    public void Trying_to_create_List_of_Fellows_and_save_them_to_file()
+    {
+        Fellow.SetFellows(new List<Fellow>());
+        List<Fellow> la = new List<Fellow>{new ( "Test1"), new ( "Test2"), new ( "Test3")};
+        
+        SerializeToFIle.saveAll();
+        
+        Fellow.SetFellows(new List<Fellow>());
+        
+        SerializeToFIle.loadAll();
+        
+        Assert.That(Fellow.GetFellows(), Is.EqualTo(la));
     }
 }

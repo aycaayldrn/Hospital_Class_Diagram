@@ -20,6 +20,9 @@ namespace Hospital_System.Models
                 if (value == null)
                 {
                     throw new ArgumentException("Date cannot be null");
+                }else if (value < DateTime.Now)
+                {
+                    throw new ArgumentException("Date cannot be earlier than today");
                 }
                 _date = value;
             }

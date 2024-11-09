@@ -30,6 +30,7 @@ public class PhysicianTests
     [Test]
     public void Trying_to_create_List_of_Physicians_and_SetAppointments()
     {
+        Physician.SetPhysicians(new List<Physician>());
         List<Physician> lp = new List<Physician>{new ( "Test1"), new ( "Test2"), new ( "Test3")};
         
         Physician.SetPhysicians(lp);
@@ -65,5 +66,21 @@ public class PhysicianTests
         {
             Assert.Pass();
         }
+    }
+    
+        
+    [Test]
+    public void Trying_to_create_List_of_Physician_and_save_them_to_file()
+    {
+        Physician.SetPhysicians(new List<Physician>());
+        List<Physician> la = new List<Physician>{new ( "Test1"), new ( "Test2"), new ( "Test3")};
+        
+        SerializeToFIle.saveAll();
+        
+        Physician.SetPhysicians(new List<Physician>());
+        
+        SerializeToFIle.loadAll();
+        
+        Assert.That(Physician.GetPhysicians(), Is.EqualTo(la));
     }
 }

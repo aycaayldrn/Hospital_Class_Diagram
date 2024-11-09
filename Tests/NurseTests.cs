@@ -40,6 +40,7 @@ public class NurseTests
     [Test]
     public void Trying_to_create_List_of_Nurses_and_SetAppointments()
     {
+        Nurse.SetNurses(new List<Nurse>());
         List<Nurse> ln = new List<Nurse>{new ( 24,"Test1"), new ( 21,"Test2"), new ( 44,"Test3")};
         
         Nurse.SetNurses(ln);
@@ -74,5 +75,21 @@ public class NurseTests
         {
             Assert.Pass();
         }
+    }
+    
+        
+    [Test]
+    public void Trying_to_create_List_of_Nurses_and_save_them_to_file()
+    {
+        Nurse.SetNurses(new List<Nurse>());
+        List<Nurse> la = new List<Nurse>{new ( 24,"Test1"), new ( 21,"Test2"), new ( 44,"Test3")};
+        
+        SerializeToFIle.saveAll();
+        
+        Nurse.SetNurses(new List<Nurse>());
+        
+        SerializeToFIle.loadAll();
+        
+        Assert.That(Nurse.GetNurses(), Is.EqualTo(la));
     }
 }

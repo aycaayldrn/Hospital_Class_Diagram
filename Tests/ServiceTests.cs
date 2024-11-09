@@ -57,6 +57,7 @@ public class ServiceTests
     [Test]
     public void Trying_to_create_List_of_Services_and_SetAppointments()
     {
+        Service.SetServices(new List<Service>());
         List<Service> ls = new List<Service>{new ( "Test2", 100d), new ( "Test3", 100d), new ("Test4", 100d)};
         
         Service.SetServices(ls);
@@ -91,5 +92,21 @@ public class ServiceTests
         {
             Assert.Pass();
         }
+    }
+    
+        
+    [Test]
+    public void Trying_to_create_List_of_Services_and_save_them_to_file()
+    {
+        Service.SetServices(new List<Service>());
+        List<Service> la = new List<Service>{new ( "Test2", 100d), new ( "Test3", 100d), new ("Test4", 100d)};
+        
+        SerializeToFIle.saveAll();
+        
+        Service.SetServices(new List<Service>());
+        
+        SerializeToFIle.loadAll();
+        
+        Assert.That(Service.GetServices(), Is.EqualTo(la));
     }
 }
