@@ -52,6 +52,18 @@ namespace Hospital_System.Models
         public IReadOnlyList<Insurance_Provider> PatientProviders => _patientProviders.AsReadOnly();
 
         public bool HasHealthInsurance => _patientProviders.Count > 0;
+        
+        public Patient(int id, string name, DateTime birthDate)
+        {
+            Id = id;
+            Name = name;
+            BirthDate = birthDate;
+
+            Diagnoses = new List<string>();
+            Allergies = new List<string>();
+            Treatments = new List<string>();
+            AddPatient(this);
+        }
 
         public void AddInsuranceProviderToPatient(Insurance_Provider provider)
         {
@@ -86,18 +98,6 @@ namespace Hospital_System.Models
             }
 
             return age;
-        }
-
-        public Patient(int id, string name, DateTime birthDate)
-        {
-            Id = id;
-            Name = name;
-            BirthDate = birthDate;
-
-            Diagnoses = new List<string>();
-            Allergies = new List<string>();
-            Treatments = new List<string>();
-            AddPatient(this);
         }
 
         private static void AddPatient(Patient patient)

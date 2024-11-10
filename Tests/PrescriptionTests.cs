@@ -79,7 +79,7 @@ public class PrescriptionTests
     {
         try
         {
-            Prescription.RemovePrescription(new Prescription());
+            Prescription.RemovePrescription(new Prescription(5, "Test5", 1.2f, 4, false));
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {

@@ -8,7 +8,7 @@ public class PatientTests
     {
         try
         {
-            Patient p = new Patient(1, null, new DateTime(2024, 8, 18), false);
+            Patient p = new Patient(1, null, new DateTime(2024, 8, 18));
 
             Assert.Fail("Expected ArgumentException");
         }
@@ -23,7 +23,7 @@ public class PatientTests
     {
         try
         {
-            Patient p = new Patient(1, null, new DateTime(3000, 8, 18), false);
+            Patient p = new Patient(1, null, new DateTime(3000, 8, 18));
 
             Assert.Fail("Expected ArgumentException");
         }
@@ -37,7 +37,7 @@ public class PatientTests
     public void Trying_to_create_Patient_with_specific_name_and_check_if_it_assigned_correctly()
     {
         String name = "Test2";
-        Patient p = new Patient(1, name, new DateTime(2024, 8, 18), false);
+        Patient p = new Patient(1, name, new DateTime(2024, 8, 18));
 
         Assert.That(p.Name, Is.EqualTo(name));
     }
@@ -47,7 +47,7 @@ public class PatientTests
     {
         DateTime date = new DateTime(2003, 12, 18);
         
-        Patient p = new Patient(1, "name", date, false);
+        Patient p = new Patient(1, "name", date);
         Assert.That(p.Age, Is.EqualTo(date.Month > DateTime.Today.Month ? DateTime.Today.Year - date.Year - 1 : DateTime.Today.Year - date.Year));
     }
     
@@ -57,7 +57,7 @@ public class PatientTests
     {
         
         Patient.SetPatients(new List<Patient>());
-        List<Patient> lp = new List<Patient>{new ( 1,"Test1",new DateTime(2005),false), new ( 2,"Test2",new DateTime(2005),false), new (3,"Test3",new DateTime(2005),false)};
+        List<Patient> lp = new List<Patient>{new ( 1,"Test1",new DateTime(2005)), new ( 2,"Test2",new DateTime(2005)), new (3,"Test3",new DateTime(2005))};
         
         Patient.SetPatients(lp);
         
@@ -69,10 +69,10 @@ public class PatientTests
     [Test]
     public void Trying_to_create_same_Patient_throws_InvalidOperationException()
     {
-        Patient b = new Patient(1,"Test1",new DateTime(2005),false);
+        Patient b = new Patient(1,"Test1",new DateTime(2005));
         try
         {
-            Patient b2 = new Patient(1,"Test1",new DateTime(2005),false);
+            Patient b2 = new Patient(1,"Test1",new DateTime(2005));
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
@@ -98,7 +98,7 @@ public class PatientTests
     public void Trying_to_create_List_of_Patients_and_save_them_to_file()
     {
         Patient.SetPatients(new List<Patient>());
-        List<Patient> la = new List<Patient>{new ( 1,"Test1",new DateTime(2005),false), new ( 2,"Test2",new DateTime(2005),false), new (3,"Test3",new DateTime(2005),false)};
+        List<Patient> la = new List<Patient>{new ( 1,"Test1",new DateTime(2005)), new ( 2,"Test2",new DateTime(2005)), new (3,"Test3",new DateTime(2005))};
         
         SerializeToFIle.saveAll();
         

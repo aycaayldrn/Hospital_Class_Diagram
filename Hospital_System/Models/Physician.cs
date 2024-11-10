@@ -4,16 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Hospital_System.Models
-{
+namespace Hospital_System.Models;
+
     [Serializable]
     public class Physician
     {
-        public Physician(){}
+        public Physician()
+        {
+        }
+
         private static List<Physician> _physicianList = new List<Physician>();
         private List<Patient> _patients = new List<Patient>();
 
         private string _specialization;
+
         public string Specialization
         {
             get => _specialization;
@@ -23,6 +27,7 @@ namespace Hospital_System.Models
                 {
                     throw new ArgumentException("Specialization can't be empty");
                 }
+
                 _specialization = value;
             }
         }
@@ -32,7 +37,7 @@ namespace Hospital_System.Models
             Specialization = specialization;
             AddPhysician(this);
         }
-        
+
         private static void AddPhysician(Physician physician)
         {
             if (physician == null)
@@ -47,8 +52,8 @@ namespace Hospital_System.Models
 
             _physicianList.Add(physician);
         }
-        
-        
+
+
         public static void RemovePhysician(Physician physician)
         {
             if (physician == null)
@@ -63,12 +68,12 @@ namespace Hospital_System.Models
 
             _physicianList.Remove(physician);
         }
-        
+
         public static IReadOnlyList<Physician> GetPhysicians()
         {
             return _physicianList.AsReadOnly();
         }
-        
+
         public override bool Equals(object? obj)
         {
             if (obj == null || !(obj is Physician))
@@ -80,17 +85,17 @@ namespace Hospital_System.Models
 
             return string.Equals(this._specialization, other._specialization, StringComparison.OrdinalIgnoreCase);
         }
-        
-        
+
+
         public override int GetHashCode()
         {
             return _specialization.ToLowerInvariant().GetHashCode();
         }
 
-        
+
         public override string ToString()
         {
-            return "Physician Specialization:" +Specialization;
+            return "Physician Specialization:" + Specialization;
         }
 
 
@@ -99,7 +104,8 @@ namespace Hospital_System.Models
             _physicianList = containerPhysicians ?? new List<Physician>();
         }
 
-        public Prescription WritePrescription(int id, string medicationName, float dosage, int duration, bool redPrescription)
+        public Prescription WritePrescription(int id, string medicationName, float dosage, int duration,
+            bool redPrescription)
         {
             return new Prescription(id, medicationName, dosage, duration, redPrescription);
         }
@@ -123,15 +129,15 @@ namespace Hospital_System.Models
 
             if (_patients.Contains(patient))
             {
-                throw new InvalidOperationException("This patient is already assigned to this physician.")
+                throw new InvalidOperationException("This patient is already assigned to this physician.");
             }
 
             _patients.Add(patient);
 
         }
 
-        public IReadOnlyList<Patient> GetPatients() 
+        public IReadOnlyList<Patient> GetPatients()
         {
             return _patients.AsReadOnly();
         }
-}
+    }

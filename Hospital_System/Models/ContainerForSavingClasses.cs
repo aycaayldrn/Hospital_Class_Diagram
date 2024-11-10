@@ -19,7 +19,6 @@ public class ContainerForSavingClasses
     public List<Service> Services { get; set; }
     public List<Shift> Shifts { get; set; }
     public List<Staff> Staff { get; set; }
-    public List<Surgerie> Surgeries { get; set; }
     public List<Surgeon> Surgeons { get; set; }
     
     //
@@ -42,7 +41,6 @@ public class ContainerForSavingClasses
         Services = new List<Service>();
         Shifts = new List<Shift>();
         Staff = new List<Staff>();
-        Surgeries = new List<Surgerie>();
         Surgeons = new List<Surgeon>();
     }
 }

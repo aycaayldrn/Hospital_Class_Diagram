@@ -24,7 +24,6 @@ public static class SerializeToFIle
             Services = Service.GetServices().ToList(),
             Shifts = Shift.GetShifts().ToList(),
             Staff = Staff.GetStaffMembers().ToList(),
-            Surgeries = Surgerie.GetSurgeries().ToList(),
             Surgeons = Surgeon.GetSurgeons().ToList()
         };
 
@@ -77,7 +76,6 @@ public static class SerializeToFIle
                 Service.SetServices(container.Services);
                 Shift.SetShifts(container.Shifts);
                 Staff.SetStaffMembers(container.Staff);
-                Surgerie.SetSurgeries(container.Surgeries);
                 Surgeon.SetSurgeons(container.Surgeons);
             }
 

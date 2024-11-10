@@ -38,11 +38,11 @@ namespace Hospital_System.Models
 
         public object AssignedDoctor { get; private set; }
 
-        internal Appointment(DateTime date, AppointmentType type, object assignedDoctor) 
+        public Appointment(DateTime date, AppointmentType type, object assignedDoctor) 
         {
             if(type == AppointmentType.Surgery && assignedDoctor is not Surgeon)
             {
-                throw new InvalidOperationException("Only surgeons can be assigned to surgery appointments. ")
+                throw new InvalidOperationException("Only surgeons can be assigned to surgery appointments. ");
             }
             
             Date = date;
