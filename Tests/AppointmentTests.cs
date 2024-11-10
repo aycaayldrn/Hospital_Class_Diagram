@@ -10,7 +10,7 @@ public class AppointmentTests
     {
         DateTime date = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day,23,59,59);
         Appointment.AppointmentType at = Appointment.AppointmentType.FollowUp;
-        DummyDoctor dd = new DummyDoctor();
+        object dd = new object();
         Appointment a = new Appointment(date, at, dd);
         if (a.Date == date && a.Type == at && a.AssignedDoctor == dd)
         {
@@ -29,7 +29,7 @@ public class AppointmentTests
         try
         {
             DateTime date = new DateTime(2005, 3, 12,8,30,0);
-            Appointment a = new Appointment(date, Appointment.AppointmentType.FollowUp, new DummyDoctor());
+            Appointment a = new Appointment(date, Appointment.AppointmentType.FollowUp, new object());
             Assert.Fail("Should throw ArgumentException");
         }catch(ArgumentException o)
         {
@@ -42,7 +42,7 @@ public class AppointmentTests
     {
         try
         {
-            Appointment a = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.Surgery, new DummyDoctor());
+            Appointment a = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.Surgery, new object());
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
@@ -54,9 +54,9 @@ public class AppointmentTests
     public void Trying_to_create_List_of_Appointments_and_SetAppointments()
     {
         Appointment.SetAppointments(new List<Appointment>());
-        List<Appointment> la = new List<Appointment>{new ( new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new DummyDoctor()),
-                                                     new ( new DateTime(3002,3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new DummyDoctor()),
-                                                     new ( new DateTime(3001, 3, 12,8,30,0) , Appointment.AppointmentType.FollowUp, new DummyDoctor())};
+        List<Appointment> la = new List<Appointment>{new ( new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object()),
+                                                     new ( new DateTime(3002,3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object()),
+                                                     new ( new DateTime(3001, 3, 12,8,30,0) , Appointment.AppointmentType.FollowUp, new object())};
      
     
         Assert.That(Appointment.GetAppointments(), Is.EquivalentTo(la));
@@ -67,10 +67,10 @@ public class AppointmentTests
     {
         Appointment.SetAppointments(new List<Appointment>());
         DateTime date = new DateTime(3004, 3, 12,8,30,0);
-        Appointment a = new Appointment(date , Appointment.AppointmentType.FollowUp, new DummyDoctor());
+        Appointment a = new Appointment(date , Appointment.AppointmentType.FollowUp, new object());
         try
         {
-            Appointment a2 = new Appointment(date , Appointment.AppointmentType.FollowUp, new DummyDoctor());
+            Appointment a2 = new Appointment(date , Appointment.AppointmentType.FollowUp, new object());
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
@@ -95,10 +95,11 @@ public class AppointmentTests
     public void Trying_to_create_List_of_Appointments_and_save_them_to_file()
     {
         Appointment.SetAppointments(new List<Appointment>());
-        List<Appointment> la = new List<Appointment>{new ( new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new DummyDoctor()),
-                                                     new ( new DateTime(3002,3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new DummyDoctor()),
-                                                     new ( new DateTime(3001, 3, 12,8,30,0) , Appointment.AppointmentType.FollowUp, new DummyDoctor())};
-
+        List<Appointment> la = new List<Appointment>{new ( new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object()), 
+            new ( new DateTime(3002,3, 12,8,30,0), Appointment.AppointmentType.Consultation, new object()), 
+            new ( new DateTime(3001, 3, 12,8,30,0) , Appointment.AppointmentType.FollowUp, new object())};
+        
+        Appointment.SetAppointments(la);
         SerializeToFIle.saveAll();
         
         Appointment.SetAppointments(new List<Appointment>());

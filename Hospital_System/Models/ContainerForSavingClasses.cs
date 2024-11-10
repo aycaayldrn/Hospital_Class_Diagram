@@ -6,7 +6,7 @@ public class ContainerForSavingClasses
     public List<Bill> Bills { get; set; }
     
     public List<Department> Departments { get; set; }
-
+    
     public List<Equipment> Equipments { get; set; }
     public List<Fellow> Fellows { get; set; }
     public List<Insurance_Provider> InsuranceProviders { get; set; }
@@ -21,12 +21,11 @@ public class ContainerForSavingClasses
     public List<Staff> Staff { get; set; }
     public List<Surgeon> Surgeons { get; set; }
     
-    //
     public ContainerForSavingClasses()
     {
         Appointments = new List<Appointment>();
         Bills = new List<Bill>();
-       
+        
         Departments = new List<Department>();
         
         Equipments = new List<Equipment>();

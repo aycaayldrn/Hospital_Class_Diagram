@@ -36,6 +36,8 @@ namespace Hospital_System.Models
                 _medicationName = value;
             }
         }
+        
+        public Prescription(){}
         public float Dosage { get; set; }
         public int Duration { get; set; }
         public bool RedPrescription { get; set; }

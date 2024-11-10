@@ -81,7 +81,7 @@ public class DepartmentTests
     public void Trying_to_create_List_of_Departments_and_save_them_to_file()
     {
         Department.SetDepartments(new List<Department>());
-        List<Department> la = new List<Department>{new ( "Test1"), new ( "Test2"), new ( "Test3")};
+        List<Department> ld = new List<Department>{new ( "Test1"), new ( "Test2"), new ( "Test3")};
         
         SerializeToFIle.saveAll();
         
@@ -89,6 +89,6 @@ public class DepartmentTests
         
         SerializeToFIle.loadAll();
         
-        Assert.That(Department.GetDepartments(), Is.EqualTo(la));
+        Assert.That(Department.GetDepartments(), Is.EqualTo(ld));
     }
 }

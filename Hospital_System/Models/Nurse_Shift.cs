@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hospital_System.Models
 {
+    [Serializable] 
     public abstract class Nurse_Shift
     {
         public int ShiftId { get; set; }

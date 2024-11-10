@@ -9,14 +9,14 @@ namespace Hospital_System.Models
     [Serializable] 
     public class Room
     {
-
+        [Serializable]
         public enum RoomType
         {
             Single,
             Double,
             ICU
         }
-        
+        [Serializable]
         public enum RoomAvailability
         {
             Available,

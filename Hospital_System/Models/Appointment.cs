@@ -9,6 +9,7 @@ namespace Hospital_System.Models
     [Serializable] 
     public class Appointment
     {
+        [Serializable]
         public enum AppointmentType
         {
             Surgery,
@@ -36,7 +37,7 @@ namespace Hospital_System.Models
 
         public AppointmentType Type { get; set; }
 
-        public object AssignedDoctor { get; private set; }
+        public object AssignedDoctor { get; set; }
 
         public Appointment(DateTime date, AppointmentType type, object assignedDoctor) 
         {

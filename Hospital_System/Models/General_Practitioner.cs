@@ -7,6 +7,7 @@ using System.Xml.Linq;
 
 namespace Hospital_System.Models
 {
+    [Serializable] 
     public class General_Practitioner
     {
         private string _primaryCareSpecialty;
