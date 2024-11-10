@@ -96,5 +96,10 @@ namespace Hospital_System.Models
         {
             _surgeonList = containerSurgeons?? new List<Surgeon>();
         }
+
+        public Appointment ScheduleSurgery(DateTime date)
+        {
+            return new Appointment(date, Appointment.AppointmentType.Surgery, this);
+        }
     }
 }

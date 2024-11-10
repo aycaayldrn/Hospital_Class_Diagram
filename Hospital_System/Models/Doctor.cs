@@ -8,7 +8,8 @@ namespace Hospital_System.Models
 {
     public interface Doctor 
     {
-
+        int Id { get; set; }
+        string Name { get; set; }
 
     }
 }

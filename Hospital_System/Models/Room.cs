@@ -9,38 +9,39 @@ namespace Hospital_System.Models
     [Serializable] 
     public class Room
     {
-        public Room(){}
+
+        public enum RoomType
+        {
+            Single,
+            Double,
+            ICU
+        }
+        
+        public enum RoomAvailability
+        {
+            Available,
+            Occupied,
+            UnderMaintenance
+        }
+
         private static List<Room> _roomList = new List<Room>();
         public int Number { get; set; }
-        private string _type;
-        public string Type
+
+        private RoomType _type;
+        public RoomType Type
         {
             get => _type;
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    throw new ArgumentException("Room type can't be empty");
-                }
-                _type = value;
-            }
+            set => _type = value;
         }
 
-        private string _availability;
-        public string Availability
+        private RoomAvailability _availability;
+        public RoomAvailability Availability
         {
             get => _availability;
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    throw new ArgumentException("Room availability info can't be empty");
-                }
-                _availability = value;
-            }
+            set => _availability = value;
         }
 
-        public Room(int number, string type, string availability)
+        public Room(int number, RoomType type, RoomAvailability availability)
         {
             if(number <= 0)
             {
@@ -52,7 +53,8 @@ namespace Hospital_System.Models
             Availability = availability;
             AddRoom(this);
         }
-        
+
+        public Room() { }
         private static void AddRoom(Room room)
         {
             if (room == null)

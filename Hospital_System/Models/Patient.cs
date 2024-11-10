@@ -11,6 +11,8 @@ namespace Hospital_System.Models
     public class Patient
     {
         public Patient(){}
+
+
         private static List<Patient> _patientsList = new List<Patient>();
         public int Id { get; set; }
         private string _name;
@@ -21,7 +23,7 @@ namespace Hospital_System.Models
             {
                 if (string.IsNullOrEmpty(value))
                 {
-                    throw new ArgumentException("Insurance provider name can't be empty");
+                    throw new ArgumentException("Patient name can't be empty");
                 }
                 _name = value;
             }
@@ -45,7 +47,33 @@ namespace Hospital_System.Models
         public List<string> Diagnoses { get; set; }
         public List<string> Allergies { get; set; }
         public List<string> Treatments { get; set; }
-        public bool HasHealthInsurance { get; set; }
+
+        public List<Insurance_Provider> _patientProviders = new List<Insurance_Provider>();
+        public IReadOnlyList<Insurance_Provider> PatientProviders => _patientProviders.AsReadOnly();
+
+        public bool HasHealthInsurance => _patientProviders.Count > 0;
+
+        public void AddInsuranceProviderToPatient(Insurance_Provider provider)
+        {
+            if (provider == null)
+                throw new ArgumentException("Provider cannot be null");
+
+            if (_patientProviders.Contains(provider))
+                throw new InvalidOperationException("Provider already added for this patient.");
+
+            _patientProviders.Add(provider);
+        }
+
+        public void RemoveInsuranceProviderFromPatient(Insurance_Provider provider)
+        {
+            if (provider == null)
+                throw new ArgumentException("Provider cannot be null");
+
+            if (!_patientProviders.Contains(provider))
+                throw new InvalidOperationException("Provider not found for this patient.");
+
+            _patientProviders.Remove(provider);
+        }
 
         private int CalculateAge()
         {
@@ -60,12 +88,11 @@ namespace Hospital_System.Models
             return age;
         }
 
-        public Patient(int id, string name, DateTime birthDate, bool hasHealthInsurance)
+        public Patient(int id, string name, DateTime birthDate)
         {
             Id = id;
             Name = name;
             BirthDate = birthDate;
-            HasHealthInsurance = hasHealthInsurance;
 
             Diagnoses = new List<string>();
             Allergies = new List<string>();

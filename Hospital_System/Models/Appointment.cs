@@ -9,7 +9,13 @@ namespace Hospital_System.Models
     [Serializable] 
     public class Appointment
     {
-        
+        public enum AppointmentType
+        {
+            Surgery,
+            FollowUp,
+            Consultation
+        }
+
         private static List<Appointment> _appointmentList = new List<Appointment>();
         private DateTime _date;
         public DateTime Date
@@ -28,10 +34,23 @@ namespace Hospital_System.Models
             }
         }
 
-        public Appointment(DateTime date) {
+        public AppointmentType Type { get; set; }
+
+        public object AssignedDoctor { get; private set; }
+
+        internal Appointment(DateTime date, AppointmentType type, object assignedDoctor) 
+        {
+            if(type == AppointmentType.Surgery && assignedDoctor is not Surgeon)
+            {
+                throw new InvalidOperationException("Only surgeons can be assigned to surgery appointments. ")
+            }
+            
             Date = date;
+            Type = type;
+            AssignedDoctor = assignedDoctor;
             addAppointment(this);
         }
+
         public Appointment(){}
     
         
@@ -102,6 +121,7 @@ namespace Hospital_System.Models
     {
         DateTime Date { get; set; }
         DateTime Time { get; set; }
+        Appointment.AppointmentType Type { get; set; }
     }
     
     

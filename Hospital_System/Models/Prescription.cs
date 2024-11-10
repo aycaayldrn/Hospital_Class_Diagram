@@ -10,7 +10,16 @@ namespace Hospital_System.Models
     [Serializable] 
     public class Prescription
     {
-        public Prescription(){}
+        public Prescription(int id, string medicationName, float dosage, int duration, bool redPrescription)
+        {
+            Id = id;
+            MedicationName = medicationName;
+            Dosage = dosage;
+            Duration = duration;
+            RedPrescription = redPrescription;
+            AddPrescription(this);
+        }
+
         private static List<Prescription> _prescriptionList = new List<Prescription>();
         public int Id { get; set; }
 
@@ -30,16 +39,6 @@ namespace Hospital_System.Models
         public float Dosage { get; set; }
         public int Duration { get; set; }
         public bool RedPrescription { get; set; }
-
-        public Prescription(int id, string medicationName, float dosage, int duration, bool redPrescription)
-        {
-            Id = id;
-            MedicationName = medicationName;
-            Dosage = dosage;
-            Duration = duration;
-            RedPrescription = redPrescription;
-            AddPrescription(this);
-        }
         
         private static void AddPrescription(Prescription prescription)
         {
@@ -97,7 +96,6 @@ namespace Hospital_System.Models
         {
             return "Prescription Id: "+Id+ "Medication :"+MedicationName +"Dosage: "+Dosage+ "Duration: "+ Duration + "Red Prescription: "+RedPrescription;
         }
-
 
         public static void SetPrescriptions(List<Prescription> containerPrescriptions)
         {

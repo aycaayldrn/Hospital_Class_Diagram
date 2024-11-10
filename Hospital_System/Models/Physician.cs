@@ -11,6 +11,8 @@ namespace Hospital_System.Models
     {
         public Physician(){}
         private static List<Physician> _physicianList = new List<Physician>();
+        private List<Patient> _patients = new List<Patient>();
+
         private string _specialization;
         public string Specialization
         {
@@ -30,7 +32,6 @@ namespace Hospital_System.Models
             Specialization = specialization;
             AddPhysician(this);
         }
-        
         
         private static void AddPhysician(Physician physician)
         {
@@ -97,5 +98,40 @@ namespace Hospital_System.Models
         {
             _physicianList = containerPhysicians ?? new List<Physician>();
         }
-    }
+
+        public Prescription WritePrescription(int id, string medicationName, float dosage, int duration, bool redPrescription)
+        {
+            return new Prescription(id, medicationName, dosage, duration, redPrescription);
+        }
+
+        public Appointment ScheduleAppointment(DateTime date, Appointment.AppointmentType type)
+        {
+            if (type == Appointment.AppointmentType.Surgery)
+            {
+                throw new InvalidOperationException("Only surgeons can schedule surgery appointments.");
+            }
+
+            return new Appointment(date, type, this);
+        }
+
+        public void AssignPatient(Patient patient)
+        {
+            if (patient == null)
+            {
+                throw new ArgumentNullException("Patient cannot be null");
+            }
+
+            if (_patients.Contains(patient))
+            {
+                throw new InvalidOperationException("This patient is already assigned to this physician.")
+            }
+
+            _patients.Add(patient);
+
+        }
+
+        public IReadOnlyList<Patient> GetPatients() 
+        {
+            return _patients.AsReadOnly();
+        }
 }
