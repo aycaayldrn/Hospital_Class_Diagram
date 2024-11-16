@@ -118,12 +118,7 @@ namespace Hospital_System.Models
         }
     }
     
-    internal interface IAppointment
-    {
-        DateTime Date { get; set; }
-        DateTime Time { get; set; }
-        Appointment.AppointmentType Type { get; set; }
-    }
+ 
     
     
     

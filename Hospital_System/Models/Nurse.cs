@@ -26,7 +26,19 @@ namespace Hospital_System.Models
                 _name = value;
             }
         }
-        public List<string> Certifications { get; set; }
+        private List<string> _certification = new List<string>();
+        public List<string> Certifications 
+        { 
+            get => _certification;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentException(nameof(value), "Certification cannot be null");
+                }
+                _certification = value.Where(item => !string.IsNullOrWhiteSpace(item)).ToList();
+            }
+        }
 
         public Nurse(int id, string name, List<string>? certifications = null)
         {

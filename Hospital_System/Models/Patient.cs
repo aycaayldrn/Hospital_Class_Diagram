@@ -44,9 +44,48 @@ namespace Hospital_System.Models
             }
         }
         public int Age => CalculateAge();
-        public List<string> Diagnoses { get; set; }
-        public List<string> Allergies { get; set; }
-        public List<string> Treatments { get; set; }
+
+        private List<string> _diagnoses = new List<string>();
+        public List<string> Diagnoses 
+        { 
+            get => _diagnoses;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentException(nameof(value), "Diagnose cannot be null");
+                }
+                _diagnoses = value.Where(item => !string.IsNullOrWhiteSpace(item)).ToList();
+            }
+        }
+
+        private List<string> _allergies = new List<string>();
+        public List<string> Allergies 
+        { 
+            get => _allergies;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentException(nameof(value), "Allergie cannot be null");
+                }
+                _allergies = value.Where(item => !string.IsNullOrWhiteSpace(item)).ToList();
+            }
+        }
+
+        private List<string> _treatments = new List<string>();
+        public List<string> Treatments 
+        { 
+            get => _treatments;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentException(nameof(value), "Treatment cannot be null");
+                }
+                _treatments = value.Where(item => !string.IsNullOrWhiteSpace(item)).ToList();
+            }
+        }
 
         public List<Insurance_Provider> _patientProviders = new List<Insurance_Provider>();
         public IReadOnlyList<Insurance_Provider> PatientProviders => _patientProviders.AsReadOnly();

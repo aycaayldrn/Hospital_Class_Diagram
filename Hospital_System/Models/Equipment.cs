@@ -11,6 +11,7 @@ namespace Hospital_System.Models
     {
         private static List<Equipment> _equipmentList = new List<Equipment>();
         public int Id { get; set; }
+
         private string _type;
         public string Type
         {
@@ -24,7 +25,21 @@ namespace Hospital_System.Models
                 _type = value;
             }
         }
-        public List<string> MaintenanceHistory { get; set; }
+
+        private List<string> _maintenanceHistory = new List<string>();
+        public List<string> MaintenanceHistory
+        {
+            get => _maintenanceHistory;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentException(nameof(value), "Maintenance history cannot be null");
+                }
+                _maintenanceHistory = value.Where(item => !string.IsNullOrWhiteSpace(item)).ToList();
+            }
+        }
+
         public Equipment(){}
         public Equipment(int id, string type)
         {

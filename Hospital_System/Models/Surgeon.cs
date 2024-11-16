@@ -12,8 +12,19 @@ namespace Hospital_System.Models
         public Surgeon(){}
         private static List<Surgeon> _surgeonList = new List<Surgeon>();
 
-
-        public List<string> Surgeries { get; set; }
+        private List<string> _surgeries = new List<string>();
+        public List<string> Surgeries 
+        { 
+            get => _surgeries;
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentException(nameof(value), "Surgery cannot be null");
+                }
+                _surgeries = value.Where(item => !string.IsNullOrWhiteSpace(item)).ToList();
+            }
+        }
         public static readonly int MaxSurgeriesPerShift = 2;
 
         public Surgeon(List<string> surgeries = null)
