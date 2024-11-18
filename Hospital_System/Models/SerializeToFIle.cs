@@ -57,26 +57,99 @@ public static class SerializeToFIle
 
         try
         {
+            
+            
+            
             using (StreamReader file = File.OpenText(path))
             {
                 XmlSerializer xmlSerializer = new XmlSerializer(typeof(ContainerForSavingClasses));
                 ContainerForSavingClasses container = (ContainerForSavingClasses)xmlSerializer.Deserialize(file);
-
-                Appointment.SetAppointments(container.Appointments);
-                Bill.SetBills(container.Bills);
-                Department.SetDepartments(container.Departments);
-                Equipment.SetEquipments(container.Equipments);
-                Fellow.SetFellows(container.Fellows);
-                Insurance_Provider.SetProviders(container.InsuranceProviders);
-                Nurse.SetNurses(container.Nurses);
-                Patient.SetPatients(container.Patients);
-                Physician.SetPhysicians(container.Physicians);
-                Prescription.SetPrescriptions(container.Prescriptions);
-                Room.SetRooms(container.Rooms);
-                Service.SetServices(container.Services);
-                Shift.SetShifts(container.Shifts);
-                Staff.SetStaffMembers(container.Staff);
-                Surgeon.SetSurgeons(container.Surgeons);
+               
+                Appointment.LoadExtent(container.Appointments);
+                Bill.LoadExtent(container.Bills);
+                Department.LoadExtent(container.Departments);
+                Equipment.LoadExtent(container.Equipments);
+                Fellow.LoadExtent(container.Fellows);
+                Insurance_Provider.LoadExtent(container.InsuranceProviders);
+                Nurse.LoadExtent(container.Nurses);
+                Patient.LoadExtent(container.Patients);
+                Physician.LoadExtent(container.Physicians);
+                Prescription.LoadExtent(container.Prescriptions);
+                Room.LoadExtent(container.Rooms);
+                Service.LoadExtent(container.Services);
+                Shift.LoadExtent(container.Shifts);
+                Staff.LoadExtent(container.Staff);
+                Surgeon.LoadExtent(container.Surgeons);
+                
+                
+                
+                
+                // foreach (var service in container.Services)
+                // {
+                //     Service.AddService(service);
+                // }
+                //
+                // foreach (var shift in container.Shifts)
+                // {
+                //     Shift.AddShift(shift);
+                // }
+                //
+                // foreach (var staffMem in container.Staff)
+                // {
+                //     Staff.AddStaff(staffMem);
+                // }
+                
+                // foreach (var surgeon in container.Surgeons)
+                // {
+                //     Surgeon.AddSurgeon(surgeon);
+                // }
+                
+                
+                // foreach (var dep in container.Departments)
+                // {
+                //     Department.addDepartment(dep);
+                // }
+                // foreach (var equipment in container.Equipments)
+                // {
+                //     Equipment.addEqiupment(equipment);
+                // }
+                //
+                // foreach (var fellow in container.Fellows)
+                // {
+                //     Fellow.addFellow(fellow);
+                // }
+                //
+                // foreach (var insuranceP in container.InsuranceProviders)
+                // {
+                //     Insurance_Provider.addProvider(insuranceP);
+                // }
+                //
+                // foreach (var nurse in container.Nurses)
+                // {
+                // }
+                //
+                // foreach (var patient in container.Patients)
+                // {
+                //     Patient.AddPatient(patient);
+                // }
+                //
+                // foreach (var physician in container.Physicians)
+                // {
+                //     Physician.AddPhysician(physician);
+                // }
+                //
+                //
+                // foreach (var prescription in container.Prescriptions)
+                // {
+                //     Prescription.AddPrescription(prescription);
+                // }
+                
+                
+                // foreach (var room in container.Rooms)
+                // {
+                //     Room.AddRoom(room);
+                // }
+                
             }
 
             return true;

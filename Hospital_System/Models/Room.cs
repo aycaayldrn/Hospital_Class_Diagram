@@ -55,7 +55,8 @@ namespace Hospital_System.Models
         }
 
         public Room() { }
-        private static void AddRoom(Room room)
+
+        internal static void AddRoom(Room room)
         {
             if (room == null)
             {
@@ -111,9 +112,19 @@ namespace Hospital_System.Models
             return "Room Number: "+Number+ "Type: "+Type+ "Availability: " + Availability;
         }
 
-        public static void SetRooms(List<Room> containerRooms)
+        // public static void SetRooms(List<Room> containerRooms)
+        // {
+        //     _roomList = containerRooms ?? new List<Room>();
+        // }
+
+        public static void LoadExtent(IEnumerable<Room> containerRooms)
         {
-            _roomList = containerRooms ?? new List<Room>();
+            _roomList.Clear();
+            foreach (var room in containerRooms)
+            {
+
+                new Room(room.Number, room.Type, room.Availability);
+            }
         }
     }
 }

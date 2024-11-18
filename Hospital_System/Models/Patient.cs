@@ -139,7 +139,7 @@ namespace Hospital_System.Models
             return age;
         }
 
-        private static void AddPatient(Patient patient)
+        internal static void AddPatient(Patient patient)
         {
             if (patient == null)
             {
@@ -199,10 +199,16 @@ namespace Hospital_System.Models
             return "Patient Id: "+Id+ "Name: " +Name+ "Age: "+ Age+" Has Health Insurance: "+HasHealthInsurance;
         }
 
+        
 
-        public static void SetPatients(List<Patient> cPatients)
+        public static void LoadExtent(IEnumerable<Patient> containerPatients)
         {
-            _patientsList = cPatients ?? new List<Patient>();
+           _patientsList.Clear();
+           foreach (var patient in containerPatients)
+           {
+
+               new Patient(patient.Age,patient.Name,patient.BirthDate);
+           }
         }
     }
 }

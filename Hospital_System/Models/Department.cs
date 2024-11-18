@@ -31,9 +31,9 @@ namespace Hospital_System.Models
             addDepartment(this);
         }
          public Department(){}
-        
-        
-        private static void addDepartment(Department department)
+
+
+         internal static void addDepartment(Department department)
         {
             if (department== null)
             {
@@ -66,10 +66,10 @@ namespace Hospital_System.Models
         {
             return _departmentList.AsReadOnly();
         }
-        public static void SetDepartments(List<Department> departments)
-        {
-            _departmentList = departments ?? new List<Department>();
-        }
+        // public static void SetDepartments(List<Department> departments)
+        // {
+        //     _departmentList = departments ?? new List<Department>();
+        // }
         
         
         public override bool Equals(object? obj)
@@ -93,8 +93,16 @@ namespace Hospital_System.Models
         {
             return "Department " + _name;
         }
-        
-        
-        
+
+
+        public static void LoadExtent(IEnumerable<Department> containerDepartments)
+        {
+            _departmentList.Clear();
+            foreach (var dep in containerDepartments)
+            {
+                
+                new Department(dep.Name);
+            }
+        }
     }
 }

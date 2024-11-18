@@ -39,9 +39,9 @@ namespace Hospital_System.Models
         {
             return EndTime - StartTime;
         }
-        
-        
-        private static void AddShift(Shift shift)
+
+
+        internal static void AddShift(Shift shift)
         {
             if (shift == null)
             {
@@ -102,9 +102,20 @@ namespace Hospital_System.Models
             return "Shift:"+Day+" Start Time: "+StartTime+" End Time: "+EndTime+ "Duration: "+GetShiftDuration();
         }
 
-        public static void SetShifts(List<Shift> containerShifts)
+        // public static void SetShifts(List<Shift> containerShifts)
+        // {
+        //     _shiftList = containerShifts ?? new List<Shift>();
+        // }
+
+        public static void LoadExtent(IEnumerable<Shift> containerShifts)
         {
-            _shiftList = containerShifts ?? new List<Shift>();
+            _shiftList.Clear();
+            
+            foreach (var shift in containerShifts)
+            {
+
+                new Shift(shift.StartTime,shift.EndTime,shift.Day);
+            }
         }
     }
 }

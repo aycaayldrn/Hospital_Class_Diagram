@@ -50,8 +50,8 @@ namespace Hospital_System.Models
             Position = position;
             AddStaff(this);
         }
-        
-        private static void AddStaff(Staff staff)
+
+        internal static void AddStaff(Staff staff)
         {
             if (staff == null)
             {
@@ -114,9 +114,19 @@ namespace Hospital_System.Models
         }
 
 
-        public static void SetStaffMembers(List<Staff> containerStaff)
+        // public static void SetStaffMembers(List<Staff> containerStaff)
+        // {
+        //     _staffList =containerStaff?? new List<Staff>();
+        // }
+
+        public static void LoadExtent(IEnumerable<Staff> containerStaff)
         {
-            _staffList =containerStaff?? new List<Staff>();
+            _staffList.Clear();
+            foreach (var staf in containerStaff)
+            {
+
+                new Staff(staf.Id,staf.Name,staf.Position);
+            }
         }
     }
 }

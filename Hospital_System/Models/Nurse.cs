@@ -69,9 +69,9 @@ namespace Hospital_System.Models
             }
 
         }
-        
-        
-        private static void addNurse(Nurse nurse)
+
+
+        internal static void addNurse(Nurse nurse)
         {
             if (nurse== null)
             {
@@ -135,9 +135,19 @@ namespace Hospital_System.Models
         }
 
 
-        public static void SetNurses(List<Nurse> CNurses)
+        // public static void SetNurses(List<Nurse> CNurses)
+        // {
+        //     _nursesList = CNurses ?? new List<Nurse>();
+        // }
+
+        public static void LoadExtent(IEnumerable<Nurse> containerNurses)
         {
-            _nursesList = CNurses ?? new List<Nurse>();
+           _nursesList.Clear();
+           foreach (var nurse in containerNurses)
+           {
+
+               new Nurse(nurse.Id, nurse.Name, nurse.Certifications);
+           }
         }
     }
 }

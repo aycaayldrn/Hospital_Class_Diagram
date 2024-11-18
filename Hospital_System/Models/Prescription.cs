@@ -41,8 +41,8 @@ namespace Hospital_System.Models
         public float Dosage { get; set; }
         public int Duration { get; set; }
         public bool RedPrescription { get; set; }
-        
-        private static void AddPrescription(Prescription prescription)
+
+        internal static void AddPrescription(Prescription prescription)
         {
             if (prescription == null)
             {
@@ -99,9 +99,19 @@ namespace Hospital_System.Models
             return "Prescription Id: "+Id+ "Medication :"+MedicationName +"Dosage: "+Dosage+ "Duration: "+ Duration + "Red Prescription: "+RedPrescription;
         }
 
-        public static void SetPrescriptions(List<Prescription> containerPrescriptions)
+        // public static void SetPrescriptions(List<Prescription> containerPrescriptions)
+        // {
+        //     _prescriptionList = containerPrescriptions ?? new List<Prescription>();
+        // }
+
+        public static void LoadExtent(IEnumerable<Prescription> containerPrescriptions)
         {
-            _prescriptionList = containerPrescriptions ?? new List<Prescription>();
+            _prescriptionList.Clear();
+            foreach (var pre in containerPrescriptions)
+            {
+
+                new Prescription(pre.Id, pre.MedicationName, pre.Dosage, pre.Duration, pre.RedPrescription);
+            }
         }
     }
 }

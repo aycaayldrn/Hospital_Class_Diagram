@@ -53,9 +53,9 @@ namespace Hospital_System.Models
             MaintenanceHistory = new List<string>();
             addEqiupment(this);
         }
-        
-        
-        private static void addEqiupment(Equipment equipment)
+
+
+        internal static void addEqiupment(Equipment equipment)
         {
             if (equipment== null)
             {
@@ -116,9 +116,19 @@ namespace Hospital_System.Models
             return "type: " + _type + "Id: " + Id;
         }
 
-        public static void SetEquipments(List<Equipment> eq)
+        // public static void SetEquipments(List<Equipment> eq)
+        // {
+        //     _equipmentList = eq?? new List<Equipment>();
+        // }
+
+        public static void LoadExtent(IEnumerable<Equipment> containerEquipments)
         {
-            _equipmentList = eq?? new List<Equipment>();
+            _equipmentList.Clear();
+            foreach (var equ in containerEquipments)
+            {
+
+                new Equipment(equ.Id,equ.Type);
+            }
         }
     }
 }

@@ -1,32 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\aycay\\source\\repos\\Hospital_System\\Hospital_System\\Hospital_System.csproj": {}
+    "/Users/jakubmordal/Documents/Sem5_2024_25/BYT/CHANGEOFSERIALIZATION/Hospital_System/Hospital_System.csproj": {}
   },
   "projects": {
-    "C:\\Users\\aycay\\source\\repos\\Hospital_System\\Hospital_System\\Hospital_System.csproj": {
+    "/Users/jakubmordal/Documents/Sem5_2024_25/BYT/CHANGEOFSERIALIZATION/Hospital_System/Hospital_System.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\aycay\\source\\repos\\Hospital_System\\Hospital_System\\Hospital_System.csproj",
+        "projectUniqueName": "/Users/jakubmordal/Documents/Sem5_2024_25/BYT/CHANGEOFSERIALIZATION/Hospital_System/Hospital_System.csproj",
         "projectName": "Hospital_System",
-        "projectPath": "C:\\Users\\aycay\\source\\repos\\Hospital_System\\Hospital_System\\Hospital_System.csproj",
-        "packagesPath": "C:\\Users\\aycay\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\aycay\\source\\repos\\Hospital_System\\Hospital_System\\obj\\",
+        "projectPath": "/Users/jakubmordal/Documents/Sem5_2024_25/BYT/CHANGEOFSERIALIZATION/Hospital_System/Hospital_System.csproj",
+        "packagesPath": "/Users/jakubmordal/.nuget/packages/",
+        "outputPath": "/Users/jakubmordal/Documents/Sem5_2024_25/BYT/CHANGEOFSERIALIZATION/Hospital_System/obj/",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\aycay\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/jakubmordal/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -65,7 +58,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.306/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

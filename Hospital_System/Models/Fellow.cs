@@ -34,9 +34,9 @@ namespace Hospital_System.Models
             addFellow(this);
         }
         public Fellow(){}
-        
-        
-        private static void addFellow(Fellow fellow)
+
+
+        internal static void addFellow(Fellow fellow)
         {
             if (fellow== null)
             {
@@ -101,9 +101,19 @@ namespace Hospital_System.Models
             return "Specialization: " +" "+ _specialization +" "+ "Research project: " + ResearchProject;
         }
 
-        public static void SetFellows(List<Fellow> Fellows)
+        // public static void SetFellows(List<Fellow> Fellows)
+        // {
+        //     _fellowList = Fellows ?? new List<Fellow>();
+        // }
+
+        public static void LoadExtent(IEnumerable<Fellow> containerFellows)
         {
-            _fellowList = Fellows ?? new List<Fellow>();
+            _fellowList.Clear();
+            foreach (var fellow in containerFellows)
+            {
+
+                new Fellow(fellow.Specialization,fellow.ResearchProject);
+            }
         }
     }
         

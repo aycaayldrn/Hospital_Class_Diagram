@@ -55,9 +55,9 @@ namespace Hospital_System.Models
             addBill(this);
         }
         public Bill(){}
-        
-        
-        private static void addBill(Bill bill)
+
+
+        internal static void addBill(Bill bill)
         {
             if (bill== null)
             {
@@ -121,9 +121,21 @@ namespace Hospital_System.Models
             return "Bill: " + Number + " " + "Total cost: " + _totalCost+" "+"Final cost: "+FinalCost;
         }
 
-        public static void SetBills(List<Bill> bills)
+      
+        
+        internal static void Clear()
         {
-            _billList = bills ?? new List<Bill>();
+            _billList.Clear();
+        }
+
+        public static void LoadExtent(IEnumerable<Bill> containerBills)
+        {
+            _billList.Clear();
+            foreach (var bill in containerBills)
+            {
+                
+                new Bill(bill.Number,bill.TotalCost);
+            }
         }
     }
 }

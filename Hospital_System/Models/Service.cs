@@ -48,8 +48,8 @@ namespace Hospital_System.Models
             Price = price;
             AddService(this);
         }
-        
-        private static void AddService(Service service)
+
+        internal static void AddService(Service service)
         {
             if (service == null)
             {
@@ -108,9 +108,19 @@ namespace Hospital_System.Models
         }
 
 
-        public static void SetServices(List<Service> containerServices)
+        // public static void SetServices(List<Service> containerServices)
+        // {
+        //     _serviceList =containerServices?? new List<Service>();
+        // }
+
+        public static void LoadExtent(IEnumerable<Service> containerServices)
         {
-            _serviceList =containerServices?? new List<Service>();
+            _serviceList.Clear();
+            foreach (var ser in containerServices)
+            {
+
+                new Service(ser.Name, ser.Price);
+            }
         }
     }
 }

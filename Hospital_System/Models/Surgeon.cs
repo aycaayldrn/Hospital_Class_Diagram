@@ -41,9 +41,9 @@ namespace Hospital_System.Models
             }
             Surgeries.Add(surgery);
         }
-        
-        
-        private static void AddSurgeon(Surgeon surgeon)
+
+
+        internal static void AddSurgeon(Surgeon surgeon)
         {
             if (surgeon == null)
             {
@@ -103,14 +103,24 @@ namespace Hospital_System.Models
         }
 
 
-        public static void SetSurgeons(List<Surgeon> containerSurgeons)
-        {
-            _surgeonList = containerSurgeons?? new List<Surgeon>();
-        }
+        // public static void SetSurgeons(List<Surgeon> containerSurgeons)
+        // {
+        //     _surgeonList = containerSurgeons?? new List<Surgeon>();
+        // }
 
         public Appointment ScheduleSurgery(DateTime date)
         {
             return new Appointment(date, Appointment.AppointmentType.Surgery, this);
+        }
+
+        public static void LoadExtent(IEnumerable<Surgeon> containerSurgeons)
+        {
+          _surgeonList.Clear();
+          foreach (var surgeon in containerSurgeons)
+          {
+
+              new Surgeon(surgeon.Surgeries);
+          }
         }
     }
 }

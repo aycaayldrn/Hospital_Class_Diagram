@@ -38,7 +38,7 @@ namespace Hospital_System.Models;
             AddPhysician(this);
         }
 
-        private static void AddPhysician(Physician physician)
+        internal static void AddPhysician(Physician physician)
         {
             if (physician == null)
             {
@@ -99,10 +99,10 @@ namespace Hospital_System.Models;
         }
 
 
-        public static void SetPhysicians(List<Physician> containerPhysicians)
-        {
-            _physicianList = containerPhysicians ?? new List<Physician>();
-        }
+        // public static void SetPhysicians(List<Physician> containerPhysicians)
+        // {
+        //     _physicianList = containerPhysicians ?? new List<Physician>();
+        // }
 
         public Prescription WritePrescription(int id, string medicationName, float dosage, int duration,
             bool redPrescription)
@@ -139,5 +139,15 @@ namespace Hospital_System.Models;
         public IReadOnlyList<Patient> GetPatients()
         {
             return _patients.AsReadOnly();
+        }
+
+        public static void LoadExtent(IEnumerable<Physician> containerPhysicians)
+        {
+            _physicianList.Clear();
+            foreach (var physician in containerPhysicians)
+            {
+
+                new Physician(physician.Specialization);
+            }
         }
     }

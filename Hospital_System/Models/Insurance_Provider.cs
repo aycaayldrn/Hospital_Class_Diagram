@@ -37,10 +37,9 @@ namespace Hospital_System.Models
             addProvider(this);
         }
         public Insurance_Provider(){}
-        
-        
-        
-        private static void addProvider(Insurance_Provider provider)
+
+
+        internal static void addProvider(Insurance_Provider provider)
         {
             if (provider== null)
             {
@@ -103,9 +102,19 @@ namespace Hospital_System.Models
             return "Id: " +" "+ Id +" "+ "Name: " + _name;
         }
 
-        public static void SetProviders(List<Insurance_Provider> InsuranceProviders)
+        // public static void SetProviders(List<Insurance_Provider> InsuranceProviders)
+        // {
+        //     _insuranceProviders = InsuranceProviders ?? new List<Insurance_Provider>();
+        // }
+
+        public static void LoadExtent(IEnumerable<Insurance_Provider> containerInsuranceProviders)
         {
-            _insuranceProviders = InsuranceProviders ?? new List<Insurance_Provider>();
+            _insuranceProviders.Clear();
+            foreach (var provider in containerInsuranceProviders)
+            {
+
+                new Insurance_Provider(provider.Id, provider.Name);
+            }
         }
     }
 }

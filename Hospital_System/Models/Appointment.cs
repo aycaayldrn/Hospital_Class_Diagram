@@ -53,9 +53,9 @@ namespace Hospital_System.Models
         }
 
         public Appointment(){}
-    
-        
-        private static void addAppointment(Appointment appointment)
+
+
+        internal static void addAppointment(Appointment appointment)
         {
             if (appointment== null)
             {
@@ -90,10 +90,18 @@ namespace Hospital_System.Models
             return new List<Appointment>(_appointmentList.AsReadOnly());
         }
         
-        public static void SetAppointments(List<Appointment> containerAppointments)
+        public static void LoadExtent(IEnumerable<Appointment> newAppointments)
         {
-            _appointmentList = containerAppointments.Count == 0 ? new List<Appointment>(): containerAppointments;
+            _appointmentList.Clear(); 
+
+            foreach (var appointment in newAppointments)
+            {
+                
+                new Appointment(appointment.Date, appointment.Type, appointment.AssignedDoctor);
+            }
         }
+        
+        
 
         public override bool Equals(object? obj)
         {
@@ -114,7 +122,9 @@ namespace Hospital_System.Models
 
         public override string ToString()
         {
-            return "date: " + _date;
+            return "Date: " + Date
+                +" Type: "+Type
+                +" Assigned doctor: "+ AssignedDoctor;
         }
     }
     
