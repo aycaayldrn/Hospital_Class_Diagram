@@ -7,6 +7,11 @@ public class FellowTests
     [Test]
     public void Trying_to_assign_null_to_specialization_should_throw_ArgumentNullException()
     {
+        foreach (var o in Fellow.GetFellows().ToList())
+        {
+            Fellow.removeFellow(o);
+        }
+
         try
         {
             Fellow f = new Fellow(null);
@@ -21,6 +26,11 @@ public class FellowTests
     [Test]
     public void Trying_to_create_Fellow_with_specific_name_of_specialization_and_check_if_it_assigned_correctly()
     {
+        foreach (var o in Fellow.GetFellows().ToList())
+        {
+            Fellow.removeFellow(o);
+        }
+
         String name = "Test2";
         Fellow f = new Fellow(name);
         
@@ -32,6 +42,11 @@ public class FellowTests
     [Test]
     public void Trying_to_create_Fellow_with_researchProject_name_of_specialization_and_check_if_it_assigned_correctly()
     {
+        foreach (var o in Fellow.GetFellows().ToList())
+        {
+            Fellow.removeFellow(o);
+        }
+
         String name = "Test";
         Fellow f = new Fellow("name",name);
         
@@ -43,20 +58,24 @@ public class FellowTests
     [Test]
     public void Trying_to_create_List_of_Fellows_and_SetAppointments()
     {
-        Fellow.SetFellows(new List<Fellow>());
+        foreach (var o in Fellow.GetFellows().ToList())
+        {
+            Fellow.removeFellow(o);
+        }
 
         List<Fellow> lf = new List<Fellow>{new ( "Test1"), new ( "Test2"), new ( "Test3")};
         
-        Fellow.SetFellows(lf);
-        
         Assert.That(Fellow.GetFellows(), Is.EqualTo(lf));
-        
-        Fellow.SetFellows(new List<Fellow>());
     }
     
     [Test]
     public void Trying_to_create_same_Fellow_throws_InvalidOperationException()
     {
+        foreach (var o in Fellow.GetFellows().ToList())
+        {
+            Fellow.removeFellow(o);
+        }
+
         Fellow b = new Fellow("Test1");
         try
         {
@@ -64,6 +83,7 @@ public class FellowTests
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
+            Fellow.removeFellow(b);
             Assert.Pass();
         }
     }
@@ -71,6 +91,11 @@ public class FellowTests
     [Test]
     public void Trying_to_remove_nonExisting_Fellow_InvalidOperationException_excepted()
     {
+        foreach (var o in Fellow.GetFellows().ToList())
+        {
+            Fellow.removeFellow(o);
+        }
+        
         try
         {
             Fellow.removeFellow(new Fellow());
@@ -85,12 +110,19 @@ public class FellowTests
     [Test]
     public void Trying_to_create_List_of_Fellows_and_save_them_to_file()
     {
-        Fellow.SetFellows(new List<Fellow>());
+        foreach (var o in Fellow.GetFellows().ToList())
+        {
+            Fellow.removeFellow(o);
+        }
+        
         List<Fellow> la = new List<Fellow>{new ( "Test1"), new ( "Test2"), new ( "Test3")};
         
         SerializeToFIle.saveAll();
         
-        Fellow.SetFellows(new List<Fellow>());
+        foreach (Fellow o in la)
+        {
+            Fellow.removeFellow(o);
+        }
         
         SerializeToFIle.loadAll();
         

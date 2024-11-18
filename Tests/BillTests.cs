@@ -6,6 +6,10 @@ public class Tests
     [Test]
     public void Trying_to_set_wrong_val_to_taxRate_should_catch_Exception()
     {
+        foreach (var o in Bill.GetBills().ToList())
+        {
+            Bill.removeBill(o);
+        }
         try
         {
             Bill.TaxRate = 1.2;
@@ -21,6 +25,10 @@ public class Tests
     [Test]
     public void Trying_to_create_Bill_with_wrong_totalCost_val_should_catch_Exception()
     {
+        foreach (var o in Bill.GetBills().ToList())
+        {
+            Bill.removeBill(o);
+        }
         try
         {
             Bill b = new Bill(12, -1);
@@ -35,6 +43,10 @@ public class Tests
     [Test]
     public void Trying_to_create_Bill_with_specific_Number()
     {
+        foreach (var o in Bill.GetBills().ToList())
+        {
+            Bill.removeBill(o);
+        }
         int number = 123;
         
         Bill b = new Bill(number, 100);
@@ -45,6 +57,10 @@ public class Tests
     [Test]
     public void Trying_to_calulate_final_cost()
     {
+        foreach (var o in Bill.GetBills().ToList())
+        {
+            Bill.removeBill(o);
+        }
         int totalCost = 100;
         Bill b = new Bill(124, totalCost);
         Assert.That(b.FinalCost, Is.EqualTo(totalCost*(1+Bill.TaxRate)).Within(0.01));
@@ -54,19 +70,23 @@ public class Tests
     [Test]
     public void Trying_to_create_List_of_Bills_and_SetAppointments()
     {
-        Bill.SetBills(new List<Bill>());
+        foreach (var o in Bill.GetBills().ToList())
+        {
+            Bill.removeBill(o);
+        }
         List<Bill> lb = new List<Bill>{new ( 24,4312), new ( 21,4313), new ( 44,4232)};
         
-        Bill.SetBills(lb);
         
         Assert.That(Bill.GetBills(), Is.EqualTo(lb));
-        
-        Bill.SetBills(new List<Bill>());
     }
     
     [Test]
     public void Trying_to_create_same_Bill_throws_InvalidOperationException()
     {
+        foreach (var o in Bill.GetBills().ToList())
+        {
+            Bill.removeBill(o);
+        }
         Bill b = new Bill(21,3213);
         try
         {
@@ -74,6 +94,7 @@ public class Tests
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
+            Bill.removeBill(b);
             Assert.Pass();
         }
     }
@@ -81,6 +102,10 @@ public class Tests
     [Test]
     public void Trying_to_remove_nonExisting_Bill_InvalidOperationException_excepted()
     {
+        foreach (var o in Bill.GetBills().ToList())
+        {
+            Bill.removeBill(o);
+        }
         try
         {
             Bill.removeBill(new Bill());
@@ -94,12 +119,20 @@ public class Tests
     [Test]
     public void Trying_to_create_List_of_Bills_and_save_them_to_file()
     {
-        Bill.SetBills(new List<Bill>());
+        foreach (var o in Bill.GetBills().ToList())
+        {
+            Bill.removeBill(o);
+        }
+        
         List<Bill> la = new List<Bill>{new ( 24,4312), new ( 21,4313), new ( 44,4232)};
+        
         
         SerializeToFIle.saveAll();
         
-        Bill.SetBills(new List<Bill>());
+        foreach (Bill o in la)
+        {
+            Bill.removeBill(o);
+        }
         
         SerializeToFIle.loadAll();
         

@@ -6,6 +6,11 @@ public class PhysicianTests
     [Test]
     public void Trying_to_assign_null_val_to_specialization_should_throw_ArgumentNullException()
     {
+        foreach (var o in Physician.GetPhysicians().ToList())
+        {
+            Physician.RemovePhysician(o);
+        }
+
         try
         {
             Physician p = new Physician(null);
@@ -20,6 +25,11 @@ public class PhysicianTests
     [Test]
     public void Trying_to_create_Physician_with_specific_specialization_and_check_if_it_assigned_correctly()
     {
+        foreach (var o in Physician.GetPhysicians().ToList())
+        {
+            Physician.RemovePhysician(o);
+        }
+        
         String name = "Test2";
         Physician p = new Physician(name);
         Assert.That(p.Specialization, Is.EqualTo(name));
@@ -30,20 +40,25 @@ public class PhysicianTests
     [Test]
     public void Trying_to_create_List_of_Physicians_and_SetAppointments()
     {
-        Physician.SetPhysicians(new List<Physician>());
+        foreach (var o in Physician.GetPhysicians().ToList())
+        {
+            Physician.RemovePhysician(o);
+        }
+        
         List<Physician> lp = new List<Physician>{new ( "Test1"), new ( "Test2"), new ( "Test3")};
         
-        Physician.SetPhysicians(lp);
-        
         Assert.That(Physician.GetPhysicians(), Is.EqualTo(lp));
-        
-        Physician.SetPhysicians(new List<Physician>());
     }
     
     
     [Test]
     public void Trying_to_create_same_Physician_throws_InvalidOperationException()
     {
+        foreach (var o in Physician.GetPhysicians().ToList())
+        {
+            Physician.RemovePhysician(o);
+        }
+
         Physician b = new Physician("Test");
         try
         {
@@ -51,6 +66,7 @@ public class PhysicianTests
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
+            Physician.RemovePhysician(b);
             Assert.Pass();
         }
     }
@@ -58,6 +74,11 @@ public class PhysicianTests
     [Test]
     public void Trying_to_remove_nonExisting_Physician_InvalidOperationException_excepted()
     {
+        foreach (var o in Physician.GetPhysicians().ToList())
+        {
+            Physician.RemovePhysician(o);
+        }
+
         try
         {
             Physician.RemovePhysician(new Physician());
@@ -72,12 +93,19 @@ public class PhysicianTests
     [Test]
     public void Trying_to_create_List_of_Physician_and_save_them_to_file()
     {
-        Physician.SetPhysicians(new List<Physician>());
+        foreach (var o in Physician.GetPhysicians().ToList())
+        {
+            Physician.RemovePhysician(o);
+        }
+        
         List<Physician> la = new List<Physician>{new ( "Test1"), new ( "Test2"), new ( "Test3")};
         
         SerializeToFIle.saveAll();
         
-        Physician.SetPhysicians(new List<Physician>());
+        foreach (Physician o in la)
+        {
+            Physician.RemovePhysician(o);
+        }
         
         SerializeToFIle.loadAll();
         

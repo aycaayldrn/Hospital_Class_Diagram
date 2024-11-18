@@ -94,7 +94,7 @@ namespace Hospital_System.Models
         
         public Patient(int id, string name, DateTime birthDate)
         {
-            Id = id;
+            Id = id; 
             Name = name;
             BirthDate = birthDate;
 
@@ -207,8 +207,8 @@ namespace Hospital_System.Models
            foreach (var patient in containerPatients)
            {
 
-               new Patient(patient.Age,patient.Name,patient.BirthDate);
+               new Patient(patient.Id,patient.Name, patient.BirthDate);
            }
-        }
+        } 
     }
 }

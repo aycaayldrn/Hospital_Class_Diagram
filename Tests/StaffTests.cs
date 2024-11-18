@@ -6,6 +6,11 @@ public class StaffTests
     [Test]
     public void Trying_to_create_Staff_with_null_name_should_throw_ArgumentNullException()
     {
+        foreach (var o in Staff.GetStaffMembers().ToList())
+        {
+            Staff.RemoveStaff(o);
+        }
+
         try
         {
             Staff s = new Staff(1, null, "test1");
@@ -21,6 +26,11 @@ public class StaffTests
     [Test]
     public void Trying_to_create_Staff_with_null_position_should_throw_ArgumentNullException()
     {
+        foreach (var o in Staff.GetStaffMembers().ToList())
+        {
+            Staff.RemoveStaff(o);
+        }
+
         try
         {
             Staff s = new Staff(1, "test1", null);
@@ -36,6 +46,11 @@ public class StaffTests
     [Test]
     public void Trying_to_create_Staff_with_specific_position_and_check_if_it_assigned_correctly()
     {
+        foreach (var o in Staff.GetStaffMembers().ToList())
+        {
+            Staff.RemoveStaff(o);
+        }
+
         String name = "Joe";
         Staff s = new Staff(1, name, "Test2");
 
@@ -47,6 +62,11 @@ public class StaffTests
     [Test]
     public void Trying_to_create_Staff_with_specific_Name_and_check_if_it_assigned_correctly()
     {
+        foreach (var o in Staff.GetStaffMembers().ToList())
+        {
+            Staff.RemoveStaff(o);
+        }
+
         String pos = "type1231";
         Staff s = new Staff(1, "test2", pos);
 
@@ -59,19 +79,24 @@ public class StaffTests
     [Test]
     public void Trying_to_create_List_of_Staffs_and_SetAppointments()
     {
-        Staff.SetStaffMembers(new List<Staff>());
+        foreach (var o in Staff.GetStaffMembers().ToList())
+        {
+            Staff.RemoveStaff(o);
+        }
+
         List<Staff> lb = new List<Staff>{new (2,"Test2","test"), new (3,"Test3","test"), new (4,"Test4","test")};
         
-        Staff.SetStaffMembers(lb);
-        
         Assert.That(Staff.GetStaffMembers(), Is.EqualTo(lb));
-        
-        Staff.SetStaffMembers(new List<Staff>());
     }
     
     [Test]
     public void Trying_to_create_same_Staff_throws_InvalidOperationException()
     {
+        foreach (var o in Staff.GetStaffMembers().ToList())
+        {
+            Staff.RemoveStaff(o);
+        }
+
         Staff b = new Staff(1,"Test","test");
         try
         {
@@ -79,6 +104,7 @@ public class StaffTests
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
+            Staff.RemoveStaff(b);
             Assert.Pass();
         }
     }
@@ -86,6 +112,11 @@ public class StaffTests
     [Test]
     public void Trying_to_remove_nonExisting_Staff_InvalidOperationException_excepted()
     {
+        foreach (var o in Staff.GetStaffMembers().ToList())
+        {
+            Staff.RemoveStaff(o);
+        }
+
         try
         {
             Staff.RemoveStaff(new Staff());
@@ -100,15 +131,22 @@ public class StaffTests
     [Test]
     public void Trying_to_create_List_of_Staff_and_save_them_to_file()
     {
-        Staff.SetStaffMembers(new List<Staff>());
+        foreach (var o in Staff.GetStaffMembers().ToList())
+        {
+            Staff.RemoveStaff(o);
+        }
+
         List<Staff> la = new List<Staff>{new (2,"Test2","test"), new (3,"Test3","test"), new (4,"Test4","test")};
         
         SerializeToFIle.saveAll();
         
-        Staff.SetStaffMembers(new List<Staff>());
+        foreach (Staff o in la.ToList())
+        {
+            Staff.RemoveStaff(o);
+        }
         
         SerializeToFIle.loadAll();
-        
+
         Assert.That(Staff.GetStaffMembers(), Is.EqualTo(la));
     }
 }
