@@ -18,5 +18,5 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyTitleAttribute("Hospital_System")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
-// Wygenerowane przez klasę WriteCodeFragment programu MSBuild.
+// Создано классом WriteCodeFragment MSBuild.
 

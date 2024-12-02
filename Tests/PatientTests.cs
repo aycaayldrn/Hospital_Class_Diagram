@@ -128,7 +128,7 @@ public class PatientTests
         DateTime date = new DateTime(2003, 12, 18);
         
         Patient p = new Patient(1, "name", date);
-        Assert.That(p.Age, Is.EqualTo(date.Month > DateTime.Today.Month ? DateTime.Today.Year - date.Year - 1 : DateTime.Today.Year - date.Year));
+        Assert.That(p.Age, Is.EqualTo(date.Month > DateTime.Today.Month || date.Day > DateTime.Today.Day ? DateTime.Today.Year - date.Year - 1 : DateTime.Today.Year - date.Year));
     }
     
      
