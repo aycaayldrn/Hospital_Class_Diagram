@@ -59,6 +59,10 @@ namespace Hospital_System.Models
             }
 
             _department = department;
+            if (!department.GetEquipments().Contains(this))
+            {
+                department.addEquipmentToDepartment(this);
+            }
         }
 
         public void changeDepartment(Department difrentDepartment)
@@ -75,19 +79,15 @@ namespace Hospital_System.Models
 
             if (_department!=null)
             {
-             deleteEquipment();   
+                _department.removeEquipmentFromDepartment(this);
             }
             difrentDepartment.addEquipmentToDepartment(this);
+            _department = difrentDepartment;
         }
 
         public void deleteEquipment()
         {
-            if (_department!=null)
-            {
-                var referenceCopy = _department;
-                _department = null;
-                referenceCopy.removeEquipmentFromDepartment(this);
-            }
+            _department = null;
             
         }
 

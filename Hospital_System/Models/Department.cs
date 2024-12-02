@@ -39,14 +39,25 @@ namespace Hospital_System.Models
                 throw new InvalidOperationException("Equipment already exists in the list");
 
             }
-
-            equipment.assignToDepartment(this);
             _equipmentsList.Add(equipment);
         }
 
         public void removeEquipmentFromDepartment(Equipment equipment)
         {
-            if (_equipmentsList.Remove(equipment))
+            
+            if (equipment == null)
+            {
+                throw new ArgumentException("Equipment cannot be null!");
+            }
+
+            if (!_equipmentsList.Contains(equipment))
+            {
+                throw new  InvalidOperationException("No such element in the list");
+            }
+
+            _equipmentsList.Remove(equipment);
+            
+            if (equipment.Department == this)
             {
                 equipment.deleteEquipment();
             }
