@@ -7,6 +7,8 @@ namespace Hospital_System
     {
         private static void Main(string[] args)
         {
+            
+            
             if (SerializeToFIle.loadAll("hospital.xml"))
             {
                 Console.WriteLine("Data saved and loaded successfully.");
