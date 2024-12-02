@@ -319,10 +319,7 @@
       "System.Reflection.Metadata/1.6.0": {},
       "Hospital_System/1.0.0": {
         "runtime": {
-          "Hospital_System.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "Hospital_System.dll": {}
         }
       }
     }

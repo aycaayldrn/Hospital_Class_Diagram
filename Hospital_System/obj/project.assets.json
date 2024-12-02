@@ -1,26 +1,51 @@
 {
   "version": 3,
   "targets": {
-    "net8.0": {}
+    "net8.0": {
+      "NUnit.Analyzers/4.4.0": {
+        "type": "package"
+      }
+    }
   },
-  "libraries": {},
+  "libraries": {
+    "NUnit.Analyzers/4.4.0": {
+      "sha512": "VVl1CuQttXRZh52HRw5SIOut3qXw4pmuiTYk02jTELVWZ9uYRY8IVl2qF9Zs7W0ElPiLDUrAglFBzNLBCPzEcw==",
+      "type": "package",
+      "path": "nunit.analyzers/4.4.0",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "analyzers/dotnet/cs/nunit.analyzers.dll",
+        "docs/README.md",
+        "images/nunit_256.png",
+        "license.txt",
+        "nunit.analyzers.4.4.0.nupkg.sha512",
+        "nunit.analyzers.nuspec",
+        "tools/install.ps1",
+        "tools/uninstall.ps1"
+      ]
+    }
+  },
   "projectFileDependencyGroups": {
-    "net8.0": []
+    "net8.0": [
+      "NUnit.Analyzers >= 4.4.0"
+    ]
   },
   "packageFolders": {
-    "C:\\Users\\kerya\\.nuget\\packages\\": {}
+    "/Users/jakubmordal/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram_main\\Hospital_System\\Hospital_System.csproj",
+      "projectUniqueName": "/Users/jakubmordal/Documents/Sem5_2024_25/BYT/CHANGEOFSERIALIZATION/Hospital_System/Hospital_System.csproj",
       "projectName": "Hospital_System",
-      "projectPath": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram_main\\Hospital_System\\Hospital_System.csproj",
-      "packagesPath": "C:\\Users\\kerya\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kerya\\RiderProjects\\Hospital_Class_Diagram_main\\Hospital_System\\obj\\",
+      "projectPath": "/Users/jakubmordal/Documents/Sem5_2024_25/BYT/CHANGEOFSERIALIZATION/Hospital_System/Hospital_System.csproj",
+      "packagesPath": "/Users/jakubmordal/.nuget/packages/",
+      "outputPath": "/Users/jakubmordal/Documents/Sem5_2024_25/BYT/CHANGEOFSERIALIZATION/Hospital_System/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\kerya\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/Users/jakubmordal/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -48,6 +73,14 @@
     "frameworks": {
       "net8.0": {
         "targetAlias": "net8.0",
+        "dependencies": {
+          "NUnit.Analyzers": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[4.4.0, )"
+          }
+        },
         "imports": [
           "net461",
           "net462",
@@ -64,7 +97,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.306/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

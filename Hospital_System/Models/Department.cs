@@ -12,6 +12,7 @@ namespace Hospital_System.Models
     {
         private static List<Department> _departmentList = new List<Department>();
         private string _name;
+        private List<Equipment> _equipmentsList = new List<Equipment>();
         public string Name
         {
             get => _name;
@@ -24,6 +25,33 @@ namespace Hospital_System.Models
                 _name = value;
             }
         }
+
+        public void addEquipmentToDepartment(Equipment equipment)
+        {
+            if (equipment==null)
+            {
+                throw new ArgumentException("Equipment cannot be null!");
+
+            }
+
+            if (_equipmentsList.Contains(equipment))
+            {
+                throw new InvalidOperationException("Equipment already exists in the list");
+
+            }
+
+            equipment.assignToDepartment(this);
+            _equipmentsList.Add(equipment);
+        }
+
+        public void removeEquipmentFromDepartment(Equipment equipment)
+        {
+            if (_equipmentsList.Remove(equipment))
+            {
+                equipment.deleteEquipment();
+            }
+        }
+        
 
         public Department(string name)
         {
@@ -59,6 +87,13 @@ namespace Hospital_System.Models
             {
                 throw new InvalidOperationException("Department not found!");
             }
+            //have to remove all of equipment before deleting dep!
+            var equipmentsListCount = department._equipmentsList.Count;
+            for (int i = equipmentsListCount-1; i >=0; i--)
+            {
+                department._equipmentsList[i].deleteEquipment();
+            }
+            department._equipmentsList.Clear();
             _departmentList.Remove(department);
         }
         
@@ -66,12 +101,12 @@ namespace Hospital_System.Models
         {
             return _departmentList.AsReadOnly();
         }
-        // public static void SetDepartments(List<Department> departments)
-        // {
-        //     _departmentList = departments ?? new List<Department>();
-        // }
-        
-        
+
+        public IReadOnlyList<Equipment> GetEquipments()
+        {
+            return _equipmentsList.AsReadOnly();
+        }
+
         public override bool Equals(object? obj)
         {
             if (obj==null||!(obj is Department))

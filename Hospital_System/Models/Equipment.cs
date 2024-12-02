@@ -26,6 +26,12 @@ namespace Hospital_System.Models
             }
         }
 
+        private Department _department;
+        public Department Department
+        {
+            get { return _department; }
+        }
+
         private List<string> _maintenanceHistory = new List<string>();
         public List<string> MaintenanceHistory
         {
@@ -38,6 +44,51 @@ namespace Hospital_System.Models
                 }
                 _maintenanceHistory = value.Where(item => !string.IsNullOrWhiteSpace(item)).ToList();
             }
+        }
+
+        public void assignToDepartment(Department department)
+        {
+            if (department==null)
+            {
+                throw new ArgumentException("department cannot be null");
+            }
+            
+            if (_department!= null)
+            {
+                throw new InvalidOperationException("Equipment already assigned to department");
+            }
+
+            _department = department;
+        }
+
+        public void changeDepartment(Department difrentDepartment)
+        {
+            if (difrentDepartment== null)
+            {
+                throw new ArgumentException("department cannot be null");
+            }
+
+            if (_department==difrentDepartment)
+            {
+                throw new InvalidOperationException("Departments are the same!");
+            }
+
+            if (_department!=null)
+            {
+             deleteEquipment();   
+            }
+            difrentDepartment.addEquipmentToDepartment(this);
+        }
+
+        public void deleteEquipment()
+        {
+            if (_department!=null)
+            {
+                var referenceCopy = _department;
+                _department = null;
+                referenceCopy.removeEquipmentFromDepartment(this);
+            }
+            
         }
 
         public Equipment(){}
@@ -83,6 +134,8 @@ namespace Hospital_System.Models
                 throw new InvalidOperationException("appointment not found!");
             }
             _equipmentList.Remove(equipment);
+            equipment.deleteEquipment();
+            _equipmentList.Remove(equipment);
         }
         
         
@@ -116,11 +169,7 @@ namespace Hospital_System.Models
             return "type: " + _type + "Id: " + Id;
         }
 
-        // public static void SetEquipments(List<Equipment> eq)
-        // {
-        //     _equipmentList = eq?? new List<Equipment>();
-        // }
-
+      
         public static void LoadExtent(IEnumerable<Equipment> containerEquipments)
         {
             _equipmentList.Clear();
