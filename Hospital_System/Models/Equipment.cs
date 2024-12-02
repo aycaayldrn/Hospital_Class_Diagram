@@ -46,8 +46,13 @@ namespace Hospital_System.Models
             }
         }
 
-        public void assignToDepartment(Department department)
+        public void assignToDepartment(Department department, int i)
         {
+            if (i == 1)
+            {
+                _department = department;
+                return;
+            }
             if (department==null)
             {
                 throw new ArgumentException("department cannot be null");
@@ -57,8 +62,9 @@ namespace Hospital_System.Models
             {
                 throw new InvalidOperationException("Equipment already assigned to department");
             }
-
+            
             _department = department;
+            department.addEquipmentToDepartment(this);
         }
 
         public void changeDepartment(Department difrentDepartment)
@@ -74,21 +80,22 @@ namespace Hospital_System.Models
             }
 
             if (_department!=null)
-            {
-             deleteEquipment();   
+            { 
+                deleteEquipment(0);   
             }
             difrentDepartment.addEquipmentToDepartment(this);
         }
 
-        public void deleteEquipment()
+        public void deleteEquipment(int i)
         {
-            if (_department!=null)
+            if (i == 1)
             {
-                var referenceCopy = _department;
                 _department = null;
-                referenceCopy.removeEquipmentFromDepartment(this);
+                return;
             }
-            
+            var referenceCopy = _department;
+            _department = null;
+            referenceCopy.removeEquipmentFromDepartment(this);
         }
 
         public Equipment(){}
@@ -133,8 +140,7 @@ namespace Hospital_System.Models
             {
                 throw new InvalidOperationException("appointment not found!");
             }
-            _equipmentList.Remove(equipment);
-            equipment.deleteEquipment();
+            equipment.deleteEquipment(1);
             _equipmentList.Remove(equipment);
         }
         

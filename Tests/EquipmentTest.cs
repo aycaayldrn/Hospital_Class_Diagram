@@ -14,8 +14,8 @@ public class EquipmentTest
 
         Equipment e = new Equipment(1,"Test");
 
-        Assert.Pass();
         Equipment.removeEquipment(e);
+        Assert.Pass();
     }
     
     [Test]
@@ -88,12 +88,138 @@ public class EquipmentTest
             Equipment.removeEquipment(o);
         }
 
-        String Tname = "Test2";
+        String Tname = "Test5";
         Equipment e = new Equipment(1,Tname);
         Assert.That(e.Type, Is.EqualTo(Tname));
         Equipment.removeEquipment(e);
     }
     
+    [Test]
+    public void Trying_to_assign_Equipment_to_Department()
+    {
+        Department department = new Department("Test");
+        Equipment equipment = new Equipment(1,"Test");
+        equipment.assignToDepartment(department,0);
+        foreach (var e in department.GetEquipments())
+        {
+            if (e.Id == equipment.Id)
+            {
+                Department.removeDepartment(department);
+                Equipment.removeEquipment(equipment);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_assign_Equipment_to_Department_and_change_Department()
+    {
+        Department department = new Department("Test");
+        Department department2 = new Department("Test1");
+        Equipment equipment = new Equipment(1,"Test");
+        equipment.assignToDepartment(department,0);
+        if (!equipment.Department.Equals(department))
+        {
+            Assert.Fail();
+        }
+        equipment.changeDepartment(department2);
+
+        if (department2.Equals(equipment.Department))
+        {
+            Department.removeDepartment(department2);
+            Department.removeDepartment(department);
+            Equipment.removeEquipment(equipment);
+            Assert.Pass();
+        }else{
+            Assert.Fail();
+        }
+    }
+    
+    [Test]
+    public void Trying_to_assign_Equipment_to_Department_and_change_to_null_Department_should_throw_ArgumentException()
+    {
+        Department department = new Department("Test");
+        Equipment equipment = new Equipment(1,"Test");
+        equipment.assignToDepartment(department,0);
+        if (!equipment.Department.Equals(department))
+        {
+            Assert.Fail();
+        }
+
+        try
+        {
+            equipment.changeDepartment(null);
+            Assert.Fail("Expected ArgumentException");
+        }
+        catch (ArgumentException ae)
+        {
+            Department.removeDepartment(department);
+            Equipment.removeEquipment(equipment);
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
+    public void Trying_to_assign_Equipment_to_Department_and_change_to_same_Department_should_throw_InvalidOperationException()
+    {
+        Department department = new Department("Test");
+        Equipment equipment = new Equipment(1,"Test");
+        equipment.assignToDepartment(department,0);
+        if (!equipment.Department.Equals(department))
+        {
+            Assert.Fail();
+        }
+
+        try
+        {
+            equipment.changeDepartment(department);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException ae)
+        {
+            Department.removeDepartment(department);
+            Equipment.removeEquipment(equipment);
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
+    public void Trying_to_assign_Equipment_to_null_Department_should_throw_ArgumentException()
+    {
+        Equipment equipment = new Equipment(1,"Test");
+        try
+        {
+            equipment.assignToDepartment(null,0);
+            Assert.Fail("expected ArgumentException");
+        }
+        catch (ArgumentException a)
+        {
+            Equipment.removeEquipment(equipment);
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
+    public void Trying_to_assign_Equipment_to_Department_when_it_already_assigned_to_another_should_throw_InvalidOperationException()
+    {
+        Department department = new Department("Test");
+        Department department2 = new Department("Test1");
+        Equipment equipment = new Equipment(1,"Test");
+        equipment.assignToDepartment(department,0);
+        try
+        {
+            equipment.assignToDepartment(department2,0);
+            Assert.Fail("expected InvalidOperationException");
+        }
+        catch (InvalidOperationException)
+        {
+            Department.removeDepartment(department2);
+            Department.removeDepartment(department);
+            Equipment.removeEquipment(equipment);
+            Assert.Pass();
+        }
+    }
      
     [Test]
     public void Trying_to_create_List_of_Equipments_and_SetAppointments()

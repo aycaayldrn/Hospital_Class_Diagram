@@ -40,7 +40,7 @@ namespace Hospital_System.Models
 
             }
 
-            equipment.assignToDepartment(this);
+            equipment.assignToDepartment(this,1);
             _equipmentsList.Add(equipment);
         }
 
@@ -48,7 +48,7 @@ namespace Hospital_System.Models
         {
             if (_equipmentsList.Remove(equipment))
             {
-                equipment.deleteEquipment();
+                equipment.deleteEquipment(1);
             }
         }
         
@@ -91,7 +91,7 @@ namespace Hospital_System.Models
             var equipmentsListCount = department._equipmentsList.Count;
             for (int i = equipmentsListCount-1; i >=0; i--)
             {
-                department._equipmentsList[i].deleteEquipment();
+                department._equipmentsList[i].deleteEquipment(1);
             }
             department._equipmentsList.Clear();
             _departmentList.Remove(department);
