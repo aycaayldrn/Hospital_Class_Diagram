@@ -117,6 +117,8 @@ namespace Hospital_System.Models
                 _department.removeEquipmentFromDepartment(this);
             }
             _department = null;
+
+           
         }
 
 
@@ -150,9 +152,10 @@ namespace Hospital_System.Models
             {
                 throw new InvalidOperationException("appointment not found!");
             }
-            _equipmentList.Remove(equipment);
             equipment.deleteEquipment();
             _equipmentList.Remove(equipment);
+            
+            
         }
         
         

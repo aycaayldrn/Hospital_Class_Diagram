@@ -16,8 +16,12 @@ namespace Hospital_System.Models
             FollowUp,
             Consultation
         }
+        public AppointmentType Type { get; set; }
 
         private static List<Appointment> _appointmentList = new List<Appointment>();
+        
+        
+        
         private DateTime _date;
         public DateTime Date
         {
@@ -35,9 +39,17 @@ namespace Hospital_System.Models
             }
         }
 
-        public AppointmentType Type { get; set; }
-
+        
         public object AssignedDoctor { get; set; }
+        
+        
+        private Patient _patient;
+        public Patient Patient
+        {
+            get { return _patient; }
+        }
+        
+        
 
         public Appointment(DateTime date, AppointmentType type, object assignedDoctor) 
         {
@@ -51,10 +63,52 @@ namespace Hospital_System.Models
             AssignedDoctor = assignedDoctor;
             addAppointment(this);
         }
-
         public Appointment(){}
+        
+        
+//==================================================================================================================        
+//Associations: Patient->"visits"-Appointment
 
 
+        public void assignPatient(Patient patient)
+        {
+            if (patient==null)
+            {
+                throw new ArgumentException("Patient cannot be null");
+            }
+            
+            if (_patient!= null)
+            {
+                throw new InvalidOperationException("Patient already assigned to appointment");
+            }
+
+            _patient = patient;
+            if (!patient.GetPatientsAppointments().Contains(this))
+            {
+                patient.addAppointmentForPatient(this);
+            }
+        }
+        
+        
+        public void deletePatient()
+        {
+            if (_patient != null && _patient.GetPatientsAppointments().Contains(this))
+            {
+                _patient.removeAppointmentFromPatient(this);
+            }
+            _patient = null;
+            
+           
+        }
+
+        
+        
+
+
+
+
+//==================================================================================================================
+//Class extent methods
         internal static void addAppointment(Appointment appointment)
         {
             if (appointment== null)
@@ -82,6 +136,8 @@ namespace Hospital_System.Models
             {
                 throw new InvalidOperationException("appointment not found!");
             }
+            
+            appointment.deletePatient();
             _appointmentList.Remove(appointment);
         }
 
@@ -102,7 +158,8 @@ namespace Hospital_System.Models
         }
         
         
-
+//==================================================================================================================
+//Helper methods
         public override bool Equals(object? obj)
         {
             if (obj==null||!(obj is Appointment))
@@ -126,6 +183,8 @@ namespace Hospital_System.Models
                 +" Type: "+Type
                 +" Assigned doctor: "+ AssignedDoctor;
         }
+
+       
     }
     
  

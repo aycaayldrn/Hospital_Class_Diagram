@@ -162,7 +162,7 @@ namespace Hospital_System.Models
                 department._equipmentsList[i].deleteEquipment();
             }
 
-            for (int i = 0; i < department._roomList.Count; i++)
+            for (int i =  department._roomList.Count-1;i >=0; i--)
             {
                 department._roomList[i].deleteRoom();
             }

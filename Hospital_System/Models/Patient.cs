@@ -10,11 +10,25 @@ namespace Hospital_System.Models
     [Serializable] 
     public class Patient
     {
-        public Patient(){}
-
-
         private static List<Patient> _patientsList = new List<Patient>();
+        
+        
+        public List<Appointment> _appointments = new List<Appointment>();
+        
+        
+        public List<Prescription> _prescriptions = new List<Prescription>();
+        public List<Bill> _bills = new List<Bill>();
+        
+        
+        
+        public List<Insurance_Provider> _patientProviders = new List<Insurance_Provider>();
+        public IReadOnlyList<Insurance_Provider> PatientProviders => _patientProviders.AsReadOnly();
+        public bool HasHealthInsurance => _patientProviders.Count > 0;
+        
+        
         public int Id { get; set; }
+        
+        
         private string _name;
         public string Name
         {
@@ -28,9 +42,9 @@ namespace Hospital_System.Models
                 _name = value;
             }
         }
+        
 
         private DateTime _birthDate;
-        
         public DateTime BirthDate
         {
             get => _birthDate;
@@ -44,6 +58,8 @@ namespace Hospital_System.Models
             }
         }
         public int Age => CalculateAge();
+        
+        
 
         private List<string> _diagnoses = new List<string>();
         public List<string> Diagnoses 
@@ -58,6 +74,8 @@ namespace Hospital_System.Models
                 _diagnoses = value.Where(item => !string.IsNullOrWhiteSpace(item)).ToList();
             }
         }
+        
+        
 
         private List<string> _allergies = new List<string>();
         public List<string> Allergies 
@@ -72,6 +90,8 @@ namespace Hospital_System.Models
                 _allergies = value.Where(item => !string.IsNullOrWhiteSpace(item)).ToList();
             }
         }
+        
+        
 
         private List<string> _treatments = new List<string>();
         public List<string> Treatments 
@@ -86,12 +106,12 @@ namespace Hospital_System.Models
                 _treatments = value.Where(item => !string.IsNullOrWhiteSpace(item)).ToList();
             }
         }
-
-        public List<Insurance_Provider> _patientProviders = new List<Insurance_Provider>();
-        public IReadOnlyList<Insurance_Provider> PatientProviders => _patientProviders.AsReadOnly();
-
-        public bool HasHealthInsurance => _patientProviders.Count > 0;
         
+        
+
+        
+        
+        public Patient(){}
         public Patient(int id, string name, DateTime birthDate)
         {
             Id = id; 
@@ -103,6 +123,13 @@ namespace Hospital_System.Models
             Treatments = new List<string>();
             AddPatient(this);
         }
+
+ 
+
+        
+        
+//==================================================================================================================
+//Associations: Patient-Provider- to finish
 
         public void AddInsuranceProviderToPatient(Insurance_Provider provider)
         {
@@ -126,19 +153,147 @@ namespace Hospital_System.Models
             _patientProviders.Remove(provider);
         }
 
-        private int CalculateAge()
-        {
-            DateTime today = DateTime.Today;
-            int age = today.Year - _birthDate.Year;
 
-            if (_birthDate > today.AddYears(-age))
+
+
+//==================================================================================================================
+//Associations:Compostion: Patient->"visits"-Appointment
+        public void addAppointmentForPatient(Appointment appointment)
+        {
+            if (appointment==null)
             {
-                age--;
+                throw new ArgumentException("Appointment cannot be null!");
+
             }
 
-            return age;
+            if (_appointments.Contains(appointment))
+            {
+                throw new InvalidOperationException("room already exists in the list");
+
+            }
+            _appointments.Add(appointment);
         }
 
+        public void removeAppointmentFromPatient(Appointment appointment)
+        {
+            
+            
+            if (appointment == null)
+            {
+                throw new ArgumentException("Appointment cannot be null!");
+            }
+
+            if (!_appointments.Contains(appointment))
+            {
+                throw new  InvalidOperationException("No such element in the list");
+            }
+
+            _appointments.Remove(appointment);
+            
+            if (appointment.Patient == this)
+            {
+                appointment.deletePatient();
+            }
+        }
+
+    public IReadOnlyCollection<Appointment> GetPatientsAppointments()
+    {
+        return _appointments.AsReadOnly();
+    }
+
+
+//==================================================================================================================
+//Associations:Composition: Patient->"receives"-Prescription
+        public void addPrescriptionForPatient(Prescription prescription)
+        {
+            if (prescription==null)
+            {
+                throw new ArgumentException("Prescription cannot be null!");
+
+            }
+
+            if (_prescriptions.Contains(prescription))
+            {
+                throw new InvalidOperationException("Prescription already exists in the list");
+
+            }
+            _prescriptions.Add(prescription);
+        }
+        
+        public void removePrescriptionFromPatient(Prescription prescription)
+        {
+            
+            
+            if (prescription == null)
+            {
+                throw new ArgumentException("Presscription cannot be null!");
+            }
+
+            if (!_prescriptions.Contains(prescription))
+            {
+                throw new  InvalidOperationException("No such element in the list");
+            }
+
+            _prescriptions.Remove(prescription);
+            
+            if (prescription.Patient == this)
+            {
+                prescription.deletePrescription();
+            }
+        }
+        
+        public IReadOnlyCollection<Prescription> GetPatientsPrescriptions()
+        {
+            return _prescriptions.AsReadOnly();
+        }
+        
+//==================================================================================================================
+//Associations: Composition:Patient->"pays"-Bill
+        public void addBillForPatient(Bill bill)
+        {
+            if (bill==null)
+            {
+                throw new ArgumentException("Bill cannot be null!");
+
+            }
+
+            if (_bills.Contains(bill))
+            {
+                throw new InvalidOperationException("Bill already exists in the list");
+
+            }
+            _bills.Add(bill);
+        }
+        public void removeBillFromPatient(Bill bill)
+        {
+            
+            
+            if (bill == null)
+            {
+                throw new ArgumentException("Bill cannot be null!");
+            }
+
+            if (!_bills.Contains(bill))
+            {
+                throw new  InvalidOperationException("No such element in the list");
+            }
+
+            _bills.Remove(bill);
+            
+            if (bill.Patient == this)
+            {
+                bill.deleteBill();
+            }
+        }
+        public IReadOnlyCollection<Bill> GetPatientsBills()
+        {
+            return _bills.AsReadOnly();
+        }
+
+
+//==================================================================================================================
+
+//Class Extent Methods
         internal static void AddPatient(Patient patient)
         {
             if (patient == null)
@@ -168,14 +323,46 @@ namespace Hospital_System.Models
                 throw new InvalidOperationException("Patient not found");
             }
 
+            for (int i = patient._appointments.Count-1; i >=0; i--)
+            {
+                patient._appointments[i].deletePatient();
+            }
+            
+            
+            for (int i = patient._prescriptions.Count-1; i >=0; i--)
+            {
+                patient._prescriptions[i].deletePrescription();
+            }
+            
+            for (int i = patient._bills.Count-1; i >=0; i--)
+            {
+                patient._bills[i].deleteBill();
+            }
+            
+            
+            patient._appointments.Clear();
+            patient._prescriptions.Clear();
+            patient._bills.Clear();
             _patientsList.Remove(patient);
+            
         }
         
         public static IReadOnlyList<Patient> GetPatients()
         {
             return _patientsList.AsReadOnly();
         }
+        public static void LoadExtent(IEnumerable<Patient> containerPatients)
+        {
+            _patientsList.Clear();
+            foreach (var patient in containerPatients)
+            {
+
+                new Patient(patient.Id,patient.Name, patient.BirthDate);
+            }
+        } 
         
+//==================================================================================================================
+//Helper methods
         public override bool Equals(object? obj)
         {
             if (obj == null || !(obj is Patient))
@@ -199,16 +386,20 @@ namespace Hospital_System.Models
             return "Patient Id: "+Id+ "Name: " +Name+ "Age: "+ Age+" Has Health Insurance: "+HasHealthInsurance;
         }
 
+        private int CalculateAge()
+        {
+            DateTime today = DateTime.Today;
+            int age = today.Year - _birthDate.Year;
+
+            if (_birthDate > today.AddYears(-age))
+            {
+                age--;
+            }
+
+            return age;
+        }
         
 
-        public static void LoadExtent(IEnumerable<Patient> containerPatients)
-        {
-           _patientsList.Clear();
-           foreach (var patient in containerPatients)
-           {
-
-               new Patient(patient.Id,patient.Name, patient.BirthDate);
-           }
-        } 
+        
     }
 }

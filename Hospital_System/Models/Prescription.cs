@@ -10,19 +10,10 @@ namespace Hospital_System.Models
     [Serializable] 
     public class Prescription
     {
-        public Prescription(int id, string medicationName, float dosage, int duration, bool redPrescription)
-        {
-            Id = id;
-            MedicationName = medicationName;
-            Dosage = dosage;
-            Duration = duration;
-            RedPrescription = redPrescription;
-            AddPrescription(this);
-        }
-
         private static List<Prescription> _prescriptionList = new List<Prescription>();
+        
         public int Id { get; set; }
-
+        
         private string _medicationName;
         public string MedicationName
         {
@@ -37,11 +28,86 @@ namespace Hospital_System.Models
             }
         }
         
-        public Prescription(){}
-        public float Dosage { get; set; }
+        public float Dosage { get; set; } 
         public int Duration { get; set; }
         public bool RedPrescription { get; set; }
+        
+        
+        private Patient _patient;
+        public Patient Patient
+        {
+            get { return _patient; }
+        }
+        
+        
+        
+        public Prescription(int id, string medicationName, float dosage, int duration, bool redPrescription)
+        {
+            Id = id;
+            MedicationName = medicationName;
+            Dosage = dosage;
+            Duration = duration;
+            RedPrescription = redPrescription;
+            AddPrescription(this);
+        }
+        public Prescription(){}
+        
+//==================================================================================================================
+//
 
+        public void assignPatientPrescription(Patient patient)
+        {
+            if (patient == null)
+            {
+                throw new ArgumentException("Patient cannot be null");
+            }
+
+            if (_patient != null)
+            {
+                throw new InvalidOperationException("Patient already assigned to this");
+            }
+
+            _patient = patient;
+            if (!patient.GetPatientsPrescriptions().Contains(this))
+            {
+                patient.addPrescriptionForPatient(this);
+            }
+        }
+
+
+        public void deletePrescription()
+        {
+            if (_patient != null && _patient.GetPatientsPrescriptions().Contains(this))
+            {
+                _patient.removePrescriptionFromPatient(this);
+            }
+            _patient = null;
+        }
+        
+        
+        
+        
+        // public void changePrescription(Patient newPatient)
+        // {
+        //     if (newPatient== null)
+        //     {
+        //         throw new ArgumentException("Patient cannot be null");
+        //     }
+        //
+        //     if (_patient==newPatient)
+        //     {
+        //         throw new InvalidOperationException("Patients are the same!");
+        //     }
+        //
+        //     if (_patient!=null)
+        //     {
+        //         _patient.removePrescriptionFromPatient(this);
+        //     }
+        //     newPatient.addPrescriptionForPatient(this);
+        //     _patient = newPatient;
+        // }
+//==================================================================================================================
+//Class Extent Methods
         internal static void AddPrescription(Prescription prescription)
         {
             if (prescription == null)
@@ -68,7 +134,7 @@ namespace Hospital_System.Models
             {
                 throw new InvalidOperationException("Prescription not found");
             }
-
+            prescription.deletePrescription();
             _prescriptionList.Remove(prescription);
         }
         
@@ -77,6 +143,17 @@ namespace Hospital_System.Models
             return _prescriptionList.AsReadOnly();
         }
         
+        public static void LoadExtent(IEnumerable<Prescription> containerPrescriptions)
+        {
+            _prescriptionList.Clear();
+            foreach (var pre in containerPrescriptions)
+            {
+
+                new Prescription(pre.Id, pre.MedicationName, pre.Dosage, pre.Duration, pre.RedPrescription);
+            }
+        }
+//==================================================================================================================
+//Helper methods
         public override bool Equals(object? obj)
         {
             if (obj == null || !(obj is Prescription))
@@ -99,19 +176,10 @@ namespace Hospital_System.Models
             return "Prescription Id: "+Id+ "Medication :"+MedicationName +"Dosage: "+Dosage+ "Duration: "+ Duration + "Red Prescription: "+RedPrescription;
         }
 
-        // public static void SetPrescriptions(List<Prescription> containerPrescriptions)
-        // {
-        //     _prescriptionList = containerPrescriptions ?? new List<Prescription>();
-        // }
+       
 
-        public static void LoadExtent(IEnumerable<Prescription> containerPrescriptions)
-        {
-            _prescriptionList.Clear();
-            foreach (var pre in containerPrescriptions)
-            {
+        
 
-                new Prescription(pre.Id, pre.MedicationName, pre.Dosage, pre.Duration, pre.RedPrescription);
-            }
-        }
+       
     }
 }

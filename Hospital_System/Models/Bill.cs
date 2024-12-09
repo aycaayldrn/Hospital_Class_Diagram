@@ -10,9 +10,9 @@ namespace Hospital_System.Models
     public class Bill
     {
         private static List<Bill>_billList = new List<Bill>();
-        public int Number {  get; set; }
+        
+        
         private static double _taxRate = 0.15;
-        private double _totalCost;
         public static double TaxRate
         {
             get => _taxRate;
@@ -25,8 +25,19 @@ namespace Hospital_System.Models
                 _taxRate = value;
             }
         }
-
-       
+        
+        
+        
+        private Patient _patient;
+        public Patient Patient
+        {
+            get { return _patient; }
+        }
+        
+        public int Number {  get; set; }
+        
+      
+        private double _totalCost;
         public double TotalCost
         {
             get => _totalCost;
@@ -39,14 +50,10 @@ namespace Hospital_System.Models
                 _totalCost = value;
             }
         }
-
         public double FinalCost => CalculateFinalCost();
+        
 
-        private double CalculateFinalCost()
-        {
-            double taxRate = TotalCost * TaxRate;
-            return TotalCost + taxRate;
-        }
+  
 
         public Bill(int number, double totalCost)
         {
@@ -56,7 +63,59 @@ namespace Hospital_System.Models
         }
         public Bill(){}
 
+//==================================================================================================================
+//Composition:Patient->"pays"-Bill
+        public void assignPatientBill(Patient patient)
+        {
+            if (patient == null)
+            {
+                throw new ArgumentException("Patient cannot be null");
+            }
 
+            if (_patient != null)
+            {
+                throw new InvalidOperationException("Patient already assigned to this");
+            }
+
+            _patient = patient;
+            if (!patient.GetPatientsBills().Contains(this))
+            {
+                patient.addBillForPatient(this);
+            }
+        }
+
+        public void deleteBill()
+        {
+            if (_patient != null && _patient.GetPatientsBills().Contains(this))
+            {
+                _patient.removeBillFromPatient(this);
+            }
+            _patient = null;
+        }
+        
+        
+        public void changeBill(Patient newPatient)
+        {
+            if (newPatient== null)
+            {
+                throw new ArgumentException("Patient cannot be null");
+            }
+
+            if (_patient==newPatient)
+            {
+                throw new InvalidOperationException("the same patients are the same!");
+            }
+
+            if (_patient!=null)
+            {
+                _patient.removeBillFromPatient(this);
+            }
+            _patient.addBillForPatient(this);
+            _patient = newPatient;
+        }
+
+//==================================================================================================================
+//Class Extent Methods
         internal static void addBill(Bill bill)
         {
             if (bill== null)
@@ -72,7 +131,7 @@ namespace Hospital_System.Models
             _billList.Add(bill);
         }
         
-        
+     
         
         
         
@@ -87,6 +146,7 @@ namespace Hospital_System.Models
             {
                 throw new InvalidOperationException("Bill not found!");
             }
+            bill.deleteBill();
             _billList.Remove(bill);
         }
         
@@ -95,10 +155,19 @@ namespace Hospital_System.Models
         {
             return  _billList.AsReadOnly();
         }
+
         
-        
-        
-        
+        public static void LoadExtent(IEnumerable<Bill> containerBills)
+        {
+            _billList.Clear();
+            foreach (var bill in containerBills)
+            {
+                
+                new Bill(bill.Number,bill.TotalCost);
+            }
+        }
+//==================================================================================================================        
+//Helper methods
         public override bool Equals(object? obj)
         {
             if (obj==null||!(obj is Bill))
@@ -123,19 +192,19 @@ namespace Hospital_System.Models
 
       
         
-        internal static void Clear()
+        // internal static void Clear()
+        // {
+        //     _billList.Clear();
+        // }
+
+        
+        
+        private double CalculateFinalCost()
         {
-            _billList.Clear();
+            double taxRate = TotalCost * TaxRate;
+            return TotalCost + taxRate;
         }
 
-        public static void LoadExtent(IEnumerable<Bill> containerBills)
-        {
-            _billList.Clear();
-            foreach (var bill in containerBills)
-            {
-                
-                new Bill(bill.Number,bill.TotalCost);
-            }
-        }
+        
     }
 }

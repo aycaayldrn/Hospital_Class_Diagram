@@ -134,7 +134,7 @@ namespace Hospital_System.Models
                 throw new InvalidOperationException("Room not found");
             }
             
-            _roomList.Remove(room);
+            
             room.deleteRoom();
             _roomList.Remove(room);
         }
