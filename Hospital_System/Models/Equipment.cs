@@ -10,28 +10,8 @@ namespace Hospital_System.Models
     public class Equipment
     {
         private static List<Equipment> _equipmentList = new List<Equipment>();
-        public int Id { get; set; }
-
-        private string _type;
-        public string Type
-        {
-            get => _type;
-            set
-            {
-                if (string.IsNullOrEmpty(value))
-                {
-                    throw new ArgumentException("Equipment type can't be empty");
-                }
-                _type = value;
-            }
-        }
-
-        private Department _department;
-        public Department Department
-        {
-            get { return _department; }
-        }
-
+        
+        
         private List<string> _maintenanceHistory = new List<string>();
         public List<string> MaintenanceHistory
         {
@@ -46,6 +26,51 @@ namespace Hospital_System.Models
             }
         }
 
+        public int Id { get; set; }
+
+        
+        
+        private string _type;
+        public string Type
+        {
+            get => _type;
+            set
+            {
+                if (string.IsNullOrEmpty(value))
+                {
+                    throw new ArgumentException("Equipment type can't be empty");
+                }
+                _type = value;
+            }
+        }
+        
+        
+
+        private Department _department;
+        public Department Department
+        {
+            get { return _department; }
+        }
+        
+        
+
+        public Equipment(){}
+        public Equipment(int id, string type)
+        {
+            if(id <= 0)
+            {
+                throw new ArgumentException("Id must be greater than 0");
+            }
+
+            Id = id;
+            Type = type;
+            MaintenanceHistory = new List<string>();
+            addEqiupment(this);
+        }
+        
+        
+//==================================================================================================================
+//Associations 
         public void assignToDepartment(Department department)
         {
             if (department==null)
@@ -87,25 +112,17 @@ namespace Hospital_System.Models
 
         public void deleteEquipment()
         {
-            _department = null;
-            
-        }
-
-        public Equipment(){}
-        public Equipment(int id, string type)
-        {
-            if(id <= 0)
+            if (_department != null && _department.GetEquipments().Contains(this))
             {
-                throw new ArgumentException("Id must be greater than 0");
+                _department.removeEquipmentFromDepartment(this);
             }
-
-            Id = id;
-            Type = type;
-            MaintenanceHistory = new List<string>();
-            addEqiupment(this);
+            _department = null;
         }
 
 
+
+//==================================================================================================================
+//Class Extent Methods
         internal static void addEqiupment(Equipment equipment)
         {
             if (equipment== null)
@@ -144,9 +161,18 @@ namespace Hospital_System.Models
             return _equipmentList.AsReadOnly();
         }
         
+        public static void LoadExtent(IEnumerable<Equipment> containerEquipments)
+        {
+            _equipmentList.Clear();
+            foreach (var equ in containerEquipments)
+            {
+
+                new Equipment(equ.Id,equ.Type);
+            }
+        }
         
-        
-        
+//==================================================================================================================
+//Helper methods
         public override bool Equals(object? obj)
         {
             if (obj==null||!(obj is Equipment))
@@ -170,14 +196,6 @@ namespace Hospital_System.Models
         }
 
       
-        public static void LoadExtent(IEnumerable<Equipment> containerEquipments)
-        {
-            _equipmentList.Clear();
-            foreach (var equ in containerEquipments)
-            {
-
-                new Equipment(equ.Id,equ.Type);
-            }
-        }
+        
     }
 }

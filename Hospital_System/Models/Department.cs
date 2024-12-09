@@ -11,8 +11,12 @@ namespace Hospital_System.Models
     public class Department
     {
         private static List<Department> _departmentList = new List<Department>();
-        private string _name;
+        
+        
         private List<Equipment> _equipmentsList = new List<Equipment>();
+        private List<Room> _roomList = new List<Room>();
+        
+        private string _name;
         public string Name
         {
             get => _name;
@@ -25,6 +29,60 @@ namespace Hospital_System.Models
                 _name = value;
             }
         }
+        
+        
+        public Department(string name)
+        {
+            Name = name;
+            addDepartment(this);
+        }
+        public Department(){}
+
+//==================================================================================================================
+//Associations 
+        public void addRoomToDepartment(Room room)
+        {
+            if (room==null)
+            {
+                throw new ArgumentException("Room cannot be null!");
+
+            }
+
+            if (_roomList.Contains(room))
+            {
+                throw new InvalidOperationException("room already exists in the list");
+
+            }
+            _roomList.Add(room);
+        } 
+        public void removeRoomFromDepartment(Room room)
+        {
+            
+            if (room == null)
+            {
+                throw new ArgumentException("Room cannot be null!");
+            }
+
+            if (!_roomList.Contains(room))
+            {
+                throw new  InvalidOperationException("No such element in the list");
+            }
+
+            _roomList.Remove(room);
+            
+            if (room.Department == this)
+            {
+                room.deleteRoom();
+            }
+        }
+        
+        public IReadOnlyList<Room> GetDepartmentRooms()
+        {
+            return _roomList.AsReadOnly();
+        }
+
+//==================================================================================================================        
+//Associations 
 
         public void addEquipmentToDepartment(Equipment equipment)
         {
@@ -62,15 +120,14 @@ namespace Hospital_System.Models
                 equipment.deleteEquipment();
             }
         }
-        
-
-        public Department(string name)
+        public IReadOnlyList<Equipment> GetEquipments()
         {
-            Name = name;
-            addDepartment(this);
+            return _equipmentsList.AsReadOnly();
         }
-         public Department(){}
 
+        
+//==================================================================================================================
+//Class Extent Methods
 
          internal static void addDepartment(Department department)
         {
@@ -98,25 +155,40 @@ namespace Hospital_System.Models
             {
                 throw new InvalidOperationException("Department not found!");
             }
-            //have to remove all of equipment before deleting dep!
-            var equipmentsListCount = department._equipmentsList.Count;
-            for (int i = equipmentsListCount-1; i >=0; i--)
+            //have to remove all of equipment,rooms before deleting dep!
+            
+            for (int i = department._equipmentsList.Count-1; i >=0; i--)
             {
                 department._equipmentsList[i].deleteEquipment();
             }
+
+            for (int i = 0; i < department._roomList.Count; i++)
+            {
+                department._roomList[i].deleteRoom();
+            }
             department._equipmentsList.Clear();
+            department._roomList.Clear();
             _departmentList.Remove(department);
+        }
+
+        
+        public static void LoadExtent(IEnumerable<Department> containerDepartments)
+        {
+            _departmentList.Clear();
+            foreach (var dep in containerDepartments)
+            {
+                
+                new Department(dep.Name);
+            }
         }
         
         public static IReadOnlyList<Department> GetDepartments()
         {
             return _departmentList.AsReadOnly();
         }
-
-        public IReadOnlyList<Equipment> GetEquipments()
-        {
-            return _equipmentsList.AsReadOnly();
-        }
+        
+//==================================================================================================================
+//Helper methods
 
         public override bool Equals(object? obj)
         {
@@ -141,14 +213,8 @@ namespace Hospital_System.Models
         }
 
 
-        public static void LoadExtent(IEnumerable<Department> containerDepartments)
-        {
-            _departmentList.Clear();
-            foreach (var dep in containerDepartments)
-            {
-                
-                new Department(dep.Name);
-            }
-        }
+ 
+
+        
     }
 }

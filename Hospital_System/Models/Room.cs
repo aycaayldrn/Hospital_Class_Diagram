@@ -16,6 +16,8 @@ namespace Hospital_System.Models
             Double,
             ICU
         }
+        
+        
         [Serializable]
         public enum RoomAvailability
         {
@@ -23,23 +25,29 @@ namespace Hospital_System.Models
             Occupied,
             UnderMaintenance
         }
-
-        private static List<Room> _roomList = new List<Room>();
-        public int Number { get; set; }
-
-        private RoomType _type;
-        public RoomType Type
-        {
-            get => _type;
-            set => _type = value;
-        }
-
         private RoomAvailability _availability;
         public RoomAvailability Availability
         {
             get => _availability;
             set => _availability = value;
         }
+
+        
+
+        private static List<Room> _roomList = new List<Room>();
+        
+        public int Number { get; set; }
+
+        
+        private RoomType _type;
+        public RoomType Type
+        {
+            get => _type;
+            set => _type = value;
+        }
+        
+
+      
 
         public Room(int number, RoomType type, RoomAvailability availability)
         {
@@ -53,9 +61,52 @@ namespace Hospital_System.Models
             Availability = availability;
             AddRoom(this);
         }
-
         public Room() { }
+        
+        
+        
+       
+        private Department _department;
+        public Department Department
+        {
+            get { return _department; }
+        }
+        
+//==================================================================================================================
+//Associations 
+        public void assignRoomToDepartment(Department department)
+        {
+            if (department==null)
+            {
+                throw new ArgumentException("Room cannot be null");
+            }
+            
+            if (_department!= null)
+            {
+                throw new InvalidOperationException("Room already assigned to department");
+            }
 
+            _department = department;
+            if (!department.GetDepartmentRooms().Contains(this))
+            {
+                department.addRoomToDepartment(this);
+            }
+        }
+        public void deleteRoom()
+        {
+            
+            if (_department != null && _department.GetDepartmentRooms().Contains(this))
+            {
+                _department.removeRoomFromDepartment(this);
+            }
+            _department = null;
+        }
+        
+        
+        
+        
+//==================================================================================================================
+//Class Extent Methods
         internal static void AddRoom(Room room)
         {
             if (room == null)
@@ -82,7 +133,9 @@ namespace Hospital_System.Models
             {
                 throw new InvalidOperationException("Room not found");
             }
-
+            
+            _roomList.Remove(room);
+            room.deleteRoom();
             _roomList.Remove(room);
         }
         
@@ -90,7 +143,17 @@ namespace Hospital_System.Models
         {
             return _roomList.AsReadOnly();
         }
-        
+        public static void LoadExtent(IEnumerable<Room> containerRooms)
+        {
+            _roomList.Clear();
+            foreach (var room in containerRooms)
+            {
+
+                new Room(room.Number, room.Type, room.Availability);
+            }
+        }
+//==================================================================================================================
+//Helper methods
         public override bool Equals(object? obj)
         {
             if (obj == null || !(obj is Room))
@@ -112,19 +175,10 @@ namespace Hospital_System.Models
             return "Room Number: "+Number+ "Type: "+Type+ "Availability: " + Availability;
         }
 
-        // public static void SetRooms(List<Room> containerRooms)
-        // {
-        //     _roomList = containerRooms ?? new List<Room>();
-        // }
+        
 
-        public static void LoadExtent(IEnumerable<Room> containerRooms)
-        {
-            _roomList.Clear();
-            foreach (var room in containerRooms)
-            {
+        
 
-                new Room(room.Number, room.Type, room.Availability);
-            }
-        }
+       
     }
 }
