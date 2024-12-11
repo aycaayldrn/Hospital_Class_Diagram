@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/jakubmordal/Documents/Sem5_2024_25/BYT/CHANGEOFSERIALIZATION/Hospital_System/Hospital_System.csproj": {}
+    "C:\\Users\\kerya\\Desktop\\HMS\\Hospital_Class_Diagram\\Hospital_System\\Hospital_System.csproj": {}
   },
   "projects": {
-    "/Users/jakubmordal/Documents/Sem5_2024_25/BYT/CHANGEOFSERIALIZATION/Hospital_System/Hospital_System.csproj": {
+    "C:\\Users\\kerya\\Desktop\\HMS\\Hospital_Class_Diagram\\Hospital_System\\Hospital_System.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jakubmordal/Documents/Sem5_2024_25/BYT/CHANGEOFSERIALIZATION/Hospital_System/Hospital_System.csproj",
+        "projectUniqueName": "C:\\Users\\kerya\\Desktop\\HMS\\Hospital_Class_Diagram\\Hospital_System\\Hospital_System.csproj",
         "projectName": "Hospital_System",
-        "projectPath": "/Users/jakubmordal/Documents/Sem5_2024_25/BYT/CHANGEOFSERIALIZATION/Hospital_System/Hospital_System.csproj",
-        "packagesPath": "/Users/jakubmordal/.nuget/packages/",
-        "outputPath": "/Users/jakubmordal/Documents/Sem5_2024_25/BYT/CHANGEOFSERIALIZATION/Hospital_System/obj/",
+        "projectPath": "C:\\Users\\kerya\\Desktop\\HMS\\Hospital_Class_Diagram\\Hospital_System\\Hospital_System.csproj",
+        "packagesPath": "C:\\Users\\kerya\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\kerya\\Desktop\\HMS\\Hospital_Class_Diagram\\Hospital_System\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/jakubmordal/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\kerya\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -66,7 +66,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.306/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.403/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

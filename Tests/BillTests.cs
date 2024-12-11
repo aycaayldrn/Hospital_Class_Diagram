@@ -138,4 +138,115 @@ public class Tests
         
         Assert.That(Bill.GetBills(), Is.EqualTo(la));
     }
+    
+    
+    
+    [Test]
+    public void Trying_to_assign_Bill_to_Patient_and_change_Department()
+    {
+        Patient patient = new Patient(1,"Test1",new DateTime(2005));
+        Patient patient2 = new Patient(2,"Test1",new DateTime(2005));
+        Bill bill = new Bill(21,3213);
+        bill.assignPatientBill(patient);
+        if (!bill.Patient.Equals(patient))
+        {
+            Assert.Fail();
+        }
+        bill.changeBill(patient2);
+    
+        if (patient2.Equals(bill.Patient))
+        {
+            Patient.RemovePatient(patient2);
+            Patient.RemovePatient(patient);
+            Bill.removeBill(bill);
+            Assert.Pass();
+        }else{
+            Assert.Fail();
+        }
+    }
+    
+    [Test]
+    public void Trying_to_assign_Bill_to_Patient_and_change_to_null_Patient_should_throw_ArgumentException()
+    {
+        Patient patient = new Patient(1,"Test1",new DateTime(2005));
+        Bill bill = new Bill(21,3213);
+        bill.assignPatientBill(patient);
+        if (!bill.Patient.Equals(patient))
+        {
+            Assert.Fail();
+        }
+    
+        try
+        {
+            bill.changeBill(null);
+            Assert.Fail("Expected ArgumentException");
+        }
+        catch (ArgumentException ae)
+        {
+            Patient.RemovePatient(patient);
+            Bill.removeBill(bill);
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
+    public void Trying_to_assign_Bill_to_Patient_and_change_to_same_Patient_should_throw_InvalidOperationException()
+    {
+        Patient patient = new Patient(1,"Test1",new DateTime(2005));
+        Bill bill = new Bill(21,3213);
+        bill.assignPatientBill(patient);
+        if (!bill.Patient.Equals(patient))
+        {
+            Assert.Fail();
+        }
+    
+        try
+        {
+            bill.changeBill(patient);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException ae)
+        {
+            Patient.RemovePatient(patient);
+            Bill.removeBill(bill);
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
+    public void Trying_to_assign_Bill_to_null_Patient_should_throw_ArgumentException()
+    {
+        Bill bill = new Bill(21,3213);
+        try
+        {
+            bill.assignPatientBill(null);
+            Assert.Fail("expected ArgumentException");
+        }
+        catch (ArgumentException a)
+        {
+            Bill.removeBill(bill);
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
+    public void Trying_to_assign_Bill_to_Patient_when_it_already_assigned_to_another_should_throw_InvalidOperationException()
+    {
+        Patient patient = new Patient(1,"Test1",new DateTime(2005));
+        Patient patient2 = new Patient(2,"Test1",new DateTime(2005));
+        Bill bill = new Bill(21,3213);
+        bill.assignPatientBill(patient);
+        try
+        {
+            bill.assignPatientBill(patient2);
+            Assert.Fail("expected InvalidOperationException");
+        }
+        catch (InvalidOperationException)
+        {
+            Patient.RemovePatient(patient2);
+            Patient.RemovePatient(patient);
+            Bill.removeBill(bill);
+            Assert.Pass();
+        }
+    }
 }

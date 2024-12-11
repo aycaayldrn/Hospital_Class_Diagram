@@ -13,10 +13,10 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1f5a53e9d85a5df43be891b070af9cdf438cfec6")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+949e0dde273f539eab092f084383aaf5d86c0fd2")]
 [assembly: System.Reflection.AssemblyProductAttribute("Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
 
-// Wygenerowane przez klasę WriteCodeFragment programu MSBuild.
+// Создано классом WriteCodeFragment MSBuild.
 

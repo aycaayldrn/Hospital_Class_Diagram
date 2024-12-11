@@ -147,4 +147,131 @@ public class RoomsTests
 
         Assert.That(Room.GetRooms(), Is.EqualTo(la));
     }
+    
+    [Test]
+    public void Trying_to_assign_Equipment_to_Department()
+    {
+        Department department = new Department("Test");
+        Room room = new Room( 2,Room.RoomType.Double,Room.RoomAvailability.Available);
+        room.assignRoomToDepartment(department);
+        foreach (var e in department.GetDepartmentRooms())
+        {
+            if (e.Number == room.Number)
+            {
+                Department.removeDepartment(department);
+                Room.RemoveRoom(room);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    // [Test]
+    // public void Trying_to_assign_Room_to_Department_and_change_Department()
+    // {
+    //     Department department = new Department("Test");
+    //     Department department2 = new Department("Test1");
+    //     Room room = new Room( 2,Room.RoomType.Double,Room.RoomAvailability.Available);
+    //     room.assignRoomToDepartment(department);
+    //     if (!room.Department.Equals(department))
+    //     {
+    //         Assert.Fail();
+    //     }
+    //     room.changeDepartment(department2);
+    //
+    //     if (department2.Equals(room.Department))
+    //     {
+    //         Department.removeDepartment(department2);
+    //         Department.removeDepartment(department);
+    //         Room.RemoveRoom(room);
+    //         Assert.Pass();
+    //     }else{
+    //         Assert.Fail();
+    //     }
+    // }
+    
+    // [Test]
+    // public void Trying_to_assign_Room_to_Department_and_change_to_null_Department_should_throw_ArgumentException()
+    // {
+    //     Department department = new Department("Test");
+    //     Room room = new Room( 2,Room.RoomType.Double,Room.RoomAvailability.Available);
+    //     room.assignRoomToDepartment(department);
+    //     if (!room.Department.Equals(department))
+    //     {
+    //         Assert.Fail();
+    //     }
+    //
+    //     try
+    //     {
+    //         room.changeDepartment(null);
+    //         Assert.Fail("Expected ArgumentException");
+    //     }
+    //     catch (ArgumentException ae)
+    //     {
+    //         Department.removeDepartment(department);
+    //         Room.RemoveRoom(room);
+    //         Assert.Pass();
+    //     }
+    // }
+    
+    // [Test]
+    // public void Trying_to_assign_Room_to_Department_and_change_to_same_Department_should_throw_InvalidOperationException()
+    // {
+    //     Department department = new Department("Test");
+    //     Room room = new Room( 2,Room.RoomType.Double,Room.RoomAvailability.Available);
+    //     room.assignRoomToDepartment(department);
+    //     if (!room.Department.Equals(department))
+    //     {
+    //         Assert.Fail();
+    //     }
+    //
+    //     try
+    //     {
+    //         room.changeDepartment(department);
+    //         Assert.Fail("Expected InvalidOperationException");
+    //     }
+    //     catch (InvalidOperationException ae)
+    //     {
+    //         Department.removeDepartment(department);
+    //         Room.RemoveRoom(room);
+    //         Assert.Pass();
+    //     }
+    // }
+    
+    [Test]
+    public void Trying_to_assign_Equipment_to_null_Department_should_throw_ArgumentException()
+    {
+        Room room = new Room( 2,Room.RoomType.Double,Room.RoomAvailability.Available);
+        try
+        {
+            room.assignRoomToDepartment(null);
+            Assert.Fail("expected ArgumentException");
+        }
+        catch (ArgumentException a)
+        {
+            Room.RemoveRoom(room);
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
+    public void Trying_to_assign_Room_to_Department_when_it_already_assigned_to_another_should_throw_InvalidOperationException()
+    {
+        Department department = new Department("Test");
+        Department department2 = new Department("Test1");
+        Room room = new Room( 2,Room.RoomType.Double,Room.RoomAvailability.Available);
+        room.assignRoomToDepartment(department);
+        try
+        {
+            room.assignRoomToDepartment(department2);
+            Assert.Fail("expected InvalidOperationException");
+        }
+        catch (InvalidOperationException)
+        {
+            Department.removeDepartment(department2);
+            Department.removeDepartment(department);
+            Room.RemoveRoom(room);
+            Assert.Pass();
+        }
+    }
 }

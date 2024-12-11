@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Hospital_System
-build_property.ProjectDir = /Users/jakubmordal/Documents/Sem5_2024_25/BYT/CHANGEOFSERIALIZATION/Hospital_System/
+build_property.ProjectDir = C:\Users\kerya\Desktop\HMS\Hospital_Class_Diagram\Hospital_System\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 

@@ -137,4 +137,113 @@ public class AppointmentTests
         
         Assert.That(Appointment.GetAppointments(), Is.EqualTo(la));
     }
+    
+    // [Test]
+    // public void Trying_to_assign_Bill_to_Patient_and_change_Department()
+    // {
+    //     Patient patient = new Patient(1,"Test1",new DateTime(2005));
+    //     Patient patient2 = new Patient(2,"Test1",new DateTime(2005));
+    //     Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
+    //     appointment.assignPatient(patient);
+    //     if (!appointment.Patient.Equals(patient))
+    //     {
+    //         Assert.Fail();
+    //     }
+    //     appointment.changeAppointment(patient2);
+    //
+    //     if (patient2.Equals(appointment.Patient))
+    //     {
+    //         Patient.RemovePatient(patient2);
+    //         Patient.RemovePatient(patient);
+    //         Appointment.removeAppointment(appointment);
+    //         Assert.Pass();
+    //     }else{
+    //         Assert.Fail();
+    //     }
+    // }
+    //
+    // [Test]
+    // public void Trying_to_assign_Bill_to_Patient_and_change_to_null_Patient_should_throw_ArgumentException()
+    // {
+    //     Patient patient = new Patient(1,"Test1",new DateTime(2005));
+    //     Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
+    //     appointment.assignPatient(patient);
+    //     if (!appointment.Patient.Equals(patient))
+    //     {
+    //         Assert.Fail();
+    //     }
+    //
+    //     try
+    //     {
+    //         appointment.changeAppointment(null);
+    //         Assert.Fail("Expected ArgumentException");
+    //     }
+    //     catch (ArgumentException ae)
+    //     {
+    //         Patient.RemovePatient(patient);
+    //         Appointment.removeAppointment(appointment);
+    //         Assert.Pass();
+    //     }
+    // }
+    
+    // [Test]
+    // public void Trying_to_assign_Bill_to_Patient_and_change_to_same_Patient_should_throw_InvalidOperationException()
+    // {
+    //     Patient patient = new Patient(1,"Test1",new DateTime(2005));
+    //     Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
+    //     appointment.assignPatient(patient);
+    //     if (!appointment.Patient.Equals(patient))
+    //     {
+    //         Assert.Fail();
+    //     }
+    //
+    //     try
+    //     {
+    //         appointment.changeAppointment(patient);
+    //         Assert.Fail("Expected InvalidOperationException");
+    //     }
+    //     catch (InvalidOperationException ae)
+    //     {
+    //         Patient.RemovePatient(patient);
+    //         Appointment.removeAppointment(appointment);
+    //         Assert.Pass();
+    //     }
+    // }
+    
+    [Test]
+    public void Trying_to_assign_Bill_to_null_Patient_should_throw_ArgumentException()
+    {
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
+        try
+        {
+            appointment.assignPatient(null);
+            Assert.Fail("expected ArgumentException");
+        }
+        catch (ArgumentException a)
+        {
+            Appointment.removeAppointment(appointment);
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
+    public void Trying_to_assign_Bill_to_Patient_when_it_already_assigned_to_another_should_throw_InvalidOperationException()
+    {
+        Patient patient = new Patient(1,"Test1",new DateTime(2005));
+        Patient patient2 = new Patient(2,"Test1",new DateTime(2005));
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
+        appointment.assignPatient(patient);
+        try
+        {
+            appointment.assignPatient(patient2);
+            Assert.Fail("expected InvalidOperationException");
+        }
+        catch (InvalidOperationException)
+        {
+            Patient.RemovePatient(patient2);
+            Patient.RemovePatient(patient);
+            Appointment.removeAppointment(appointment);
+            Assert.Pass();
+        }
+    }
 }

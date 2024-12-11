@@ -136,7 +136,7 @@ public class DepartmentTests
 
         foreach (var e in department.GetEquipments())
         {
-            if (equipments.Exists(e => e.Id == e.Id && equipments.Count==department.GetEquipments().Count))
+            if (equipments.Exists(e => equipments.Count==department.GetEquipments().Count))
             {
                 
             }
@@ -170,19 +170,108 @@ public class DepartmentTests
     }
     
     [Test]
-    public void Trying_to_add_same_Equipments_to_Department_should_throw_InvalidOperationException()
+    public void Trying_to_add_Room_to_Department_and_then_delete_it()
+    {
+        Department department = new Department("Test1");
+        Room room = new Room(1,Room.RoomType.Double, Room.RoomAvailability.Available);
+        department.addRoomToDepartment(room);
+        foreach (var e in  department.GetDepartmentRooms())
+        {
+            if (e.Number == room.Number)
+            {
+                department.removeRoomFromDepartment(room);
+                foreach (var e2 in  department.GetDepartmentRooms())
+                {
+                    if (e2.Number == room.Number)
+                    {
+                        Assert.Fail("Room has not been deleted");
+                    }
+                }
+                Department.removeDepartment(department);
+                Room.RemoveRoom(room);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail("Room has not been added");
+    }
+    
+    [Test]
+    public void Trying_to_add_Room_to_Department()
     {
         Department department = new Department("Test");
-        Equipment equipment = new Equipment(1,"Test");
-        department.addEquipmentToDepartment(equipment);
+        Room room = new Room(1,Room.RoomType.Double, Room.RoomAvailability.Available);
+        department.addRoomToDepartment(room);
+        foreach (var e in department.GetDepartmentRooms())
+        {
+            if (e.Number == room.Number)
+            {
+                Room.RemoveRoom(room);
+                Department.removeDepartment(department);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_many_Room_to_Department()
+    {
+        Department department = new Department("Test");
+        List<Room> rooms = new List<Room>{new (1,Room.RoomType.Double, Room.RoomAvailability.Available), new (2,Room.RoomType.Double, Room.RoomAvailability.Available), new (3,Room.RoomType.Double, Room.RoomAvailability.Available)};
+        foreach (var e in rooms)
+        {
+            department.addRoomToDepartment(e);
+        }
+
+        foreach (var e in department.GetEquipments())
+        {
+            if (rooms.Exists(e => rooms.Count==department.GetEquipments().Count))
+            {
+                
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+        Department.removeDepartment(department);
+        foreach (var r in rooms)
+        {
+            Room.RemoveRoom(r);
+        }
+        Assert.Pass();
+    }
+    
+    [Test]
+    public void Trying_to_add_null_Room_to_Department_throws_ArgumentNullException()
+    {
+        Department department = new Department("Test");
         try
         {
-            department.addEquipmentToDepartment(equipment);
+            department.addRoomToDepartment(null);
+            Assert.Fail("Expected ArgumentException");
+        }
+        catch (ArgumentException argumentException)
+        {
+            Department.removeDepartment(department);
+            Assert.Pass();   
+        }
+    }
+    
+    [Test]
+    public void Trying_to_add_same_Room_to_Department_should_throw_InvalidOperationException()
+    {
+        Department department = new Department("Test");
+        Room room = new Room(1,Room.RoomType.Double, Room.RoomAvailability.Available);
+        department.addRoomToDepartment(room);
+        try
+        {
+            department.addRoomToDepartment(room);
             Assert.Fail("Expected InvalidOperationException");
         }
         catch (InvalidOperationException oe)
         {
-            Equipment.removeEquipment(equipment);
+            Room.RemoveRoom(room);
             Assert.Pass();
         }
     }
