@@ -10,9 +10,11 @@ namespace Hospital_System.Models
     public class Nurse
 
     {
-        public Nurse(){}
         private static List<Nurse> _nursesList = new List<Nurse>();
+       
+       
         public int Id { get; set; }
+        
         private string _name;
         public string Name
         {
@@ -26,6 +28,7 @@ namespace Hospital_System.Models
                 _name = value;
             }
         }
+        
         private List<string> _certification = new List<string>();
         public List<string> Certifications 
         { 
@@ -39,7 +42,18 @@ namespace Hospital_System.Models
                 _certification = value.Where(item => !string.IsNullOrWhiteSpace(item)).ToList();
             }
         }
+        
+        private Department _department;
+        public Department Department
+        {
+            get { return _department; }
+        }
+        
+        
 
+
+
+        public Nurse(){}
         public Nurse(int id, string name, List<string>? certifications = null)
         {
             Id = id;
@@ -47,29 +61,65 @@ namespace Hospital_System.Models
             Certifications = certifications ?? new List<string>();
             addNurse(this);
         }
-
-
-
-        public void DisplayNurseInfo()
+//==================================================================================================================
+//Associations: Agregation nurse-department
+        public void asssignNurseToDepartment(Department department)
         {
-            Console.WriteLine($"Nurse ID: {Id}");
-            Console.WriteLine($"Name: {Name}");
-            Console.WriteLine($"Certifications: {Certifications}");
-            
-            if (Certifications.Count > 0)
+            if (department==null)
             {
-                foreach (var cert in Certifications)
-                {
-                    Console.WriteLine($"{cert} - ");
-                }
+                throw new ArgumentException("department cannot be null");
             }
-            else
+            
+            if (_department!= null)
             {
-                Console.WriteLine("No certifications available");
+                throw new InvalidOperationException("Nurse already assigned to department");
             }
 
+            _department = department;
+            if (!department.GetNurses().Contains(this))
+            {
+                department.addNurseToDepartment(this);
+            }
+        }
+        
+        
+        public void changeDepartment(Department difrentDepartment)
+        {
+            if (difrentDepartment== null)
+            {
+                throw new ArgumentException("department cannot be null");
+            }
+
+            if (_department==difrentDepartment)
+            {
+                throw new InvalidOperationException("Departments are the same!");
+            }
+
+            if (_department!=null)
+            {
+                _department.removeNurseFromDepartment(this);
+            }
+            difrentDepartment.addNurseToDepartment(this);
+            _department = difrentDepartment;
+        }
+        
+        
+        public void deleteNurse()
+        {
+            if (_department != null && _department.GetNurses().Contains(this))
+            {
+                _department.removeNurseFromDepartment(this);
+            }
+            _department = null;
+
+           
         }
 
+
+
+    
+//==================================================================================================================
+//Class Extent Methods
 
         internal static void addNurse(Nurse nurse)
         {
@@ -108,6 +158,17 @@ namespace Hospital_System.Models
         }
         
         
+        public static void LoadExtent(IEnumerable<Nurse> containerNurses)
+        {
+            _nursesList.Clear();
+            foreach (var nurse in containerNurses)
+            {
+
+                new Nurse(nurse.Id, nurse.Name, nurse.Certifications);
+            }
+        }
+//==================================================================================================================  
+//Helper methods
         public override bool Equals(object? obj)
         {
             if (obj==null||!(obj is Nurse))
@@ -134,20 +195,27 @@ namespace Hospital_System.Models
             return "Id: " +" "+ Id +" "+ "Name: " + _name;
         }
 
-
-        // public static void SetNurses(List<Nurse> CNurses)
-        // {
-        //     _nursesList = CNurses ?? new List<Nurse>();
-        // }
-
-        public static void LoadExtent(IEnumerable<Nurse> containerNurses)
+        public void DisplayNurseInfo()
         {
-           _nursesList.Clear();
-           foreach (var nurse in containerNurses)
-           {
+            Console.WriteLine($"Nurse ID: {Id}");
+            Console.WriteLine($"Name: {Name}");
+            Console.WriteLine($"Certifications: {Certifications}");
+            
+            if (Certifications.Count > 0)
+            {
+                foreach (var cert in Certifications)
+                {
+                    Console.WriteLine($"{cert} - ");
+                }
+            }
+            else
+            {
+                Console.WriteLine("No certifications available");
+            }
 
-               new Nurse(nurse.Id, nurse.Name, nurse.Certifications);
-           }
         }
+      
+
+        
     }
 }
