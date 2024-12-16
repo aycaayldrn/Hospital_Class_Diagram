@@ -1,10 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "ES0i1uaITN8=",
+  "dgSpecHash": "RMRmpPwknCU=",
   "success": true,
-  "projectFilePath": "C:\\Users\\kerya\\Desktop\\HMS\\Hospital_Class_Diagram\\Hospital_System\\Hospital_System.csproj",
+  "projectFilePath": "/Users/jakubmordal/Documents/Sem5_2024_25/BYT/CHANGEOFSERIALIZATION/Hospital_System/Hospital_System.csproj",
   "expectedPackageFiles": [
-    "C:\\Users\\kerya\\.nuget\\packages\\nunit.analyzers\\4.4.0\\nunit.analyzers.4.4.0.nupkg.sha512"
+    "/Users/jakubmordal/.nuget/packages/nunit.analyzers/4.4.0/nunit.analyzers.4.4.0.nupkg.sha512"
   ],
   "logs": []
 }

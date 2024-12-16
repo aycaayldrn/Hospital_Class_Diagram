@@ -11,7 +11,7 @@
           "Hospital_System": "1.0.0",
           "Microsoft.NET.Test.Sdk": "17.8.0",
           "NUnit": "3.14.0",
-          "NUnit.Analyzers": "3.9.0",
+          "NUnit.Analyzers": "4.4.0",
           "NUnit3TestAdapter": "4.5.0",
           "coverlet.collector": "6.0.0"
         },
@@ -314,15 +314,12 @@
           }
         }
       },
-      "NUnit.Analyzers/3.9.0": {},
+      "NUnit.Analyzers/4.4.0": {},
       "NUnit3TestAdapter/4.5.0": {},
       "System.Reflection.Metadata/1.6.0": {},
       "Hospital_System/1.0.0": {
         "runtime": {
-          "Hospital_System.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "Hospital_System.dll": {}
         }
       }
     }
@@ -403,12 +400,12 @@
       "path": "nunit/3.14.0",
       "hashPath": "nunit.3.14.0.nupkg.sha512"
     },
-    "NUnit.Analyzers/3.9.0": {
+    "NUnit.Analyzers/4.4.0": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-8bGAEljlBnzR+uU8oGQhTVKnbgBw1Mo71qjVkgzHdvtUkiB5XOIDyjAcS4KUo/j+F2Zv/xBUZRkCWXmejx4bfA==",
-      "path": "nunit.analyzers/3.9.0",
-      "hashPath": "nunit.analyzers.3.9.0.nupkg.sha512"
+      "sha512": "sha512-VVl1CuQttXRZh52HRw5SIOut3qXw4pmuiTYk02jTELVWZ9uYRY8IVl2qF9Zs7W0ElPiLDUrAglFBzNLBCPzEcw==",
+      "path": "nunit.analyzers/4.4.0",
+      "hashPath": "nunit.analyzers.4.4.0.nupkg.sha512"
     },
     "NUnit3TestAdapter/4.5.0": {
       "type": "package",

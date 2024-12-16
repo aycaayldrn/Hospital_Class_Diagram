@@ -110,13 +110,13 @@ namespace Hospital_System.Models
             {
                 _patient.removeBillFromPatient(this);
             }
-            _patient.addBillForPatient(this);
+            newPatient.addBillForPatient(this);
             _patient = newPatient;
         }
 
 //==================================================================================================================
 //Class Extent Methods
-        internal static void addBill(Bill bill)
+        public static void addBill(Bill bill)
         {
             if (bill== null)
             {
