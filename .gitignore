@@ -7,4 +7,5 @@
 
 # Ignore build outputs
 /bin/
+/obj/
 /Debug/
