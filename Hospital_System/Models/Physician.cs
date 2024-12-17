@@ -42,7 +42,7 @@ namespace Hospital_System.Models;
         
         private List<Prescription> _prescriptions = new List<Prescription>();
         
-        //==================================================================================================================
+//==================================================================================================================
 //Associations: Agregation Physician-prescription
 
         public void addPrescriptiont(Prescription prescription)

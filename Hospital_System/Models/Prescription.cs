@@ -15,6 +15,8 @@ namespace Hospital_System.Models
         
         private List<Bill> _bills = new List<Bill>();
         public IReadOnlyList<Bill> Bills => _bills.AsReadOnly();
+
+        public Physician _physician;
         public int Id { get; set; }
         
         private string _medicationName;
@@ -53,10 +55,63 @@ namespace Hospital_System.Models
             RedPrescription = redPrescription;
             AddPrescription(this);
         }
-        public Prescription(){}
-        
+        public Prescription(){ }
+
+
+//================================================================================================================== 
+//association aggregation:Prescription-Physycian
+        public void assignPrescriptionToPhysycian(Physician physician)
+        {
+            if (physician == null)
+            {
+                throw new ArgumentException("Physician cannot be null");
+            }
+
+            if (_physician != null)
+            {
+                throw new InvalidOperationException("Physcian already assigned ");
+            }
+
+            _physician = physician;
+            if (!physician.GetPrescriptions().Contains(this))
+            {
+                physician.addPrescriptiont(this);
+            }
+        }
+
+
+        public void changePhysician(Physician diffrentPhysician)
+        {
+            if (diffrentPhysician == null)
+            {
+                throw new ArgumentException("Physician cannot be null");
+            }
+
+            if (_physician == diffrentPhysician)
+            {
+                throw new InvalidOperationException("Physicians are the same!");
+            }
+
+            if (_physician != null)
+            {
+                _physician.removePrescriptiont(this);
+            }
+            diffrentPhysician.addPrescriptiont(this);
+            _physician = diffrentPhysician;
+        }
+
+
+        public void deletePrescriptionByPhyscian()
+        {
+            if (_physician != null && _physician.GetPrescriptions().Contains(this))
+            {
+                _physician.removePrescriptiont(this);
+            }
+            _physician = null;
+
+
+        }
 //==================================================================================================================
-//
 // Prescription-> "included in" -Bill
 
         public void addBillToPrescription(Bill bill)
@@ -97,7 +152,7 @@ namespace Hospital_System.Models
             bill.removePrescriptionFromBill(this);
         }
 
-        //==================================================================================================================
+//==================================================================================================================
 
 
         public void assignPatientPrescription(Patient patient)
