@@ -17,14 +17,16 @@ namespace Hospital_System.Models
         
         
         public List<Prescription> _prescriptions = new List<Prescription>();
-        public List<Bill> _bills = new List<Bill>();
 
-        
+        private List<Bill> _bills = new List<Bill>();
+        public IReadOnlyList<Bill> Bills => _bills;
         
         
         private List<Insurance_Provider> _patientProviders = new List<Insurance_Provider>();
         public IReadOnlyList<Insurance_Provider> PatientProviders => _patientProviders.AsReadOnly();
-        
+
+        public Room _room;
+
         public bool HasHealthInsurance => _patientProviders.Count > 0;
         
         
@@ -159,7 +161,35 @@ namespace Hospital_System.Models
 
 
 
+//==================================================================================================================
+//Patient-Room -> patient can occupy only one room
 
+        public void AssignRoomToPatient(Room room)
+        {
+            if(room == null) throw new ArgumentException(nameof(room),"Room cannot be empty");
+
+            if (_room == room)
+            {
+                throw new InvalidOperationException("Patient has already assigned in this room");
+            }
+            
+            _room?.RemovePatientFromRoom(this);
+
+            _room = room;
+            if (!room.GetRoomsPatients().Contains(this))
+            {
+                room.assignPatientToRoom(this);
+            }
+        }
+
+        public void RemoveRoomFromPatient(Room room)
+        {
+            if (_room != null && _room.GetRoomsPatients().Contains(this))
+            {
+                _room.RemovePatientFromRoom(this);
+            }
+            _room = null;
+        }
 //==================================================================================================================
 //Associations:Compostion: Patient->"visits"-Appointment
         public void addAppointmentForPatient(Appointment appointment)

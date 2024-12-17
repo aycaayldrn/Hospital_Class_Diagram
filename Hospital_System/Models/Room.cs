@@ -35,6 +35,9 @@ namespace Hospital_System.Models
         
 
         private static List<Room> _roomList = new List<Room>();
+
+        private List<Patient> _patients = new List<Patient>();
+        public IReadOnlyList<Patient> Patients => _patients.AsReadOnly();
         
         public int Number { get; set; }
 
@@ -73,7 +76,7 @@ namespace Hospital_System.Models
         }
         
 //==================================================================================================================
-//Associations 
+//Associations Room-Department
         public void assignRoomToDepartment(Department department)
         {
             if (department==null)
@@ -153,7 +156,43 @@ namespace Hospital_System.Models
             }
         }
 //==================================================================================================================
-//Helper methods
+//Room--patient - Room can be occupied by max 2 patients
+        public void assignPatientToRoom(Patient patient)
+        {
+            if (patient == null)
+                throw new ArgumentNullException(nameof(patient), "Patient cannot be null.");
+
+            if (_patients.Contains(patient))
+                throw new InvalidOperationException("This patient is already assigned to the room.");
+
+            if (_patients.Count >= 2)
+                throw new InvalidOperationException("The room already has two patients. Cannot assign more.");
+
+            if (patient._room != null)
+                patient._room.RemovePatientFromRoom(patient);
+
+            _patients.Add(patient);
+            patient.AssignRoomToPatient(this);
+        }
+
+        public void RemovePatientFromRoom(Patient patient)
+        {
+            if (patient == null)
+                throw new ArgumentNullException(nameof(patient), "Patient cannot be null.");
+
+            if (!_patients.Contains(patient))
+                throw new InvalidOperationException("The patient is not in this room.");
+
+            _patients.Remove(patient);
+            patient.RemoveRoomFromPatient(this);
+        }
+
+        public IReadOnlyCollection<Patient> GetRoomsPatients()
+        {
+            return _patients.AsReadOnly();
+        }
+        //==================================================================================================================
+        //Helper methods
         public override bool Equals(object? obj)
         {
             if (obj == null || !(obj is Room))
