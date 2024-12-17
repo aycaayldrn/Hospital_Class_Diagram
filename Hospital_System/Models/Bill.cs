@@ -116,7 +116,7 @@ namespace Hospital_System.Models
             {
                 _patient.removeBillFromPatient(this);
             }
-            _patient.addBillForPatient(this);
+            newPatient.addBillForPatient(this);
             _patient = newPatient;
         }
 

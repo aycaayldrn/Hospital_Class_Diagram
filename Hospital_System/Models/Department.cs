@@ -15,7 +15,9 @@ namespace Hospital_System.Models
         
         private List<Equipment> _equipmentsList = new List<Equipment>();
         private List<Room> _roomList = new List<Room>();
-        
+        private List<Nurse> _nursesInDepartment = new List<Nurse>();
+        private List<Doctor> _doctorsInDepartment = new List<Doctor>();
+
         private string _name;
         public string Name
         {
@@ -37,8 +39,87 @@ namespace Hospital_System.Models
             addDepartment(this);
         }
         public Department(){}
+        
+//==================================================================================================================
+//Associations: Department-Doctor Agregation
+        public void addDoctorToDepartment(Doctor doctor)
+        {
+            if (doctor==null)
+            {
+                throw new ArgumentException("Doctor can't be null");
+            }
+
+            if (_doctorsInDepartment.Contains(doctor))
+            {
+                throw new InvalidOperationException("Doctor is already assigned to this department");
+                
+            }
+            _doctorsInDepartment.Add(doctor);
+        }
+        public void removeDoctorFromDepartment(Doctor doctor)
+        {
+            if (doctor==null)
+            {
+                throw new ArgumentException("Doctor can't be null");
+            }
+
+            if (!_doctorsInDepartment.Contains(doctor))
+            {
+                throw new InvalidOperationException("No such doctor in list");
+                
+            }
+            _doctorsInDepartment.Remove(doctor);
+        }
+        
+        
+        
+        public IReadOnlyList<Doctor> GetDoctors()
+        {
+            return _doctorsInDepartment.AsReadOnly();
+        }
+
 
 //==================================================================================================================
+//Associations: Department-Nurse Agregation
+        public void addNurseToDepartment(Nurse nurse)
+        {
+            if (nurse==null)
+            {
+                throw new ArgumentException("Nurse can't be null");
+            }
+
+            if (_nursesInDepartment.Contains(nurse))
+            {
+                throw new InvalidOperationException("Nurse is already assigned to this department");
+                
+            }
+            _nursesInDepartment.Add(nurse);
+        }
+        public void removeNurseFromDepartment(Nurse nurse)
+        {
+            if (nurse==null)
+            {
+                throw new ArgumentException("Nurse can't be null");
+            }
+
+            if (!_nursesInDepartment.Contains(nurse))
+            {
+                throw new InvalidOperationException("No such nurse in list");
+                
+            }
+            _nursesInDepartment.Remove(nurse);
+        }
+        
+        
+        
+        public IReadOnlyList<Nurse> GetNurses()
+        {
+            return _nursesInDepartment.AsReadOnly();
+        }
+        
+
+//==================================================================================================================
+
 //Associations 
         public void addRoomToDepartment(Room room)
         {
@@ -48,7 +129,7 @@ namespace Hospital_System.Models
 
             }
 
-            if (_roomList.Contains(room))
+            if (!_roomList.Contains(room))
             {
                 throw new InvalidOperationException("room already exists in the list");
 
