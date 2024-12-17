@@ -207,7 +207,7 @@ namespace Hospital_System.Models
         }
 
         //==================================================================================================================
-        //Bill->"includes"-Prescription
+        //Bill->"includes"-Appointment
         public void AddAppointmentToBill(Appointment appointment)
         {
             if(appointment == null)

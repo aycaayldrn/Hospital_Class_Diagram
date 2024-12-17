@@ -11,8 +11,13 @@ namespace Hospital_System.Models
 
     {
         private static List<Nurse> _nursesList = new List<Nurse>();
-       
-       
+
+        private List<Shift> _shifts = new List<Shift>();
+        public IReadOnlyList<Shift> Shifts => _shifts.AsReadOnly();
+
+        private List<Nurse_Shift> _shiftsForPatients = new List<Nurse_Shift>();
+        public IReadOnlyList<Nurse_Shift> Nurse_Shifts => _shiftsForPatients.AsReadOnly();
+
         public int Id { get; set; }
         
         private string _name;
@@ -115,8 +120,40 @@ namespace Hospital_System.Models
            
         }
 
+//==================================================================================================================
+//Nurse-Shift
+    
+        public void assignShiftToNurse(Shift shift)
+        {
+            if (shift == null)
+            {
+                throw new ArgumentNullException(nameof(shift));
+            }
+            if (_shifts.Contains(shift))
+            {
+                throw new InvalidOperationException("The shift has already assigned to this nurse");
+            }
+            _shifts.Add(shift);
+            shift.assignNurseToShift(this);
+        }
 
-
+        public void removeShiftFromNurse(Shift shift)
+        {
+            if (shift == null)
+            {
+                throw new ArgumentNullException(nameof(shift));
+            }
+            if (!_shifts.Contains(shift))
+            {
+                throw new InvalidOperationException("The shift is not assigned to this nurse");
+            }
+            if(_shifts.Count == 1)
+            {
+                throw new InvalidOperationException("There should be at least one shift the nurse has assigned.");
+            }
+            _shifts.Remove(shift);
+            shift.removeNurseFromShift(this);
+        }
     
 //==================================================================================================================
 //Class Extent Methods
@@ -167,8 +204,39 @@ namespace Hospital_System.Models
                 new Nurse(nurse.Id, nurse.Name, nurse.Certifications);
             }
         }
-//==================================================================================================================  
-//Helper methods
+//==================================================================================================================
+//Asspciation with attribute: nurse-Patient
+
+        public void AddShiftToNurseForPatient(Nurse_Shift shift)
+        {
+            if (shift == null)
+                throw new ArgumentNullException(nameof(shift), "Shift cannot be null.");
+
+            if (!_shiftsForPatients.Contains(shift))
+            { 
+                _shiftsForPatients.Add(shift);
+            }
+            else
+            {
+                throw new InvalidOperationException("The nurse already assigned to this patient-realated shift");
+            }
+        }
+
+        public void RemoveShiftFromNurseForPatient(Nurse_Shift shift)
+        {
+            if (shift == null)
+                { throw new ArgumentNullException(nameof(shift), "Shift cannot be null."); }
+
+            if (!_shiftsForPatients.Contains(shift))
+            {
+                throw new InvalidOperationException("This shift is not assigned to nurse");
+            }
+
+            _shiftsForPatients.Remove(shift);
+        }
+
+        //==================================================================================================================  
+        //Helper methods
         public override bool Equals(object? obj)
         {
             if (obj==null||!(obj is Nurse))

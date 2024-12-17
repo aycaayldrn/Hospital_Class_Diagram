@@ -25,7 +25,11 @@ namespace Hospital_System.Models
         private List<Insurance_Provider> _patientProviders = new List<Insurance_Provider>();
         public IReadOnlyList<Insurance_Provider> PatientProviders => _patientProviders.AsReadOnly();
 
+        private List<Nurse_Shift> _shiftsForPatients = new List<Nurse_Shift>();
+        public IReadOnlyList<Nurse_Shift> Nurse_Shifts => _shiftsForPatients.AsReadOnly();
+
         public Room _room;
+
 
         public bool HasHealthInsurance => _patientProviders.Count > 0;
         
@@ -130,8 +134,6 @@ namespace Hospital_System.Models
 
  
 
-        
-        
 //==================================================================================================================
 //Associations: Patient- agrees with- Provider
 
@@ -323,7 +325,35 @@ namespace Hospital_System.Models
         {
             return _bills.AsReadOnly();
         }
+//==================================================================================================================
+//Association with Attribute: Patient-Nurse (Nurse_Shift)
 
+        public void AddShiftToNurseForPatient(Nurse_Shift shift)
+        {
+            if (shift == null)
+               { throw new ArgumentNullException(nameof(shift), "Shift cannot be null."); }
+
+            if (!_shiftsForPatients.Contains(shift))
+            { 
+                _shiftsForPatients.Add(shift);
+            }
+            else
+            {
+                throw new InvalidOperationException("The shift with nurse has already assigned to this patient");
+            }
+        }
+
+        public void RemoveShiftFromNurseForPatient(Nurse_Shift shift)
+        {
+            if (shift == null)
+                throw new ArgumentNullException(nameof(shift), "Shift cannot be null.");
+
+            if (!_shiftsForPatients.Contains(shift))
+            {
+                throw new InvalidOperationException("There is no assigned shift to delete.");
+            }
+            _shiftsForPatients.Remove(shift);
+        }
 
 //==================================================================================================================
 

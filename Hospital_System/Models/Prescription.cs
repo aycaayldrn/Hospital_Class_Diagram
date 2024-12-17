@@ -15,7 +15,6 @@ namespace Hospital_System.Models
         private List<Bill> _bills = new List<Bill>();
         public IReadOnlyList<Bill> Bills => _bills.AsReadOnly();
 
-
         public int Id { get; set; }
         
         private string _medicationName;
@@ -62,8 +61,8 @@ namespace Hospital_System.Models
         }
         public Prescription(){}
 
-        //==================================================================================================================
-        // Association: Composition: Prescription-> "assigned to" -Patient
+//==================================================================================================================
+// Association: Composition: Prescription-> "assigned to" -Patient
 
         public void assignPatientPrescription(Patient patient)
         {

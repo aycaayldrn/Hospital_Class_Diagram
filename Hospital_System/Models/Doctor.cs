@@ -17,5 +17,7 @@ namespace Hospital_System.Models
             this.Name = name;
         }
         public Doctor(){}
+  
+
     }
 }

@@ -15,6 +15,10 @@ namespace Hospital_System.Models
             
         }
         private static List<Shift> _shiftList = new List<Shift>();
+
+        private List<Nurse> _nurses = new List<Nurse>();
+        public IReadOnlyList<Nurse> Nurses => _nurses.AsReadOnly();
+
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public string Day { get; set; }
@@ -78,6 +82,42 @@ namespace Hospital_System.Models
             return _shiftList.AsReadOnly();
         }
         
+//==================================================================================================================
+//Shift-Nurse
+
+        public void assignNurseToShift(Nurse nurse)
+        {
+            if (nurse == null)
+            {
+                throw new ArgumentNullException(nameof(nurse));
+            }
+            if (_nurses.Contains(nurse))
+            {
+                throw new InvalidOperationException("The nurse is already assigned to the nurse");
+            }
+            _nurses.Add(nurse);
+            nurse.assignShiftToNurse(this);
+        }
+
+        public void removeNurseFromShift(Nurse nurse)
+        {
+            if (nurse == null)
+            {
+                throw new ArgumentNullException(nameof(nurse));
+            }
+            if (!_nurses.Contains(nurse))
+            {
+                throw new InvalidOperationException("The shift is not assigned to this nurse");
+            }
+            if (_nurses.Count == 1)
+            {
+                throw new InvalidOperationException("There should be at least one nurse assigned to the shift.");
+            }
+            _nurses.Remove(nurse);
+            nurse.removeShiftFromNurse(this);
+
+        }
+//==================================================================================================================
         public override bool Equals(object? obj)
         {
             if (obj == null || !(obj is Shift))
