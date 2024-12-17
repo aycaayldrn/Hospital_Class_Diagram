@@ -103,11 +103,7 @@ namespace Hospital_System.Models
         {
             return "Specialization: " +" "+ _specialization +" "+ "Research project: " + ResearchProject;
         }
-
-        // public static void SetFellows(List<Fellow> Fellows)
-        // {
-        //     _fellowList = Fellows ?? new List<Fellow>();
-        // }
+        
 
         public static void LoadExtent(IEnumerable<Fellow> containerFellows)
         {
