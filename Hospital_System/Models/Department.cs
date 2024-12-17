@@ -129,7 +129,7 @@ namespace Hospital_System.Models
 
             }
 
-            if (!_roomList.Contains(room))
+            if (_roomList.Contains(room))
             {
                 throw new InvalidOperationException("room already exists in the list");
 

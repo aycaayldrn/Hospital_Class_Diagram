@@ -40,6 +40,13 @@ namespace Hospital_System.Models
         }
         
         
+        private Physician _physician;
+        public Physician Physician
+        {
+            get { return _physician; }
+        }
+        
+        
         
         public Prescription(int id, string medicationName, float dosage, int duration, bool redPrescription)
         {
@@ -51,6 +58,64 @@ namespace Hospital_System.Models
             AddPrescription(this);
         }
         public Prescription(){}
+//==================================================================================================================
+//Association: Agregation-Doctor-Prescription
+
+        public void assignPhysicianToPrescription(Physician physician)
+        {
+            if (physician == null)
+            {
+                throw new ArgumentException("Doctor cannot be null");
+            }
+
+            if (_physician != null)
+            {
+                throw new InvalidOperationException("Doctor already assigned to patient");
+            }
+
+            _physician = physician;
+            if (!physician.GetPrescriptions().Contains(this))
+            {
+                physician.addPrescriptiont(this);
+            }
+        }
+        
+        
+        
+        
+        //Not applicable?
+        // public void changePhysician(Physician diffrentDoctor)
+        // {
+        //     if (diffrentDoctor== null)
+        // {
+        //     throw new ArgumentException("Doctor cannot be null");
+        // }
+        //
+        //      if (_physician==diffrentDoctor)
+        // {
+        //     throw new InvalidOperationException("Doctors are the same!");
+        // }
+        //
+        //     if (_physician!=null)
+        // {
+        //      _physician.removePrescriptiont(this);
+        // }
+        //      diffrentDoctor.addPrescriptiont(this);
+        //     _physician = diffrentDoctor;
+        // }
+        
+        public void deletePrescriptionOfPhysician()
+        {
+            if (_physician != null && _physician.GetPrescriptions().Contains(this))
+            {
+                _physician.removePrescriptiont(this);
+            }
+            _physician = null;
+
+           
+        }
+
+
         
 //==================================================================================================================
 //

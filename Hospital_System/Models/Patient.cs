@@ -109,7 +109,11 @@ namespace Hospital_System.Models
         
         
 
-        
+        private Doctor _doctor;
+        public Doctor Doctor
+        {
+            get { return _doctor; }
+        }
         
         public Patient(){}
         public Patient(int id, string name, DateTime birthDate)
@@ -124,10 +128,64 @@ namespace Hospital_System.Models
             AddPatient(this);
         }
 
- 
+//==================================================================================================================
+//Associations: Agregation: Patient-Doctor
+        public void assignDoctorToPatient(Doctor doctor)
+        {
+            if (doctor == null)
+            {
+                throw new ArgumentException("Doctor cannot be null");
+            }
 
+            if (_doctor != null)
+            {
+                throw new InvalidOperationException("Doctor already assigned to patient");
+            }
+
+            _doctor = doctor;
+            if (!doctor.GetPatients().Contains(this))
+            {
+                doctor.addPatientToDoctor(this);
+            }
+        }
         
         
+        public void changeDoctor(Doctor diffrentDoctor)
+        {
+            if (diffrentDoctor== null)
+            {
+                throw new ArgumentException("Doctor cannot be null");
+            }
+
+            if (_doctor==diffrentDoctor)
+            {
+                throw new InvalidOperationException("Doctors are the same!");
+            }
+
+            if (_doctor!=null)
+            {
+                _doctor.removePatientFromDoctor(this);
+            }
+            diffrentDoctor.addPatientToDoctor(this);
+            _doctor = diffrentDoctor;
+        }
+        
+        public void deletePatient()
+        {
+            if (_doctor != null && _doctor.GetPatients().Contains(this))
+            {
+                _doctor.removePatientFromDoctor(this);
+            }
+            _doctor = null;
+
+           
+        }
+
+
+
+
+
+
 //==================================================================================================================
 //Associations: Patient-Provider- to finish
 
