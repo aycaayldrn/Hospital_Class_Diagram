@@ -12,6 +12,9 @@ namespace Hospital_System.Models
     {
         private static List<Prescription> _prescriptionList = new List<Prescription>();
         
+        
+        private List<Bill> _bills = new List<Bill>();
+        public IReadOnlyList<Bill> Bills => _bills.AsReadOnly();
         public int Id { get; set; }
         
         private string _medicationName;
@@ -40,13 +43,6 @@ namespace Hospital_System.Models
         }
         
         
-        private Physician _physician;
-        public Physician Physician
-        {
-            get { return _physician; }
-        }
-        
-        
         
         public Prescription(int id, string medicationName, float dosage, int duration, bool redPrescription)
         {
@@ -58,67 +54,51 @@ namespace Hospital_System.Models
             AddPrescription(this);
         }
         public Prescription(){}
-//==================================================================================================================
-//Association: Agregation-Doctor-Prescription
-
-        public void assignPhysicianToPrescription(Physician physician)
-        {
-            if (physician == null)
-            {
-                throw new ArgumentException("Doctor cannot be null");
-            }
-
-            if (_physician != null)
-            {
-                throw new InvalidOperationException("Doctor already assigned to patient");
-            }
-
-            _physician = physician;
-            if (!physician.GetPrescriptions().Contains(this))
-            {
-                physician.addPrescriptiont(this);
-            }
-        }
-        
-        
-        
-        
-        //Not applicable?
-        // public void changePhysician(Physician diffrentDoctor)
-        // {
-        //     if (diffrentDoctor== null)
-        // {
-        //     throw new ArgumentException("Doctor cannot be null");
-        // }
-        //
-        //      if (_physician==diffrentDoctor)
-        // {
-        //     throw new InvalidOperationException("Doctors are the same!");
-        // }
-        //
-        //     if (_physician!=null)
-        // {
-        //      _physician.removePrescriptiont(this);
-        // }
-        //      diffrentDoctor.addPrescriptiont(this);
-        //     _physician = diffrentDoctor;
-        // }
-        
-        public void deletePrescriptionOfPhysician()
-        {
-            if (_physician != null && _physician.GetPrescriptions().Contains(this))
-            {
-                _physician.removePrescriptiont(this);
-            }
-            _physician = null;
-
-           
-        }
-
-
         
 //==================================================================================================================
 //
+// Prescription-> "included in" -Bill
+
+        public void addBillToPrescription(Bill bill)
+        {
+            if (bill == null)
+            {
+                throw new ArgumentException(nameof(bill),"Bill cannot be null");
+            }
+
+            if (_bills.Contains(bill))
+            {
+                throw new InvalidOperationException("Bill already assigned to this prescription");
+            }
+
+            _bills.Add(bill);
+            bill.assignPrescriptionToBill(this);
+        }
+
+        public void RemoveBillFromPrescription(Bill bill)
+        {
+            if(bill == null)
+            {
+                throw new ArgumentException(nameof(bill), "Bill cannot be null");
+            }
+
+            if (!_bills.Contains(bill))
+            {
+                throw new InvalidOperationException("The specified bill is not associated with this prescription.");
+            }
+            //Ensuring at least one bill remains
+            if (_bills.Count == 1)
+            {
+                throw new InvalidOperationException("A prescription must be assigned to at least one bill. Cannot remove the last bill.");
+            }
+
+
+            _bills.Remove(bill);
+            bill.removePrescriptionFromBill(this);
+        }
+
+        //==================================================================================================================
+
 
         public void assignPatientPrescription(Patient patient)
         {
