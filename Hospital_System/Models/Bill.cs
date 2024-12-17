@@ -17,6 +17,9 @@ namespace Hospital_System.Models
         private List<Service> _services = new List<Service>();
         public IReadOnlyList<Service> Services => _services.AsReadOnly();
 
+        private List<Appointment> _appointments = new List<Appointment>();
+        public IReadOnlyList<Appointment> Appointments => _appointments.AsReadOnly();
+
         private static double _taxRate = 0.15;
         public static double TaxRate
         {
@@ -203,9 +206,39 @@ namespace Hospital_System.Models
             UpdateTotalCost();
         }
 
-    //==================================================================================================================
-    //Class Extent Methods
-    internal static void addBill(Bill bill)
+        //==================================================================================================================
+        //Bill->"includes"-Prescription
+        public void AddAppointmentToBill(Appointment appointment)
+        {
+            if(appointment == null)
+            {
+                throw new ArgumentNullException(nameof(appointment));
+            }
+            if (_appointments.Contains(appointment)){
+                throw new InvalidOperationException("This Bill is already includes the appointment.");
+            }
+            _appointments.Add(appointment);
+            appointment.AddBillToAppointment(this);
+            UpdateTotalCost();
+        }
+
+        public void RemoveAppointmentFromBill(Appointment appointment)
+        {
+            if (appointment == null)
+            {
+                throw new ArgumentNullException(nameof(appointment));
+            }
+            if (!_appointments.Contains(appointment)){
+                throw new InvalidOperationException("This Bill does not includes the appointment.");
+            }
+            _appointments.Remove(appointment);
+            appointment.RemoveBillFromAppointment(this);
+            UpdateTotalCost();
+        }
+
+        //==================================================================================================================
+        //Class Extent Methods
+        internal static void addBill(Bill bill)
     {
         if (bill == null)
         {

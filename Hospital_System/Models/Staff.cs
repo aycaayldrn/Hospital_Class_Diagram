@@ -12,6 +12,10 @@ namespace Hospital_System.Models
     {
         public Staff(){}
         private static List<Staff> _staffList = new List<Staff>();
+
+        private List<Appointment> _appointments = new List<Appointment>();
+        public IReadOnlyList<Appointment> Appointments => _appointments.AsReadOnly();
+
         public int Id { get; set; }
         private string _name;
         public string Name
@@ -86,8 +90,40 @@ namespace Hospital_System.Models
         {
             return _staffList.AsReadOnly();
         }
-        
-        
+
+        //==================================================================================================================
+        //Staff-supports- Appointments
+            public void AddAppointmentToStaff(Appointment appointment)
+            {
+            if (appointment == null)
+            {
+                throw new ArgumentNullException(nameof(appointment));
+            }
+            if (_appointments.Contains(appointment))
+            {
+                throw new InvalidOperationException("This staff member is already supports the appointment.");
+            }
+
+            _appointments.Add(appointment);
+            appointment.addStaffToAppointment(this);
+
+            }
+
+            public void RemoveAppointmentFromStaff(Appointment appointment)
+            {
+            if (appointment == null)
+            {
+                throw new ArgumentNullException(nameof(appointment));
+            }
+            if (!_appointments.Contains(appointment))
+            {
+                throw new InvalidOperationException("The appointment doesn't supported by this staff member.");
+            }
+            _appointments.Remove(appointment);
+            appointment.removeStaffFromAppointment(this);
+        }
+        //==================================================================================================================
+
         public override bool Equals(object? obj)
         {
             if (obj == null || !(obj is Staff))

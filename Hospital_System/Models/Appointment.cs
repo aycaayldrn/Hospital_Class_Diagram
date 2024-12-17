@@ -19,9 +19,14 @@ namespace Hospital_System.Models
         public AppointmentType Type { get; set; }
 
         private static List<Appointment> _appointmentList = new List<Appointment>();
-        
-        
-        
+
+        private List<Bill> _bills = new List<Bill>();
+        public IReadOnlyList<Bill> Bills => _bills.AsReadOnly();
+
+        private List<Staff> _staffMembers = new List<Staff>();
+        public IReadOnlyList<Staff> Staffs => _staffMembers.AsReadOnly();
+
+
         private DateTime _date;
         public DateTime Date
         {
@@ -64,8 +69,48 @@ namespace Hospital_System.Models
             addAppointment(this);
         }
         public Appointment(){}
-        
-        
+
+        //==================================================================================================================        
+        //Associations: Appointment->"supported by"-Staff
+
+        public void addStaffToAppointment(Staff staff)
+        {
+            if (staff == null)
+            {
+                throw new ArgumentException("Staff member cannot be null");
+            }
+            if(_staffMembers.Contains(staff))
+            {
+                throw new InvalidOperationException("Staff member already assigned to appointment");
+            }
+
+            _staffMembers.Add(staff);
+            staff.AddAppointmentToStaff(this);
+        }
+
+        public void removeStaffFromAppointment(Staff staff)
+        {
+            if (staff == null)
+            {
+                throw new ArgumentException("Staff member cannot be null");
+            }
+
+            if (!_staffMembers.Contains(staff))
+            {
+                throw new InvalidOperationException("Staff member is not assigned to this appointment");
+            }
+
+            if(_staffMembers.Count == 1)
+            {
+                throw new InvalidOperationException("There should be at least one staff member assigned. Cannot delete last member.");
+            }
+
+            _staffMembers.Remove(staff);
+            staff.RemoveAppointmentFromStaff(this);
+        }
+
+
+
 //==================================================================================================================        
 //Associations: Patient->"visits"-Appointment
 
@@ -101,11 +146,44 @@ namespace Hospital_System.Models
            
         }
 
+//==================================================================================================================
+//Appointment-included in-Bill (one to many bills)
+
+        public void AddBillToAppointment(Bill bill)
+        {
+            if (bill == null)
+            {
+                throw new ArgumentException("Bill cannot be null");
+            }
+
+            if (_bills.Contains(bill)){
+                _bills.Add(bill);
+                bill.AddAppointmentToBill(this);
+            }
+            else
+            {
+                throw new InvalidOperationException("Bill already assigned to this appointment.");
+            }
+        }
         
-        
-
-
-
+        public void RemoveBillFromAppointment(Bill bill)
+        {
+            if (bill == null)
+            {
+                throw new ArgumentException("Bill cannot be null");
+            }
+            if (!_bills.Contains(bill))
+            {
+                throw new InvalidOperationException("The specified appointment is not associated with this bill.");
+            }
+            if (_bills.Count == 1)
+            {
+                throw new InvalidOperationException("An appointment must be included in at least one bill.");
+            }
+            
+            _bills.Remove(bill);
+            bill.RemoveAppointmentFromBill(this);
+        }
 
 //==================================================================================================================
 //Class extent methods
