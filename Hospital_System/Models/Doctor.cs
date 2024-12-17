@@ -25,7 +25,42 @@ namespace Hospital_System.Models
         }
         public Doctor(){}
         
+        
+//==================================================================================================================
+//Associations: Agregation Doctor-head of-Department
+        public void becomeHeadOfDepartment(Department department)
+        {
+            if (department==null)
+            {
+                throw new ArgumentException("Department cannot be null");
+                
+            }
+            if (_department != department)
+                throw new InvalidOperationException("Doctor must be part of the department to become head");
+            department.assignHeadOfDepartment(this);
+            
+        }
 
+        public void deleteDoctorFromBeingHead(Department department)
+        {
+            if (department == null)
+            {
+                throw new ArgumentException("Department cannot be null");
+            }
+
+            if (department.GetHeadOfDepartment() != this)
+            {
+                throw new InvalidOperationException("Doctor is not the head of this department");
+            }
+
+            department.removeHeadOfDepartment();
+
+        }
+
+
+
+
+//==================================================================================================================
 //Associations: Agregation Doctor-patient
         public void addPatientToDoctor(Patient patient)
         {
