@@ -4,3 +4,7 @@
 *.suo
 *.userosscache
 *.sln.docstates
+
+# Ignore build outputs
+/bin/
+/Debug/
