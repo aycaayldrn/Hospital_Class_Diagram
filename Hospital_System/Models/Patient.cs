@@ -18,11 +18,13 @@ namespace Hospital_System.Models
         
         public List<Prescription> _prescriptions = new List<Prescription>();
         public List<Bill> _bills = new List<Bill>();
+
         
         
         
-        public List<Insurance_Provider> _patientProviders = new List<Insurance_Provider>();
+        private List<Insurance_Provider> _patientProviders = new List<Insurance_Provider>();
         public IReadOnlyList<Insurance_Provider> PatientProviders => _patientProviders.AsReadOnly();
+        
         public bool HasHealthInsurance => _patientProviders.Count > 0;
         
         
@@ -129,7 +131,7 @@ namespace Hospital_System.Models
         
         
 //==================================================================================================================
-//Associations: Patient-Provider- to finish
+//Associations: Patient- agrees with- Provider
 
         public void AddInsuranceProviderToPatient(Insurance_Provider provider)
         {
@@ -140,6 +142,7 @@ namespace Hospital_System.Models
                 throw new InvalidOperationException("Provider already added for this patient.");
 
             _patientProviders.Add(provider);
+            provider.AddPatientToProvider(this);
         }
 
         public void RemoveInsuranceProviderFromPatient(Insurance_Provider provider)
@@ -151,6 +154,7 @@ namespace Hospital_System.Models
                 throw new InvalidOperationException("Provider not found for this patient.");
 
             _patientProviders.Remove(provider);
+            provider.RemovePatientFromProvider(this);
         }
 
 

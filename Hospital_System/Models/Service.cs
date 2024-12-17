@@ -15,6 +15,12 @@ namespace Hospital_System.Models
         }
         private static List<Service> _serviceList = new List<Service>();
         private string _serviceName;
+
+        private List<Bill> _bills = new List<Bill>();
+        public IReadOnlyList<Bill> Bills => _bills.AsReadOnly();
+
+        private List<Insurance_Provider> _insuranceProviders = new List<Insurance_Provider>();
+        public IReadOnlyList<Insurance_Provider> Insurance_Providers => _insuranceProviders.AsReadOnly();
         public string Name
         {
             get => _serviceName;
@@ -84,7 +90,78 @@ namespace Hospital_System.Models
             return _serviceList.AsReadOnly();
         }
         
-        
+        //==================================================================================================================
+        //Service-Bill
+
+        public void assignBillToService(Bill bill)
+        {
+            if (bill == null)
+            {
+                throw new ArgumentNullException(nameof(bill));
+            }
+
+            if (!_bills.Contains(bill))
+            {
+                _bills.Add(bill);
+                bill.AddServiceToBill(this);
+            }
+            else
+            {
+                throw new InvalidOperationException("Bill already assigned to this service.");
+            }
+        }
+
+        public void RemoveBillFromService(Bill bill)
+        {
+            if (bill == null) throw new ArgumentNullException(nameof(bill));
+
+            // can be empty becouse service may included in zero to many bill
+            if (_bills.Count == 0)
+                throw new InvalidOperationException("No bills to remove from. The list is empty.");
+
+            if (_bills.Contains(bill))
+            {
+                _bills.Remove(bill);
+                bill.RemoveServiceFromBill(this);
+            }
+            else
+            {
+                throw new InvalidOperationException("The specified bill is not associated with this service.");
+            }
+
+        }
+        //==================================================================================================================
+        //Service- under covarage by- insurance provider
+        public void assignInsuranceProviderToService(Insurance_Provider insurance_provider)
+        {
+            if(insurance_provider == null)
+            {
+                throw new ArgumentNullException(nameof(insurance_provider));
+            }
+
+            if (_insuranceProviders.Contains(insurance_provider)){
+                throw new InvalidOperationException("Insurance provider already covers this service");
+            }
+
+            _insuranceProviders.Add(insurance_provider);
+            insurance_provider.AddServiceToProvide(this);
+        }
+
+        public void removeInsuranceProviderFromService(Insurance_Provider insurance_provider)
+        {
+            if(insurance_provider == null)
+            {
+                throw new ArgumentNullException(nameof(insurance_provider));
+            }
+            if (!_insuranceProviders.Contains(insurance_provider))
+            {
+                throw new InvalidOperationException("Specified insurance provider is not covering service");
+            }
+
+            _insuranceProviders.Remove(insurance_provider);
+            insurance_provider.RemoveServiceFromProvider(this);
+        }
+        //===================================================================================================================
         public override bool Equals(object? obj)
         {
             if (obj == null || !(obj is Service))

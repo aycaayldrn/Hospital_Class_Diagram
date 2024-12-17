@@ -11,7 +11,11 @@ namespace Hospital_System.Models
     public class Prescription
     {
         private static List<Prescription> _prescriptionList = new List<Prescription>();
-        
+
+        private List<Bill> _bills = new List<Bill>();
+        public IReadOnlyList<Bill> Bills => _bills.AsReadOnly();
+
+
         public int Id { get; set; }
         
         private string _medicationName;
@@ -38,6 +42,12 @@ namespace Hospital_System.Models
         {
             get { return _patient; }
         }
+
+        private Bill _bill;
+        public Bill Bill
+        {
+            get { return _bill; }
+        }
         
         
         
@@ -51,9 +61,9 @@ namespace Hospital_System.Models
             AddPrescription(this);
         }
         public Prescription(){}
-        
-//==================================================================================================================
-//
+
+        //==================================================================================================================
+        // Association: Composition: Prescription-> "assigned to" -Patient
 
         public void assignPatientPrescription(Patient patient)
         {
@@ -83,10 +93,10 @@ namespace Hospital_System.Models
             }
             _patient = null;
         }
-        
-        
-        
-        
+
+
+
+
         // public void changePrescription(Patient newPatient)
         // {
         //     if (newPatient== null)
@@ -106,8 +116,50 @@ namespace Hospital_System.Models
         //     newPatient.addPrescriptionForPatient(this);
         //     _patient = newPatient;
         // }
-//==================================================================================================================
-//Class Extent Methods
+
+        // ====================================================================================================================
+        // Prescription-> "included in" -Bill
+
+        public void addBillToPrescription(Bill bill)
+        {
+            if (bill == null)
+            {
+                throw new ArgumentException(nameof(bill),"Bill cannot be null");
+            }
+
+            if (_bills.Contains(bill))
+            {
+                throw new InvalidOperationException("Bill already assigned to this prescription");
+            }
+
+            _bills.Add(bill);
+            bill.assignPrescriptionToBill(this);
+        }
+
+        public void RemoveBillFromPrescription(Bill bill)
+        {
+            if(bill == null)
+            {
+                throw new ArgumentException(nameof(bill), "Bill cannot be null");
+            }
+
+            if (!_bills.Contains(bill))
+            {
+                throw new InvalidOperationException("The specified bill is not associated with this prescription.");
+            }
+            //Ensuring at least one bill remains
+            if (_bills.Count == 1)
+            {
+                throw new InvalidOperationException("A prescription must be assigned to at least one bill. Cannot remove the last bill.");
+            }
+
+
+            _bills.Remove(bill);
+            bill.removePrescriptionFromBill(this);
+        }
+
+        //==================================================================================================================
+        //Class Extent Methods
         internal static void AddPrescription(Prescription prescription)
         {
             if (prescription == null)

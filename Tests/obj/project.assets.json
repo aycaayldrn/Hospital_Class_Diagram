@@ -998,32 +998,40 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\kerya\\.nuget\\packages\\": {}
+    "C:\\Users\\aycay\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kerya\\Desktop\\HMS\\Hospital_Class_Diagram\\Tests\\Tests.csproj",
+      "projectUniqueName": "C:\\Users\\aycay\\source\\repos\\Hospital_System\\Tests\\Tests.csproj",
       "projectName": "Tests",
-      "projectPath": "C:\\Users\\kerya\\Desktop\\HMS\\Hospital_Class_Diagram\\Tests\\Tests.csproj",
-      "packagesPath": "C:\\Users\\kerya\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kerya\\Desktop\\HMS\\Hospital_Class_Diagram\\Tests\\obj\\",
+      "projectPath": "C:\\Users\\aycay\\source\\repos\\Hospital_System\\Tests\\Tests.csproj",
+      "packagesPath": "C:\\Users\\aycay\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\aycay\\source\\repos\\Hospital_System\\Tests\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+      ],
       "configFilePaths": [
-        "C:\\Users\\kerya\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\aycay\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "C:\\Users\\kerya\\Desktop\\HMS\\Hospital_Class_Diagram\\Hospital_System\\Hospital_System.csproj": {
-              "projectPath": "C:\\Users\\kerya\\Desktop\\HMS\\Hospital_Class_Diagram\\Hospital_System\\Hospital_System.csproj"
+            "C:\\Users\\aycay\\source\\repos\\Hospital_System\\Hospital_System\\Hospital_System.csproj": {
+              "projectPath": "C:\\Users\\aycay\\source\\repos\\Hospital_System\\Hospital_System\\Hospital_System.csproj"
             }
           }
         }
