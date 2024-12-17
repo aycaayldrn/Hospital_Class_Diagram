@@ -27,7 +27,7 @@ namespace Hospital_System.Models
             }
         }
 
-        public Fellow(string specialization, string? researchProject = null)
+        public Fellow(int id,string name,string specialization, string? researchProject = null):base(id,name)
         {
             
             Specialization = specialization;
@@ -36,9 +36,11 @@ namespace Hospital_System.Models
         }
         public Fellow(){}
 
+        
 
         internal static void addFellow(Fellow fellow)
         {
+            
             if (fellow== null)
             {
                 throw new ArgumentException("Fellow cannot be null");
@@ -101,11 +103,7 @@ namespace Hospital_System.Models
         {
             return "Specialization: " +" "+ _specialization +" "+ "Research project: " + ResearchProject;
         }
-
-        // public static void SetFellows(List<Fellow> Fellows)
-        // {
-        //     _fellowList = Fellows ?? new List<Fellow>();
-        // }
+        
 
         public static void LoadExtent(IEnumerable<Fellow> containerFellows)
         {
@@ -113,7 +111,7 @@ namespace Hospital_System.Models
             foreach (var fellow in containerFellows)
             {
 
-                new Fellow(fellow.Specialization,fellow.ResearchProject);
+                new Fellow(fellow.Id,fellow.Name,fellow.Specialization,fellow.ResearchProject);
             }
         }
     }

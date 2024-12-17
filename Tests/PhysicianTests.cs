@@ -13,7 +13,7 @@ public class PhysicianTests
 
         try
         {
-            Physician p = new Physician(null);
+            Physician p = new Physician(0,null,null);
             Assert.Fail("Expected ArgumentException");
         }
         catch (ArgumentException)
@@ -31,7 +31,7 @@ public class PhysicianTests
         }
         
         String name = "Test2";
-        Physician p = new Physician(name);
+        Physician p = new Physician(1,name,name);
         Assert.That(p.Specialization, Is.EqualTo(name));
         Physician.RemovePhysician(p);
     }
@@ -45,7 +45,7 @@ public class PhysicianTests
             Physician.RemovePhysician(o);
         }
         
-        List<Physician> lp = new List<Physician>{new ( "Test1"), new ( "Test2"), new ( "Test3")};
+        List<Physician> lp = new List<Physician>{new ( 1,"Test1","Test1"), new ( 2,"Test2","Test2"), new ( 3,"Test3","Test3")};
         
         Assert.That(Physician.GetPhysicians(), Is.EqualTo(lp));
     }
@@ -59,10 +59,10 @@ public class PhysicianTests
             Physician.RemovePhysician(o);
         }
 
-        Physician b = new Physician("Test");
+        Physician b = new Physician(1,"Test","Test");
         try
         {
-            Physician b2 = new Physician("Test");
+            Physician b2 = new Physician(1,"Test","Test");
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
@@ -98,7 +98,7 @@ public class PhysicianTests
             Physician.RemovePhysician(o);
         }
         
-        List<Physician> la = new List<Physician>{new ( "Test1"), new ( "Test2"), new ( "Test3")};
+        List<Physician> la = new List<Physician>{new ( 1,"Test1","Test1"), new ( 2,"Test2","Test2"), new ( 3,"Test3","Test3")};
         
         SerializeToFIle.saveAll();
         

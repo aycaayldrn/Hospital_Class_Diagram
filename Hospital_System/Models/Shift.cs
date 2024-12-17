@@ -22,6 +22,12 @@ namespace Hospital_System.Models
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
         public string Day { get; set; }
+        private Staff _staff;
+
+        public Staff Staff
+        {
+            get { return _staff; }
+        }
 
         public Shift(DateTime startTime, DateTime endTime, string day )
         {
@@ -44,7 +50,66 @@ namespace Hospital_System.Models
             return EndTime - StartTime;
         }
 
+//==================================================================================================================
+//Association: shift-staff agregation
 
+
+        public void asssignStaffToShift(Staff staff)
+        {
+            if (staff==null)
+            {
+                throw new ArgumentException("Staff cannot be null");
+            }
+            
+            if (_staff!= null)
+            {
+                throw new InvalidOperationException("Staff already assigned to department");
+            }
+
+            _staff = staff;
+            if (!staff.GetShifts().Contains(this))
+            {
+                staff.addShiftToStaff(this);
+            }
+        }
+
+
+        public void changestaff(Staff difrentStaff)
+        {
+            {
+                if (difrentStaff == null)
+                {
+                    throw new ArgumentException("Staff cannot be null");
+                }
+
+                if (_staff == difrentStaff)
+                {
+                    throw new InvalidOperationException("staffs are the same!");
+                }
+
+                if (_staff != null)
+                {
+                    _staff.removeShiftFromStaff(this);
+                }
+
+                difrentStaff.addShiftToStaff(this);
+                _staff = difrentStaff;
+            }
+
+        }
+
+        public void deleteStaff()
+        {
+            if (_staff != null && _staff.GetShifts().Contains(this))
+            {
+                _staff.removeShiftFromStaff(this);
+            }
+            _staff = null;
+
+           
+        }
+
+//==================================================================================================================
         internal static void AddShift(Shift shift)
         {
             if (shift == null)

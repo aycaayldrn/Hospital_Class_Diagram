@@ -14,6 +14,7 @@ namespace Hospital_System.Models
         private static List<Staff> _staffList = new List<Staff>();
 
         private List<Appointment> _appointments = new List<Appointment>();
+        private List<Shift> _shifts = new List<Shift>();
         public IReadOnlyList<Appointment> Appointments => _appointments.AsReadOnly();
 
         public int Id { get; set; }
@@ -54,7 +55,44 @@ namespace Hospital_System.Models
             Position = position;
             AddStaff(this);
         }
+        
+//==================================================================================================================
+//Associations: Agregation:Staff-part of-Shift
 
+        public void addShiftToStaff(Shift shift)
+        {
+            if (shift==null)
+            {
+                throw new ArgumentException("Shift can't be null");
+            }
+
+            if (_shifts.Contains(shift))
+            {
+                throw new InvalidOperationException("Shift is already assigned to this staff");
+                
+            }
+            _shifts.Add(shift);
+        }
+        public void removeShiftFromStaff(Shift shift)
+        {
+            if (shift==null)
+            {
+                throw new ArgumentException("Shioft can't be null");
+            }
+
+            if (!_shifts.Contains(shift))
+            {
+                throw new InvalidOperationException("No such shift in list");
+                
+            }
+            _shifts.Remove(shift);
+        }
+        public IReadOnlyList<Shift> GetShifts()
+        {
+            return _shifts.AsReadOnly();
+        }
+
+//====================================================================================================================
         internal static void AddStaff(Staff staff)
         {
             if (staff == null)

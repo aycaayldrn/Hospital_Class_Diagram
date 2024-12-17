@@ -11,10 +11,10 @@ namespace Hospital_System.Models
     public class Prescription
     {
         private static List<Prescription> _prescriptionList = new List<Prescription>();
-
+        
+        
         private List<Bill> _bills = new List<Bill>();
         public IReadOnlyList<Bill> Bills => _bills.AsReadOnly();
-
         public int Id { get; set; }
         
         private string _medicationName;
@@ -41,12 +41,6 @@ namespace Hospital_System.Models
         {
             get { return _patient; }
         }
-
-        private Bill _bill;
-        public Bill Bill
-        {
-            get { return _bill; }
-        }
         
         
         
@@ -60,64 +54,10 @@ namespace Hospital_System.Models
             AddPrescription(this);
         }
         public Prescription(){}
-
+        
 //==================================================================================================================
-// Association: Composition: Prescription-> "assigned to" -Patient
-
-        public void assignPatientPrescription(Patient patient)
-        {
-            if (patient == null)
-            {
-                throw new ArgumentException("Patient cannot be null");
-            }
-
-            if (_patient != null)
-            {
-                throw new InvalidOperationException("Patient already assigned to this");
-            }
-
-            _patient = patient;
-            if (!patient.GetPatientsPrescriptions().Contains(this))
-            {
-                patient.addPrescriptionForPatient(this);
-            }
-        }
-
-
-        public void deletePrescription()
-        {
-            if (_patient != null && _patient.GetPatientsPrescriptions().Contains(this))
-            {
-                _patient.removePrescriptionFromPatient(this);
-            }
-            _patient = null;
-        }
-
-
-
-
-        // public void changePrescription(Patient newPatient)
-        // {
-        //     if (newPatient== null)
-        //     {
-        //         throw new ArgumentException("Patient cannot be null");
-        //     }
-        //
-        //     if (_patient==newPatient)
-        //     {
-        //         throw new InvalidOperationException("Patients are the same!");
-        //     }
-        //
-        //     if (_patient!=null)
-        //     {
-        //         _patient.removePrescriptionFromPatient(this);
-        //     }
-        //     newPatient.addPrescriptionForPatient(this);
-        //     _patient = newPatient;
-        // }
-
-        // ====================================================================================================================
-        // Prescription-> "included in" -Bill
+//
+// Prescription-> "included in" -Bill
 
         public void addBillToPrescription(Bill bill)
         {
@@ -158,7 +98,61 @@ namespace Hospital_System.Models
         }
 
         //==================================================================================================================
-        //Class Extent Methods
+
+
+        public void assignPatientPrescription(Patient patient)
+        {
+            if (patient == null)
+            {
+                throw new ArgumentException("Patient cannot be null");
+            }
+
+            if (_patient != null)
+            {
+                throw new InvalidOperationException("Patient already assigned to this");
+            }
+
+            _patient = patient;
+            if (!patient.GetPatientsPrescriptions().Contains(this))
+            {
+                patient.addPrescriptionForPatient(this);
+            }
+        }
+
+
+        public void deletePrescription()
+        {
+            if (_patient != null && _patient.GetPatientsPrescriptions().Contains(this))
+            {
+                _patient.removePrescriptionFromPatient(this);
+            }
+            _patient = null;
+        }
+        
+        
+        
+        
+        // public void changePrescription(Patient newPatient)
+        // {
+        //     if (newPatient== null)
+        //     {
+        //         throw new ArgumentException("Patient cannot be null");
+        //     }
+        //
+        //     if (_patient==newPatient)
+        //     {
+        //         throw new InvalidOperationException("Patients are the same!");
+        //     }
+        //
+        //     if (_patient!=null)
+        //     {
+        //         _patient.removePrescriptionFromPatient(this);
+        //     }
+        //     newPatient.addPrescriptionForPatient(this);
+        //     _patient = newPatient;
+        // }
+//==================================================================================================================
+//Class Extent Methods
         internal static void AddPrescription(Prescription prescription)
         {
             if (prescription == null)

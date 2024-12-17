@@ -7,11 +7,9 @@ using System.Threading.Tasks;
 namespace Hospital_System.Models;
 
     [Serializable]
-    public class Physician
+    public class Physician: Doctor
     {
-        public Physician()
-        {
-        }
+        
 
         private static List<Physician> _physicianList = new List<Physician>();
         private List<Patient> _patients = new List<Patient>();
@@ -32,12 +30,57 @@ namespace Hospital_System.Models;
             }
         }
 
-        public Physician(string specialization)
+        public Physician(int id,string name,string specialization):base(id,name)
         {
             Specialization = specialization;
             AddPhysician(this);
         }
+        
+        public Physician()
+        {
+        }
+        
+        private List<Prescription> _prescriptions = new List<Prescription>();
+        
+        //==================================================================================================================
+//Associations: Agregation Physician-prescription
 
+        public void addPrescriptiont(Prescription prescription)
+        {
+            if (prescription==null)
+            {
+                throw new ArgumentException("Prescription can't be null");
+            }
+
+            if (_prescriptions.Contains(prescription))
+            {
+                throw new InvalidOperationException("Prerscription  already exists ");
+                
+            }
+            _prescriptions.Add(prescription);
+        }    
+        
+        public void removePrescriptiont(Prescription prescription)
+        {
+            if (prescription==null)
+            {
+                throw new ArgumentException("Prescription can't be null");
+            }
+
+            if (!_prescriptions.Contains(prescription))
+            {
+                throw new InvalidOperationException("No such element in list");
+                
+            }
+            _prescriptions.Remove(prescription);
+        }
+        public IReadOnlyList<Prescription> GetPrescriptions()
+        {
+            return _prescriptions.AsReadOnly();
+        }
+        
+//==================================================================================================================
+//class extent methods
         internal static void AddPhysician(Physician physician)
         {
             if (physician == null)
@@ -73,7 +116,8 @@ namespace Hospital_System.Models;
         {
             return _physicianList.AsReadOnly();
         }
-
+//==================================================================================================================
+//Helper methods
         public override bool Equals(object? obj)
         {
             if (obj == null || !(obj is Physician))
@@ -99,10 +143,7 @@ namespace Hospital_System.Models;
         }
 
 
-        // public static void SetPhysicians(List<Physician> containerPhysicians)
-        // {
-        //     _physicianList = containerPhysicians ?? new List<Physician>();
-        // }
+     
 
         public Prescription WritePrescription(int id, string medicationName, float dosage, int duration,
             bool redPrescription)
@@ -147,7 +188,7 @@ namespace Hospital_System.Models;
             foreach (var physician in containerPhysicians)
             {
 
-                new Physician(physician.Specialization);
+                new Physician(physician.Id,physician.Name,physician.Specialization);
             }
         }
     }

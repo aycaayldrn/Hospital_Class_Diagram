@@ -17,6 +17,13 @@ namespace Hospital_System.Models
         private List<Room> _roomList = new List<Room>();
         private List<Nurse> _nursesInDepartment = new List<Nurse>();
         private List<Doctor> _doctorsInDepartment = new List<Doctor>();
+        
+        
+        private Doctor _headOfDepartment;
+        public Doctor HeadOfDepaartment
+        {
+            get { return _headOfDepartment; }
+        }
 
         private string _name;
         public string Name
@@ -40,6 +47,39 @@ namespace Hospital_System.Models
         }
         public Department(){}
         
+        
+//==================================================================================================================
+//Associations: Department-HeadDoctor Agregation
+        public Doctor GetHeadOfDepartment()
+        {
+            return _headOfDepartment;
+            
+        }
+
+        public void assignHeadOfDepartment(Doctor doctor)
+        {
+            if (doctor==null)
+            {
+                throw new ArgumentException("Doctor cannot be null");
+            }
+
+            if (!_doctorsInDepartment.Contains(doctor))
+            {
+                throw new InvalidOperationException("Doctor must be part of the department to become head");
+            }
+
+            _headOfDepartment = doctor;
+        }
+
+        public void removeHeadOfDepartment()
+        {
+            _headOfDepartment = null;
+        }
+        
+        
+        
+        
+
 //==================================================================================================================
 //Associations: Department-Doctor Agregation
         public void addDoctorToDepartment(Doctor doctor)
@@ -129,7 +169,7 @@ namespace Hospital_System.Models
 
             }
 
-            if (!_roomList.Contains(room))
+            if (_roomList.Contains(room))
             {
                 throw new InvalidOperationException("room already exists in the list");
 

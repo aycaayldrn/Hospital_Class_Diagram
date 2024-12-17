@@ -4,8 +4,7 @@ using Hospital_System.Models;
 
 public class FellowTests
 {
-    [Test]
-    public void Trying_to_assign_null_to_specialization_should_throw_ArgumentNullException()
+    [Test] public void Trying_to_assign_null_to_specialization_should_throw_ArgumentNullException()
     {
         foreach (var o in Fellow.GetFellows().ToList())
         {
@@ -14,8 +13,8 @@ public class FellowTests
 
         try
         {
-            Fellow f = new Fellow(null);
-            Assert.Fail("Expected ArgumentException");
+            Fellow f = new Fellow( 0,null,null);
+            Assert.Fail("Expected ArgumentNullException");
         }
         catch (ArgumentException)
         {
@@ -32,7 +31,8 @@ public class FellowTests
         }
 
         String name = "Test2";
-        Fellow f = new Fellow(name);
+        int id = 1;
+        Fellow f = new Fellow(1,name,name);
         
         Assert.That(f.Specialization, Is.EqualTo(name));
         
@@ -48,7 +48,7 @@ public class FellowTests
         }
 
         String name = "Test";
-        Fellow f = new Fellow("name",name);
+        Fellow f = new Fellow(1,"name",name,name);
         
         Assert.That(f.ResearchProject, Is.EqualTo(name));
         Fellow.removeFellow(f);
@@ -63,7 +63,7 @@ public class FellowTests
             Fellow.removeFellow(o);
         }
 
-        List<Fellow> lf = new List<Fellow>{new ( "Test1"), new ( "Test2"), new ( "Test3")};
+        List<Fellow> lf = new List<Fellow>{new (1,"Test1", "Test1"), new ( 2,"Test2","Test2"), new ( 3,"Test3","Test3")};
         
         Assert.That(Fellow.GetFellows(), Is.EqualTo(lf));
     }
@@ -76,10 +76,10 @@ public class FellowTests
             Fellow.removeFellow(o);
         }
 
-        Fellow b = new Fellow("Test1");
+        Fellow b = new Fellow(1, "Test1","Test1");
         try
         {
-            Fellow b2 = new Fellow("Test1");
+            Fellow b2 = new Fellow(2,"Test1","Test1");
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
@@ -115,7 +115,7 @@ public class FellowTests
             Fellow.removeFellow(o);
         }
         
-        List<Fellow> la = new List<Fellow>{new ( "Test1"), new ( "Test2"), new ( "Test3")};
+        List<Fellow> la = new List<Fellow>{new (1,"Test1", "Test1"), new ( 2,"Test2","Test2"), new ( 3,"Test3","Test3")};
         
         SerializeToFIle.saveAll();
         
