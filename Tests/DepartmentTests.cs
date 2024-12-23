@@ -271,6 +271,7 @@ public class DepartmentTests
         }
         catch (InvalidOperationException oe)
         {
+            Department.removeDepartment(department);
             Room.RemoveRoom(room);
             Assert.Pass();
         }
@@ -313,5 +314,576 @@ public class DepartmentTests
         SerializeToFIle.loadAll();
         
         Assert.That(Department.GetDepartments(), Is.EqualTo(ld));
+    }
+    
+    [Test]
+    public void Trying_to_add_Nurse_to_Department_and_then_delete_it()
+    {
+        Department department = new Department("Test");
+        Nurse nurse = new Nurse(1,"Test2");
+        department.addNurseToDepartment(nurse);
+        foreach (var e in department.GetNurses())
+        {
+            if (e.Equals(nurse))
+            {
+                department.removeNurseFromDepartment(nurse);
+                foreach (var e2 in department.GetNurses())
+                {
+                    if (e2.Equals(nurse))
+                    {
+                        Assert.Fail();
+                    }
+                }
+                Department.removeDepartment(department);
+                Nurse.removeNurse(nurse);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_Nurse_to_Department()
+    {
+        Department department = new Department("Test");
+        Nurse nurse = new Nurse(1,"Test2");
+        department.addNurseToDepartment(nurse);
+        foreach (var e in department.GetNurses())
+        {
+            if (e.Equals(nurse))
+            {
+                Department.removeDepartment(department);
+                Nurse.removeNurse(nurse);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_many_Nurses_to_Department()
+    {
+        Department department = new Department("Test");
+        List<Nurse> nurses = new List<Nurse>{new (1,"Test2"),
+            new (2,"Test2"),
+            new (3,"Test2")};
+        foreach (var e in nurses)
+        {
+            department.addNurseToDepartment(e);
+        }
+    
+        foreach (var e in department.GetNurses())
+        {
+            if (nurses.Contains(e))
+            {
+                
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+        Department.removeDepartment(department);
+        foreach (var e in nurses)
+        {
+            Nurse.removeNurse(e);
+        }
+        Assert.Pass();
+    }
+    
+    [Test]
+    public void Trying_to_add_null_Nurse_to_Department_throws_ArgumentNullException()
+    {
+        Department department = new Department("Test");
+        try
+        {
+            department.addNurseToDepartment(null);
+            Assert.Fail("Expected ArgumentException");
+        }
+        catch (ArgumentException argumentException)
+        {
+            Department.removeDepartment(department);
+            Assert.Pass();   
+        }
+    }
+    
+    // [Test]
+    // public void Trying_to_add_Department_to_Nurse_that_already_has_Department_throws_InvalidOperationException()
+    // {
+    //     Department department = new Department("Test");
+    //     Department department2 = new Department("Test2");
+    //     Nurse nurse = new Nurse(1,"Test2");
+    //     department.addNurseToDepartment(nurse);
+    //     try
+    //     {
+    //         department2.addNurseToDepartment(nurse);
+    //         Assert.Fail("Expected InvalidOperationException");
+    //     }
+    //     catch (InvalidOperationException argumentException)
+    //     {
+    //         Department.removeDepartment(department);
+    //         Department.removeDepartment(department2);
+    //         Nurse.removeNurse(nurse);
+    //         Assert.Pass();   
+    //     }
+    // }
+    
+    [Test]
+    public void Trying_to_add_Nurse_to_Department_and_then_change_it()
+    {
+        
+        Department department = new Department("Test");
+        Department department2 = new Department("Test2");
+        Nurse nurse = new Nurse(1,"Test2");
+        department.addNurseToDepartment(nurse);
+        if (department.GetNurses().Contains(nurse))
+        {
+            nurse.changeDepartment(department2);
+            if (department2.GetNurses().Contains(nurse))
+            {
+                Department.removeDepartment(department);
+                Department.removeDepartment(department2);
+                Nurse.removeNurse(nurse);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_Nurse_to_Department_and_then_change_it_to_the_same_physician_throws_InvalidOperationException()
+    {
+        Department department = new Department("Test");
+        Nurse nurse = new Nurse(1,"Test2");
+        department.addNurseToDepartment(nurse);
+        if (department.GetNurses().Contains(nurse))
+        {
+            try
+            {
+                nurse.changeDepartment(department);
+                Assert.Fail("Expected InvalidOperationException");
+            }
+            catch (InvalidOperationException)
+            {
+                Department.removeDepartment(department);
+                Nurse.removeNurse(nurse);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    // [Test]
+    // public void Trying_to_change_Department_Nurse_without_assigning_Department_throws_InvalidOperationException()
+    // {
+    //     Department department = new Department("Test");
+    //     Nurse nurse = new Nurse(1,"Test2");
+    //     try
+    //     {
+    //         nurse.changeDepartment(department);
+    //         Assert.Fail("Expected InvalidOperationException");
+    //     }
+    //     catch (InvalidOperationException)
+    //     {
+    //         Department.removeDepartment(department);
+    //         Nurse.removeNurse(nurse);
+    //         Assert.Pass();
+    //     }
+    //     Assert.Fail();
+    // }
+    
+    [Test]
+    public void Trying_to_add_Department_to_Nurse_and_then_try_to_add_same_Department_throws_InvalidOperationException()
+    {
+        Department department = new Department("Test");
+        Nurse nurse = new Nurse(1,"Test2");
+        department.addNurseToDepartment(nurse);
+        try
+        {
+            nurse.asssignNurseToDepartment(department);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException)
+        {
+            Department.removeDepartment(department);
+            Nurse.removeNurse(nurse);
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_Department_to_Nurse_and_then_remove_it()
+    {
+        Department department = new Department("Test");
+        Nurse nurse = new Nurse(1,"Test2");
+        department.addNurseToDepartment(nurse);
+        foreach (var e in department.GetNurses())
+        {
+            if (e.Equals(nurse) && nurse.Department.Equals(department))
+            {
+                department.removeNurseFromDepartment(nurse);
+                if (department.GetNurses().Contains(nurse) || nurse.Department != null)
+                {
+                    Assert.Fail();
+                }
+                Department.removeDepartment(department);
+                Nurse.removeNurse(nurse);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_remove_Nurse_that_not_exist_in_list_from_Department_should_throw_InvalidOperationException()
+    {
+        Department department = new Department("Test");
+        Nurse nurse = new Nurse(1,"Test2");
+        try
+        {
+            department.removeNurseFromDepartment(nurse);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException)
+        {
+            Department.removeDepartment(department);
+            Nurse.removeNurse(nurse);
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
+    
+    
+    [Test]
+    public void Trying_to_add_Head_Doctor_to_Department_and_then_delete_it()
+    {
+        Department department = new Department("Test");
+        Physician doctor = new Physician(1,"Test1","Test1");
+        department.addDoctorToDepartment(doctor);
+        doctor.becomeHeadOfDepartment(department);
+        if (department.HeadOfDepaartment.Equals(doctor))
+        {
+            doctor.deleteDoctorFromBeingHead(department);
+            if (department.HeadOfDepaartment != null)
+            {
+                Assert.Fail();
+            }
+            Department.removeDepartment(department);
+            Physician.RemovePhysician(doctor);
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_Head_Doctor_to_Department()
+    {
+        Department department = new Department("Test");
+        Physician doctor = new Physician(1,"Test1","Test1");
+        department.addDoctorToDepartment(doctor);
+        doctor.becomeHeadOfDepartment(department);
+        if (department.HeadOfDepaartment.Equals(doctor))
+        {
+            Department.removeDepartment(department);
+            Physician.RemovePhysician(doctor);
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_Head_Doctor_to_null_Department_throws_ArgumentNullException()
+    {
+        Physician doctor = new Physician(1,"Test1","Test1");
+        try
+        {
+            doctor.becomeHeadOfDepartment(null);
+            Assert.Fail("Expected ArgumentException");
+        }
+        catch (ArgumentException argumentException)
+        {
+            Physician.RemovePhysician(doctor);
+            Assert.Pass();   
+        }
+    }
+    
+    [Test]
+    public void Trying_to_add_Department_to_Head_Doctor_that_already_has_Department_throws_InvalidOperationException()
+    {
+        Department department = new Department("Test");
+        Department department2 = new Department("Test2");
+        Physician doctor = new Physician(1,"Test1","Test1");
+        department.addDoctorToDepartment(doctor);
+        doctor.becomeHeadOfDepartment(department);
+        try
+        {
+            doctor.becomeHeadOfDepartment(department2);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException argumentException)
+        {
+            Department.removeDepartment(department);
+            Department.removeDepartment(department2);
+            Physician.RemovePhysician(doctor);
+            Assert.Pass();   
+        }
+    }
+    
+    [Test]
+    public void Trying_to_remove_Head_Doctor_that_not_exist_from_Department_should_throw_InvalidOperationException()
+    {
+        Department department = new Department("Test");
+        Physician doctor = new Physician(1,"Test1","Test1");
+        try
+        {
+            doctor.deleteDoctorFromBeingHead(department);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException)
+        {
+            Department.removeDepartment(department);
+            Physician.RemovePhysician(doctor);
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
+    
+        [Test]
+    public void Trying_to_add_Doctor_to_Department_and_then_delete_it()
+    {
+        Department department = new Department("Test");
+        Physician doctor = new Physician(1,"Test1","Test1");
+        department.addDoctorToDepartment(doctor);
+        foreach (var e in department.GetDoctors())
+        {
+            if (e.Equals(doctor))
+            {
+                department.removeDoctorFromDepartment(doctor);
+                foreach (var e2 in department.GetDoctors())
+                {
+                    if (e2.Equals(doctor))
+                    {
+                        Assert.Fail();
+                    }
+                }
+                Department.removeDepartment(department);
+                Physician.RemovePhysician(doctor);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_Doctor_to_Department()
+    {
+        Department department = new Department("Test");
+        Physician doctor = new Physician(1,"Test1","Test1");
+        department.addDoctorToDepartment(doctor);
+        foreach (var e in department.GetDoctors())
+        {
+            if (e.Equals(doctor))
+            {
+                Department.removeDepartment(department);
+                Physician.RemovePhysician(doctor);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_many_Doctors_to_Department()
+    {
+        Department department = new Department("Test");
+        List<Physician> doctors = new List<Physician>{new (4,"Test1","Test1"),
+            new (5,"Test1","Test2"),
+            new (6,"Test1","Test3")};
+        foreach (var e in doctors)
+        {
+            department.addDoctorToDepartment(e);
+        }
+    
+        foreach (var e in department.GetDoctors())
+        {
+            if (doctors.Contains(e))
+            {
+                
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+        Department.removeDepartment(department);
+        foreach (var e in doctors)
+        {
+            Physician.RemovePhysician(e);
+        }
+        Assert.Pass();
+    }
+    
+    [Test]
+    public void Trying_to_add_null_Doctor_to_Department_throws_ArgumentNullException()
+    {
+        Department department = new Department("Test");
+        try
+        {
+            department.addDoctorToDepartment(null);
+            Assert.Fail("Expected ArgumentException");
+        }
+        catch (ArgumentException argumentException)
+        {
+            Department.removeDepartment(department);
+            Assert.Pass();   
+        }
+    }
+    
+    [Test]
+    public void Trying_to_add_Doctor_to_Department_that_already_has_Doctor_throws_InvalidOperationException()
+    {
+        Department department = new Department("Test");
+        Department department2 = new Department("Test2");
+        Physician doctor = new Physician(1,"Test1","Test1");
+        department.addDoctorToDepartment(doctor);
+        try
+        {
+            department2.addDoctorToDepartment(doctor);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException argumentException)
+        {
+            Department.removeDepartment(department);
+            Department.removeDepartment(department2);
+            Physician.RemovePhysician(doctor);
+            Assert.Pass();   
+        }
+    }
+    
+    [Test]
+    public void Trying_to_add_Doctor_to_Department_and_then_change_it()
+    {
+        
+        Department department = new Department("Test");
+        Department department2 = new Department("Test2");
+        Physician doctor = new Physician(1,"Test1","Test1");
+        department.addDoctorToDepartment(doctor);
+        if (department.GetDoctors().Contains(doctor))
+        {
+            doctor.changeDepartment(department2);
+            if (department2.GetDoctors().Contains(doctor))
+            {
+                Department.removeDepartment(department);
+                Department.removeDepartment(department2);
+                Physician.RemovePhysician(doctor);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_Doctor_to_Department_and_then_change_it_to_the_same_Department_throws_InvalidOperationException()
+    {
+        Department department = new Department("Test");
+        Physician doctor = new Physician(1,"Test1","Test1");
+        department.addDoctorToDepartment(doctor);
+        if (department.GetDoctors().Contains(doctor))
+        {
+            try
+            {
+                doctor.changeDepartment(department);
+                Assert.Fail("Expected InvalidOperationException");
+            }
+            catch (InvalidOperationException)
+            {
+                Department.removeDepartment(department);
+                Physician.RemovePhysician(doctor);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    // [Test]
+    // public void Trying_to_change_Doctors_Department_without_assigning_Department_throws_InvalidOperationException()
+    // {
+    //     Department department = new Department("Test");
+    //     Physician doctor = new Physician(1,"Test1","Test1");
+    //     try
+    //     {
+    //         doctor.changeDepartment(department);
+    //         Assert.Fail("Expected InvalidOperationException");
+    //     }
+    //     catch (InvalidOperationException)
+    //     {
+    //         Department.removeDepartment(department);
+    //         Physician.RemovePhysician(doctor);
+    //         Assert.Pass();
+    //     }
+    //     Assert.Fail();
+    // }
+    
+    [Test]
+    public void Trying_to_add_Department_to_Doctor_and_then_try_to_add_same_Department_throws_InvalidOperationException()
+    {
+        Department department = new Department("Test");
+        Physician doctor = new Physician(1,"Test1","Test1");
+        department.addDoctorToDepartment(doctor);
+        try
+        {
+            doctor.asssignDoctorToDepartment(department);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException)
+        {
+            Department.removeDepartment(department);
+            Physician.RemovePhysician(doctor);
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_Department_to_Doctor_and_then_remove_it()
+    {
+        Department department = new Department("Test");
+        Physician doctor = new Physician(1,"Test1","Test1");
+        department.addDoctorToDepartment(doctor);
+        foreach (var e in department.GetDoctors())
+        {
+            if (e.Equals(doctor) && doctor.Department.Equals(department))
+            {
+                department.removeDoctorFromDepartment(doctor);
+                if (department.GetDoctors().Contains(doctor) || doctor.Department != null)
+                {
+                    Assert.Fail();
+                }
+                Department.removeDepartment(department);
+                Physician.RemovePhysician(doctor);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_remove_Doctor_that_not_exist_in_list_from_Department_should_throw_InvalidOperationException()
+    {
+        Department department = new Department("Test");
+        Physician doctor = new Physician(1,"Test1","Test1");
+        try
+        {
+            department.removeDoctorFromDepartment(doctor);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException)
+        {
+            Department.removeDepartment(department);
+            Physician.RemovePhysician(doctor);
+            Assert.Pass();
+        }
+        Assert.Fail();
     }
 }

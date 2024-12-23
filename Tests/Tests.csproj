@@ -25,4 +25,15 @@
     <ProjectReference Include="..\Hospital_System\Hospital_System.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Include="obj\Debug\net8.0\Tests.csproj.BuildWithSkipAnalyzers" />
+    <Content Include="obj\Debug\net8.0\Tests.csproj.CoreCompileInputs.cache" />
+    <Content Include="obj\Debug\net8.0\Tests.csproj.FileListAbsolute.txt" />
+    <Content Include="obj\Debug\net8.0\Tests.csproj.Up2Date" />
+    <Content Include="obj\Debug\net8.0\Tests.dll" />
+    <Content Include="obj\Debug\net8.0\Tests.genruntimeconfig.cache" />
+    <Content Include="obj\Debug\net8.0\Tests.pdb" />
+    <Content Include="obj\Debug\net8.0\Tests.sourcelink.json" />
+  </ItemGroup>
+
 </Project>

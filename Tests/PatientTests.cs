@@ -192,7 +192,7 @@ public class PatientTests
             Patient.RemovePatient(o);
         }
         
-        List<Patient> la = new List<Patient>{new ( 1,"Test34",new DateTime(2009)), new ( 2,"Test2",new DateTime(2005)), new (3,"Test3",new DateTime(2005))};
+        List<Patient> la = new List<Patient>{new ( 6,"Test34",new DateTime(2009)), new ( 2,"Test2",new DateTime(2005)), new (3,"Test3",new DateTime(2005))};
         
         SerializeToFIle.saveAll();
         
@@ -213,12 +213,12 @@ public class PatientTests
     //     Patient patient = new Patient(1,"Test1",new DateTime(2005));
     //     Insurance_Provider provider = new Insurance_Provider(1, "Test2");
     //     patient.AddInsuranceProviderToPatient(provider);
-    //     foreach (var e in patient.GetProviders())
+    //     foreach (var e in patient.PatientProviders)
     //     {
     //         if (e.Id == provider.Id)
     //         {
     //             patient.RemoveInsuranceProviderFromPatient(provider);
-    //             foreach (var e2 in patient.GetProviders())
+    //             foreach (var e2 in patient.PatientProviders)
     //             {
     //                 if (e2.Id == provider.Id)
     //                 {
@@ -236,10 +236,11 @@ public class PatientTests
     // [Test]
     // public void Trying_to_add_Insurance_Provider_to_Patient()
     // {
-    //     Patient patient = new Patient(1,"Test1",new DateTime(2005));
-    //     Insurance_Provider provider = new Insurance_Provider(1, "Test2");
+    //     Patient patient = new Patient(2,"Test1",new DateTime(2005));
+    //     Insurance_Provider provider = new Insurance_Provider(2, "Test2");
+    //     Console.WriteLine(patient.PatientProviders.Count);
     //     patient.AddInsuranceProviderToPatient(provider);
-    //     foreach (var e in patient.GetProviders())
+    //     foreach (var e in patient.PatientProviders)
     //     {
     //         if (e.Id == provider.Id)
     //         {
@@ -261,9 +262,9 @@ public class PatientTests
     //         patient.AddInsuranceProviderToPatient(e);
     //     }
     //
-    //     foreach (var e in patient.GetProviders())
+    //     foreach (var e in patient.PatientProviders)
     //     {
-    //         if (providers.Exists(e => providers.Count==patient.GetProviders().Count))
+    //         if (providers.Exists(e => providers.Count==patient.PatientProviders.Count))
     //         {
     //             
     //         }
@@ -476,4 +477,56 @@ public class PatientTests
             Assert.Pass();   
         }
     }
+    
+    // [Test]
+    // public void Trying_to_assign_Patient_to_Room()
+    // {
+    //     Room room = new Room(123,Room.RoomType.ICU, Room.RoomAvailability.Available);
+    //     Patient patient  = new Patient(1,"Test1",new DateTime(2005));
+    //     patient.AssignRoomToPatient(room);
+    //     if(patient._room.Equals(room))
+    //     {
+    //         Room.RemoveRoom(room);
+    //         Patient.RemovePatient(patient);
+    //         Assert.Pass();
+    //     }
+    //     Assert.Fail();
+    // }
+    
+    [Test]
+    public void Trying_to_assign_Patient_to_null_Room_should_throw_ArgumentException()
+    {
+        Patient patient  = new Patient(1,"Test1",new DateTime(2005));
+        try
+        {
+            patient.AssignRoomToPatient(null);
+            Assert.Fail("expected ArgumentException");
+        }
+        catch (ArgumentException a)
+        {
+            Patient.RemovePatient(patient);
+            Assert.Pass();
+        }
+    }
+    
+    // [Test]
+    // public void Trying_to_assign_Patient_to_Room_when_it_already_assigned_to_another_should_throw_InvalidOperationException()
+    // {
+    //     Room room = new Room(123,Room.RoomType.ICU, Room.RoomAvailability.Available);
+    //     Room room2 = new Room(124,Room.RoomType.ICU, Room.RoomAvailability.Available);
+    //     Patient patient  = new Patient(1,"Test1",new DateTime(2005));
+    //     patient.AssignRoomToPatient(room);
+    //     try
+    //     {
+    //         patient.AssignRoomToPatient(room2);
+    //         Assert.Fail("expected InvalidOperationException");
+    //     }
+    //     catch (InvalidOperationException)
+    //     {
+    //         Room.RemoveRoom(room2);
+    //         Room.RemoveRoom(room);
+    //         Patient.RemovePatient(patient);
+    //         Assert.Pass();
+    //     }
+    // }
 }

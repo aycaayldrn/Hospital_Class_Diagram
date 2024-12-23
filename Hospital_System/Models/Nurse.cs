@@ -82,10 +82,6 @@ namespace Hospital_System.Models
             }
 
             _department = department;
-            if (!department.GetNurses().Contains(this))
-            {
-                department.addNurseToDepartment(this);
-            }
         }
         
         
@@ -110,7 +106,7 @@ namespace Hospital_System.Models
         }
         
         
-        public void deleteNurse()
+        public void deleteNurseDepartment()
         {
             if (_department != null && _department.GetNurses().Contains(this))
             {

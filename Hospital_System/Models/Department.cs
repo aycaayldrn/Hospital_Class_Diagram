@@ -183,7 +183,6 @@ namespace Hospital_System.Models
             if (_nursesInDepartment.Contains(nurse))
             {
                 throw new InvalidOperationException("Nurse is already assigned to this department");
-                
             }
             _nursesInDepartment.Add(nurse);
             if (nurse.Department != this)

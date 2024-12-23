@@ -246,4 +246,162 @@ public class AppointmentTests
             Assert.Pass();
         }
     }
+    
+    // [Test]
+    // public void Trying_to_add_Staff_to_Appointment_and_then_delete_it()
+    // {
+    //     Staff staff = new Staff(2,"Test2","test");
+    //     Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
+    //     appointment.addStaffToAppointment(staff);
+    //     if (appointment.Staffs.Contains(staff) && staff.Appointments.Contains(appointment)) {
+    //         appointment.removeStaffFromAppointment(staff);
+    //         if (appointment.Staffs.Contains(staff) || staff.Appointments.Contains(appointment))
+    //         {
+    //             Assert.Fail();
+    //         }
+    //         Staff.RemoveStaff(staff); 
+    //         Appointment.removeAppointment(appointment); 
+    //         Assert.Pass();
+    //     }
+    //     Assert.Fail();
+    // }
+    
+    // [Test]
+    // public void Trying_to_add_Staff_to_Appointment()
+    // {
+    //     Staff staff = new Staff(2,"Test2","test");
+    //     Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
+    //     appointment.addStaffToAppointment(staff);
+    //     if (appointment.Staffs.Contains(staff) && staff.Appointments.Contains(appointment)) {
+    //         Staff.RemoveStaff(staff); 
+    //         Appointment.removeAppointment(appointment); 
+    //         Assert.Pass();
+    //     }
+    //     Assert.Fail();
+    // }
+    
+    // [Test]
+    // public void Trying_to_add_many_Staff_to_Appointment()
+    // {
+    //     Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
+    //     List<Staff> staffs = new List<Staff>{new (1,"Test2","test"),
+    //         new (2,"Test2","test"),
+    //         new (3,"Test2","test")};
+    //     foreach (var e in staffs)
+    //     {
+    //         appointment.addStaffToAppointment(e);
+    //     }
+    //
+    //     foreach (var e in appointment.Staffs)
+    //     {
+    //         if (staffs.Contains(e)&& e.Appointments.Contains(appointment))
+    //         {
+    //             
+    //         }
+    //         else
+    //         {
+    //             Assert.Fail();
+    //         }
+    //     }
+    //     Appointment.removeAppointment(appointment);
+    //     foreach (var e in staffs)
+    //     {
+    //         Staff.RemoveStaff(e);
+    //     }
+    //     Assert.Pass();
+    // }
+    //
+    // [Test]
+    // public void Trying_to_add_null_Staff_to_Appointment_throws_ArgumentNullException()
+    // {
+    //     Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
+    //     try
+    //     {
+    //         appointment.addStaffToAppointment(null);
+    //         Assert.Fail("Expected ArgumentException");
+    //     }
+    //     catch (ArgumentException argumentException)
+    //     {
+    //         Appointment.removeAppointment(appointment);
+    //         Assert.Pass();   
+    //     }
+    // }
+    
+    // [Test]
+    // public void Trying_to_add_Staff_to_Appointment_and_then_try_to_add_same_Prescription_throws_InvalidOperationException()
+    // {
+    //     Staff staff = new Staff(2,"Test2","test");
+    //     Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
+    //     appointment.addStaffToAppointment(staff);
+    //     try
+    //     {
+    //         appointment.addStaffToAppointment(staff);
+    //         Assert.Fail("Expected InvalidOperationException");
+    //     }
+    //     catch (InvalidOperationException)
+    //     {
+    //         Staff.RemoveStaff(staff); 
+    //         Appointment.removeAppointment(appointment); 
+    //         Assert.Pass();
+    //     }
+    //     Assert.Fail();
+    // }
+    
+    // [Test]
+    // public void Trying_to_add_Appointment_to_Staff_and_then_remove_it()
+    // {
+    //     Staff staff = new Staff(2,"Test2","test");
+    //     Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
+    //     appointment.addStaffToAppointment(staff);
+    //     if (appointment.Staffs.Equals(staff) && staff.Appointments.Contains(appointment)) {
+    //         staff.RemoveAppointmentFromStaff(appointment);
+    //         if (appointment.Staffs.Contains(staff) || staff.Appointments.Contains(appointment))
+    //         {
+    //             Assert.Fail();
+    //         }
+    //         Staff.RemoveStaff(staff); 
+    //         Appointment.removeAppointment(appointment); 
+    //         Assert.Pass();
+    //     }
+    //     Assert.Fail();
+    // }
+    
+    [Test]
+    public void Trying_to_remove_Appointment_that_not_exist_in_list_from_Staff_should_throw_InvalidOperationException()
+    {
+        Staff staff = new Staff(2,"Test2","test");
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
+        try
+        {
+            staff.RemoveAppointmentFromStaff(appointment);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException)
+        {
+            Staff.RemoveStaff(staff); 
+            Appointment.removeAppointment(appointment); 
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
+    
+    
+    [Test]
+    public void Trying_to_remove_Staff_that_not_exist_in_list_from_Appointment_should_throw_InvalidOperationException()
+    {
+        Staff staff = new Staff(2,"Test2","test");
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
+        try
+        {
+            appointment.removeStaffFromAppointment(staff);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException)
+        {
+            Staff.RemoveStaff(staff); 
+            Appointment.removeAppointment(appointment); 
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
 }

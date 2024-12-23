@@ -84,7 +84,7 @@ public class StaffTests
             Staff.RemoveStaff(o);
         }
 
-        List<Staff> lb = new List<Staff>{new (2,"Test2","test"), new (3,"Test3","test"), new (4,"Test4","test")};
+        List<Staff> lb = new List<Staff>{new (5,"Test2","test"), new (3,"Test3","test"), new (4,"Test4","test")};
         
         Assert.That(Staff.GetStaffMembers(), Is.EqualTo(lb));
     }
@@ -136,7 +136,7 @@ public class StaffTests
             Staff.RemoveStaff(o);
         }
 
-        List<Staff> la = new List<Staff>{new (2,"Test2","test"), new (3,"Test3","test"), new (4,"Test4","test")};
+        List<Staff> la = new List<Staff>{new (5,"Test2","test"), new (3,"Test3","test"), new (4,"Test4","test")};
         
         SerializeToFIle.saveAll();
         
@@ -146,7 +146,98 @@ public class StaffTests
         }
         
         SerializeToFIle.loadAll();
-
+        
         Assert.That(Staff.GetStaffMembers(), Is.EqualTo(la));
+    }
+    
+    [Test]
+    public void Trying_to_add_Shift_to_Staff_and_then_delete_it()
+    {
+        Staff staff = new Staff(3,"Test2","test");
+        Shift shift = new Shift(new DateTime(2019, 01, 01), new DateTime(2020, 01, 01), "Test");
+        staff.addShiftToStaff(shift);
+        foreach (var e in staff.GetShifts())
+        {
+            if (e.Equals(shift))
+            {
+                staff.removeShiftFromStaff(shift);
+                foreach (var e2 in staff.GetShifts())
+                {
+                    if (e2.Equals(shift))
+                    {
+                        Assert.Fail("Bill has not been deleted");
+                    }
+                }
+                Staff.RemoveStaff(staff);
+                Shift.RemoveShift(shift);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail("Bill has not been added");
+    }
+    
+    [Test]
+    public void Trying_to_add_Shift_to_Staff()
+    {
+        Staff staff = new Staff(3,"Test2","test");
+        Shift shift = new Shift(new DateTime(2019, 01, 01), new DateTime(2020, 01, 01), "Test");
+        staff.addShiftToStaff(shift);
+        foreach (var e in staff.GetShifts())
+        {
+            if (e.Equals(shift))
+            {
+                Shift.RemoveShift(shift);
+                Staff.RemoveStaff(staff);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_many_Shift_to_Staff()
+    {
+        Staff staff = new Staff(3,"Test2","test");
+        List<Shift> shift = new List<Shift>{new (new DateTime(2019, 01, 01), new DateTime(2020, 01, 01), "Test"),
+                                            new (new DateTime(2019, 01, 01), new DateTime(2021, 01, 01), "Test2"),
+                                            new (new DateTime(2019, 01, 01), new DateTime(2024, 01, 01), "Test3")};
+        foreach (var e in shift)
+        {
+            staff.addShiftToStaff(e);
+        }
+    
+        foreach (var e in staff.GetShifts())
+        {
+            if (shift.Exists(e => shift.Count==staff.GetShifts().Count))
+            {
+                
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+        Staff.RemoveStaff(staff);
+        foreach (var e in shift)
+        {
+            Shift.RemoveShift(e);
+        }
+        Assert.Pass();
+    }
+    
+    [Test]
+    public void Trying_to_add_null_Shift_to_Staff_throws_ArgumentNullException()
+    {
+        Staff staff = new Staff(3,"Test2","test");
+        try
+        {
+            staff.addShiftToStaff(null);
+            Assert.Fail("Expected ArgumentException");
+        }
+        catch (ArgumentException argumentException)
+        {
+            Staff.RemoveStaff(staff);
+            Assert.Pass();   
+        }
     }
 }

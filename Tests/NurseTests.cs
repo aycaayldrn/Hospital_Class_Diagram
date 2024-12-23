@@ -55,6 +55,7 @@ public class NurseTests
         }
         catch (ArgumentException a)
         {
+            Nurse.removeNurse(n);
             Assert.Pass();
         }
     }

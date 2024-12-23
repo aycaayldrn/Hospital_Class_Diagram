@@ -1,4 +1,6 @@
-﻿namespace Tests;
+﻿using InvalidOperationException = System.InvalidOperationException;
+
+namespace Tests;
 using Hospital_System.Models;
 
 public class PhysicianTests
@@ -110,5 +112,266 @@ public class PhysicianTests
         SerializeToFIle.loadAll();
         
         Assert.That(Physician.GetPhysicians(), Is.EqualTo(la));
+    }
+    
+    [Test]
+    public void Trying_to_add_Physician_to_Prescription_and_then_delete_it()
+    {
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Physician physician = new Physician(1,"Test1","Test1");
+        prescription.assignPrescriptionToPhysycian(physician);
+        foreach (var e in physician.GetPrescriptions())
+        {
+            if (e.Equals(prescription))
+            {
+                prescription.deletePrescriptionByPhyscian();
+                foreach (var e2 in physician.GetPrescriptions())
+                {
+                    if (e2.Equals(prescription))
+                    {
+                        Assert.Fail();
+                    }
+                }
+                Prescription.RemovePrescription(prescription);
+                Physician.RemovePhysician(physician);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_Physician_to_Prescription()
+    {
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Physician physician = new Physician(1,"Test1","Test1");
+        prescription.assignPrescriptionToPhysycian(physician);
+        foreach (var e in physician.GetPrescriptions())
+        {
+            if (e.Equals(prescription) && prescription._physician.Equals(physician))
+            {
+                Physician.RemovePhysician(physician);
+                Prescription.RemovePrescription(prescription);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_many_Prescriptions_to_Physician()
+    {
+        Physician physician = new Physician(1,"Test1","Test1");
+        List<Prescription> prescriptions = new List<Prescription>{new (1, "Test1", 1.2f, 4, false),
+            new (2, "Test1", 1.2f, 4, false),
+            new (3, "Test1", 1.2f, 4, false)};
+        foreach (var e in prescriptions)
+        {
+            e.assignPrescriptionToPhysycian(physician);
+        }
+    
+        foreach (var e in physician.GetPrescriptions())
+        {
+            if (prescriptions.Contains(e))
+            {
+                
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+        Physician.RemovePhysician(physician);
+        foreach (var e in prescriptions)
+        {
+            Prescription.RemovePrescription(e);
+        }
+        Assert.Pass();
+    }
+    
+    [Test]
+    public void Trying_to_add_null_Prescription_to_Physician_throws_ArgumentNullException()
+    {
+        Physician physician = new Physician(1,"Test1","Test1");
+        try
+        {
+            physician.addPrescriptiont(null);
+            Assert.Fail("Expected ArgumentException");
+        }
+        catch (ArgumentException argumentException)
+        {
+            Physician.RemovePhysician(physician);
+            Assert.Pass();   
+        }
+    }
+    
+    [Test]
+    public void Trying_to_add_Physician_to_Prescription_that_already_has_Physician_throws_InvalidOperationException()
+    {
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Physician physician = new Physician(1,"Test1","Test1");
+        Physician physician2 = new Physician(2,"Test2","Test2");
+        prescription.assignPrescriptionToPhysycian(physician);
+        try
+        {
+            prescription.assignPrescriptionToPhysycian(physician2);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException argumentException)
+        {
+            Physician.RemovePhysician(physician);
+            Physician.RemovePhysician(physician2);
+            Prescription.RemovePrescription(prescription);
+            Assert.Pass();   
+        }
+    }
+    
+    [Test]
+    public void Trying_to_add_Physician_to_Prescription_and_then_change_it()
+    {
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Physician physician = new Physician(1,"Test1","Test1");
+        Physician physician2 = new Physician(2,"Test2","Test2");
+        prescription.assignPrescriptionToPhysycian(physician);
+        if (prescription._physician.Equals(physician))
+        {
+            prescription.changePhysician(physician2);
+            if (prescription._physician.Equals(physician2))
+            {
+                Physician.RemovePhysician(physician);
+                Physician.RemovePhysician(physician2);
+                Prescription.RemovePrescription(prescription);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_Physician_to_Prescription_and_then_change_it_to_the_same_physician_throws_InvalidOperationException()
+    {
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Physician physician = new Physician(1,"Test1","Test1");
+        prescription.assignPrescriptionToPhysycian(physician);
+        if (prescription._physician.Equals(physician))
+        {
+            try
+            {
+                prescription.changePhysician(physician);
+                Assert.Fail("Expected InvalidOperationException");
+            }
+            catch (InvalidOperationException)
+            {
+                Physician.RemovePhysician(physician);
+                Prescription.RemovePrescription(prescription);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_Physician_to_Prescription_and_then_change_it_to_the_null_physician_throws_InvalidOperationException()
+    {
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Physician physician = new Physician(1,"Test1","Test1");
+        prescription.assignPrescriptionToPhysycian(physician);
+        if (prescription._physician.Equals(physician))
+        {
+            try
+            {
+                prescription.changePhysician(null);
+                Assert.Fail("Expected InvalidOperationException");
+            }
+            catch (ArgumentException)
+            {
+                Physician.RemovePhysician(physician);
+                Prescription.RemovePrescription(prescription);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_change_prescrition_physician_without_assigning_physician_throws_InvalidOperationException()
+    {
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Physician physician = new Physician(1,"Test1","Test1");
+        try
+        {
+            prescription.changePhysician(physician);
+            Physician.RemovePhysician(physician);
+            Prescription.RemovePrescription(prescription);
+            Assert.Fail("Expected InvalidOperationException"); 
+        }catch (InvalidOperationException) 
+        {
+            Physician.RemovePhysician(physician);
+            Prescription.RemovePrescription(prescription);
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_Prescription_to_Physician_and_then_try_to_add_same_Prescription_throws_InvalidOperationException()
+    {
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Physician physician = new Physician(1,"Test1","Test1");
+        prescription.assignPrescriptionToPhysycian(physician);
+        try
+        {
+            physician.addPrescriptiont(prescription);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException)
+        {
+            Physician.RemovePhysician(physician);
+            Prescription.RemovePrescription(prescription);
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_Physician_to_Prescription_and_then_remove_it()
+    {
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Physician physician = new Physician(1,"Test1","Test1");
+        prescription.assignPrescriptionToPhysycian(physician);
+        foreach (var e in physician.GetPrescriptions())
+        {
+            if (e.Equals(prescription) && prescription._physician.Equals(physician))
+            {
+                physician.removePrescriptiont(prescription);
+                if (physician.GetPrescriptions().Contains(prescription) && prescription._physician.Equals(null))
+                {
+                    Assert.Fail();
+                }
+                Physician.RemovePhysician(physician);
+                Prescription.RemovePrescription(prescription);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_remove_Prescription_that_not_exist_in_prescriptionslist_from_Physician_should_throw_InvalidOperationException()
+    {
+        Physician physician = new Physician(1,"Test1","Test1");
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        try
+        {
+            physician.removePrescriptiont(prescription);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException)
+        {
+            Physician.RemovePhysician(physician);
+            Prescription.RemovePrescription(prescription);
+            Assert.Pass();
+        }
+        Assert.Fail();
     }
 }
