@@ -148,4 +148,114 @@ public class ShiftTests
         
         Assert.That(Shift.GetShifts(), Is.EqualTo(la));
     }
+    
+    
+     [Test]
+    public void Trying_to_assign_Shift_to_Staff()
+    {
+        Staff staff = new Staff(3,"Test2","test");
+        Staff staff2 = new Staff(1,"Test2","test");
+        Shift shift = new Shift(new DateTime(2004), new DateTime(2005),"test");
+        shift.asssignStaffToShift(staff);
+        if (!shift.Staff.Equals(staff))
+        {
+            Assert.Fail();
+        }
+        shift.changestaff(staff2);
+    
+        if (staff2.Equals(shift.Staff))
+        {
+            Staff.RemoveStaff(staff2);
+            Staff.RemoveStaff(staff);
+            Shift.RemoveShift(shift);
+            Assert.Pass();
+        }else{
+            Assert.Fail();
+        }
+    }
+    
+    [Test]
+    public void Trying_to_assign_Shift_to_Staff_and_change_to_null_Patient_should_throw_ArgumentException()
+    {
+        Staff staff = new Staff(3,"Test2","test");
+        Shift shift = new Shift(new DateTime(2004), new DateTime(2005),"test");
+        shift.asssignStaffToShift(staff);
+        if (!shift.Staff.Equals(staff))
+        {
+            Assert.Fail();
+        }
+    
+        try
+        {
+            shift.changestaff(null);
+            Assert.Fail("Expected ArgumentException");
+        }
+        catch (ArgumentException ae)
+        {
+            Staff.RemoveStaff(staff);
+            Shift.RemoveShift(shift);
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
+    public void Trying_to_assign_Shift_to_Staff_and_change_to_same_Patient_should_throw_InvalidOperationException()
+    {
+        Staff staff = new Staff(3,"Test2","test");
+        Shift shift = new Shift(new DateTime(2004), new DateTime(2005),"test");
+        shift.asssignStaffToShift(staff);
+        if (!shift.Staff.Equals(staff))
+        {
+            Assert.Fail();
+        }
+    
+        try
+        {
+            shift.changestaff(staff);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException ae)
+        {
+            Staff.RemoveStaff(staff);
+            Shift.RemoveShift(shift);
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
+    public void Trying_to_assign_Shift_to_null_Staff_should_throw_ArgumentException()
+    {
+        Shift shift = new Shift(new DateTime(2004), new DateTime(2005),"test");
+        try
+        {
+            shift.asssignStaffToShift(null);
+            Assert.Fail("expected ArgumentException");
+        }
+        catch (ArgumentException a)
+        {
+            Shift.RemoveShift(shift);
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
+    public void Trying_to_assign_Shift_to_Staff_when_it_already_assigned_to_another_should_throw_InvalidOperationException()
+    {
+        Staff staff = new Staff(1,"Test2","test");
+        Staff staff2 = new Staff(3,"Test2","test");
+        Shift shift = new Shift(new DateTime(2004), new DateTime(2005),"test");
+        shift.asssignStaffToShift(staff);
+        try
+        {
+            shift.asssignStaffToShift(staff2);
+            Assert.Fail("expected InvalidOperationException");
+        }
+        catch (InvalidOperationException)
+        {
+            Staff.RemoveStaff(staff2);
+            Staff.RemoveStaff(staff);
+            Shift.RemoveShift(shift);
+            Assert.Pass();
+        }
+    }
 }
