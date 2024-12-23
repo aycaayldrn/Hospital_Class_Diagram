@@ -301,6 +301,8 @@ public class PhysicianTests
         try
         {
             prescription.changePhysician(physician);
+            Physician.RemovePhysician(physician);
+            Prescription.RemovePrescription(prescription);
             Assert.Fail("Expected InvalidOperationException"); 
         }catch (InvalidOperationException) 
         {
@@ -367,6 +369,7 @@ public class PhysicianTests
         catch (InvalidOperationException)
         {
             Physician.RemovePhysician(physician);
+            Prescription.RemovePrescription(prescription);
             Assert.Pass();
         }
         Assert.Fail();

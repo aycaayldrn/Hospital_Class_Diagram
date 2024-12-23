@@ -110,10 +110,6 @@ namespace Hospital_System.Models
             }
 
             _department = department;
-            if (!department.GetDoctors().Contains(this))
-            {
-                department.addDoctorToDepartment(this);
-            }
         }
         
         
@@ -145,8 +141,6 @@ namespace Hospital_System.Models
                 _department.removeDoctorFromDepartment(this);
             }
             _department = null;
-
-           
         }
 
 

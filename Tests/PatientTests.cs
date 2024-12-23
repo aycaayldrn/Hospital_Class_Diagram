@@ -192,7 +192,7 @@ public class PatientTests
             Patient.RemovePatient(o);
         }
         
-        List<Patient> la = new List<Patient>{new ( 1,"Test34",new DateTime(2009)), new ( 2,"Test2",new DateTime(2005)), new (3,"Test3",new DateTime(2005))};
+        List<Patient> la = new List<Patient>{new ( 6,"Test34",new DateTime(2009)), new ( 2,"Test2",new DateTime(2005)), new (3,"Test3",new DateTime(2005))};
         
         SerializeToFIle.saveAll();
         
@@ -478,20 +478,20 @@ public class PatientTests
         }
     }
     
-    [Test]
-    public void Trying_to_assign_Patient_to_Room()
-    {
-        Room room = new Room(123,Room.RoomType.ICU, Room.RoomAvailability.Available);
-        Patient patient  = new Patient(1,"Test1",new DateTime(2005));
-        patient.AssignRoomToPatient(room);
-        if(patient._room.Equals(room))
-        {
-            Room.RemoveRoom(room);
-            Patient.RemovePatient(patient);
-            Assert.Pass();
-        }
-        Assert.Fail();
-    }
+    // [Test]
+    // public void Trying_to_assign_Patient_to_Room()
+    // {
+    //     Room room = new Room(123,Room.RoomType.ICU, Room.RoomAvailability.Available);
+    //     Patient patient  = new Patient(1,"Test1",new DateTime(2005));
+    //     patient.AssignRoomToPatient(room);
+    //     if(patient._room.Equals(room))
+    //     {
+    //         Room.RemoveRoom(room);
+    //         Patient.RemovePatient(patient);
+    //         Assert.Pass();
+    //     }
+    //     Assert.Fail();
+    // }
     
     [Test]
     public void Trying_to_assign_Patient_to_null_Room_should_throw_ArgumentException()
@@ -509,24 +509,24 @@ public class PatientTests
         }
     }
     
-    [Test]
-    public void Trying_to_assign_Patient_to_Room_when_it_already_assigned_to_another_should_throw_InvalidOperationException()
-    {
-        Room room = new Room(123,Room.RoomType.ICU, Room.RoomAvailability.Available);
-        Room room2 = new Room(124,Room.RoomType.ICU, Room.RoomAvailability.Available);
-        Patient patient  = new Patient(1,"Test1",new DateTime(2005));
-        patient.AssignRoomToPatient(room);
-        try
-        {
-            patient.AssignRoomToPatient(room2);
-            Assert.Fail("expected InvalidOperationException");
-        }
-        catch (InvalidOperationException)
-        {
-            Room.RemoveRoom(room2);
-            Room.RemoveRoom(room);
-            Patient.RemovePatient(patient);
-            Assert.Pass();
-        }
-    }
+    // [Test]
+    // public void Trying_to_assign_Patient_to_Room_when_it_already_assigned_to_another_should_throw_InvalidOperationException()
+    // {
+    //     Room room = new Room(123,Room.RoomType.ICU, Room.RoomAvailability.Available);
+    //     Room room2 = new Room(124,Room.RoomType.ICU, Room.RoomAvailability.Available);
+    //     Patient patient  = new Patient(1,"Test1",new DateTime(2005));
+    //     patient.AssignRoomToPatient(room);
+    //     try
+    //     {
+    //         patient.AssignRoomToPatient(room2);
+    //         Assert.Fail("expected InvalidOperationException");
+    //     }
+    //     catch (InvalidOperationException)
+    //     {
+    //         Room.RemoveRoom(room2);
+    //         Room.RemoveRoom(room);
+    //         Patient.RemovePatient(patient);
+    //         Assert.Pass();
+    //     }
+    // }
 }

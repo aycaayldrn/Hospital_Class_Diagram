@@ -197,7 +197,7 @@ public class StaffTests
     [Test]
     public void Trying_to_add_many_Shift_to_Staff()
     {
-        Staff staff = new Staff(2,"Test2","test");
+        Staff staff = new Staff(3,"Test2","test");
         List<Shift> shift = new List<Shift>{new (new DateTime(2019, 01, 01), new DateTime(2020, 01, 01), "Test"),
                                             new (new DateTime(2019, 01, 01), new DateTime(2021, 01, 01), "Test2"),
                                             new (new DateTime(2019, 01, 01), new DateTime(2024, 01, 01), "Test3")};

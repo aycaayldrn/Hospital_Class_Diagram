@@ -95,6 +95,7 @@ namespace Hospital_System.Models
                 
             }
             _doctorsInDepartment.Add(doctor);
+            doctor.asssignDoctorToDepartment(this);
         }
         public void removeDoctorFromDepartment(Doctor doctor)
         {
@@ -109,6 +110,7 @@ namespace Hospital_System.Models
                 
             }
             _doctorsInDepartment.Remove(doctor);
+            doctor.deleteDoctor();
         }
         
         
@@ -131,9 +133,9 @@ namespace Hospital_System.Models
             if (_nursesInDepartment.Contains(nurse))
             {
                 throw new InvalidOperationException("Nurse is already assigned to this department");
-                
             }
             _nursesInDepartment.Add(nurse);
+            nurse.asssignNurseToDepartment(this);
         }
         public void removeNurseFromDepartment(Nurse nurse)
         {
@@ -148,6 +150,7 @@ namespace Hospital_System.Models
                 
             }
             _nursesInDepartment.Remove(nurse);
+            nurse.deleteNurseDepartment();
         }
         
         
