@@ -56,7 +56,7 @@ namespace Hospital_System.Models
         
         
 
-        public Appointment(DateTime date, AppointmentType type, object assignedDoctor) 
+        public Appointment(DateTime date, AppointmentType type, object assignedDoctor, Bill initialBill, Staff staff) 
         {
             if(type == AppointmentType.Surgery && assignedDoctor is not Surgeon)
             {
@@ -66,8 +66,21 @@ namespace Hospital_System.Models
             Date = date;
             Type = type;
             AssignedDoctor = assignedDoctor;
+
+            if(initialBill == null)
+            {
+                throw new ArgumentException("An appointment must be included in at least one bill");
+            }
+            AddBillToAppointment(initialBill);
+
+            if(staff == null)
+            {
+                throw new ArgumentException("An appointment must be supported by at least one staff member");
+            }
+            addStaffToAppointment(staff);
             addAppointment(this);
         }
+
         public Appointment(){}
 
         //==================================================================================================================        
@@ -85,7 +98,11 @@ namespace Hospital_System.Models
             }
 
             _staffMembers.Add(staff);
-            staff.AddAppointmentToStaff(this);
+            if (!staff.Appointments.Contains(this))
+            {
+                staff.AddAppointmentToStaff(this);
+            }
+            
         }
 
         public void removeStaffFromAppointment(Staff staff)
@@ -106,7 +123,12 @@ namespace Hospital_System.Models
             }
 
             _staffMembers.Remove(staff);
-            staff.RemoveAppointmentFromStaff(this);
+
+            if (staff.Appointments.Contains(this))
+            {
+                staff.RemoveAppointmentFromStaff(this);
+            }
+            
         }
 
 
@@ -156,13 +178,15 @@ namespace Hospital_System.Models
                 throw new ArgumentException("Bill cannot be null");
             }
 
-            if (_bills.Contains(bill)){
-                _bills.Add(bill);
-                bill.AddAppointmentToBill(this);
-            }
-            else
+            if (_bills.Contains(bill))
             {
-                throw new InvalidOperationException("Bill already assigned to this appointment.");
+                return;
+            }
+            _bills.Add(bill);
+
+            if (!bill.Appointments.Contains(this))
+            {
+                bill.AddAppointmentToBill(this);
             }
         }
         
@@ -182,7 +206,10 @@ namespace Hospital_System.Models
             }
             
             _bills.Remove(bill);
-            bill.RemoveAppointmentFromBill(this);
+            if (bill.Appointments.Contains(this))
+            {
+                bill.RemoveAppointmentFromBill(this);
+            }
         }
 
 //==================================================================================================================
@@ -230,8 +257,37 @@ namespace Hospital_System.Models
 
             foreach (var appointment in newAppointments)
             {
-                
-                new Appointment(appointment.Date, appointment.Type, appointment.AssignedDoctor);
+
+                if (appointment.Bills == null || appointment.Bills.Count == 0)
+                {
+                    throw new InvalidOperationException("Each appointment must have at least one bill.");
+                }
+                if(appointment.Staffs ==null || appointment.Staffs.Count == 0)
+                {
+                    throw new InvalidOperationException("Each appointment must be supported by at least one staff member.");
+                }
+                var initialBill = appointment.Bills.First();
+                var initalStaff = appointment.Staffs.First();
+                var newAppointment = new Appointment(
+                   appointment.Date,
+                   appointment.Type,
+                   appointment.AssignedDoctor,
+                   initialBill,
+                   initalStaff
+                );
+
+                foreach (var additionalBill in appointment.Bills.Skip(1))
+                {
+                    newAppointment.AddBillToAppointment(additionalBill);
+                }
+                if (appointment.Patient != null)
+                {
+                    newAppointment.assignPatient(appointment.Patient);
+                }
+                foreach (var additionalStaff in appointment.Staffs.Skip(1))
+                {
+                    newAppointment.addStaffToAppointment(additionalStaff);
+                }
             }
         }
         

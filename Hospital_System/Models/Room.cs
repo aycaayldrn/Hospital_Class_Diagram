@@ -17,7 +17,6 @@ namespace Hospital_System.Models
             ICU
         }
         
-        
         [Serializable]
         public enum RoomAvailability
         {
@@ -32,13 +31,14 @@ namespace Hospital_System.Models
             set => _availability = value;
         }
 
-        
+        Dictionary<int, Department> _departmentForRoom = new Dictionary<int, Department>();
 
         private static List<Room> _roomList = new List<Room>();
 
         private List<Patient> _patients = new List<Patient>();
         public IReadOnlyList<Patient> Patients => _patients.AsReadOnly();
-        
+
+
         public int Number { get; set; }
 
         
@@ -49,8 +49,6 @@ namespace Hospital_System.Models
             set => _type = value;
         }
         
-
-      
 
         public Room(int number, RoomType type, RoomAvailability availability)
         {
@@ -105,9 +103,7 @@ namespace Hospital_System.Models
             _department = null;
         }
         
-        
-        
-        
+  
 //==================================================================================================================
 //Class Extent Methods
         internal static void AddRoom(Room room)

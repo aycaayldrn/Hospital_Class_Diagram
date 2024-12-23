@@ -9,10 +9,8 @@ namespace Hospital_System.Models
     [Serializable] 
     public abstract class Nurse_Shift
     {
-        public int ShiftId { get; set; }
-        public int NurseId { get; set; }
-        public int PatientId { get; set; }
-
+        public Nurse Nurse;
+        public Patient Patient;
         public DateTime _startTime;
         public DateTime StartTime
         {
@@ -45,18 +43,20 @@ namespace Hospital_System.Models
             }
         }
 
-        protected Nurse_Shift(int shiftId, int nurseId, int patientId, DateTime startTime, DateTime endTime)
+        protected Nurse_Shift( Nurse nurse, Patient patient, DateTime startTime, DateTime endTime)
         {
-            ShiftId = shiftId;
-            NurseId = nurseId;
-            PatientId = patientId;
             StartTime = startTime;
             EndTime = endTime;
+            Patient = patient;
+            Nurse = nurse;
+
+            //Nurse.AddShiftToNurseForPatient(this);
+            //Patient.AddShiftToNurseForPatient(this);
         }
 
         public override string ToString()
         {
-            return "Shift Id: " + ShiftId + "Nurse Id :" + NurseId + "Patient ID: " + PatientId + "Start date: " + StartTime + "End date: " + EndTime;
+            return "Start date: " + StartTime + "End date: " + EndTime;
         }
     }
 }

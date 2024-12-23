@@ -32,7 +32,7 @@ namespace Hospital_System.Models
             }
         }
 
-        public Insurance_Provider(int id, string name)
+        public Insurance_Provider(int id, string name,Service service)
         {
             if(id < 0)
             {
@@ -41,6 +41,12 @@ namespace Hospital_System.Models
 
             Id = id;
             Name = name;
+
+            if(service == null)
+            {
+                throw new ArgumentException("An insurance provider must cover at least one service");
+            }
+            AddServiceToProvide(service);
             addProvider(this);
         }
         public Insurance_Provider(){}
@@ -96,7 +102,11 @@ namespace Hospital_System.Models
             }
 
             _services.Add(service);
-            service.assignInsuranceProviderToService(this);
+            if (!service.Insurance_Providers.Contains(this))
+            {
+                service.assignInsuranceProviderToService(this);
+            }
+            
         }
 
         public void RemoveServiceFromProvider(Service service)
@@ -116,7 +126,11 @@ namespace Hospital_System.Models
             }
 
             _services.Remove(service);
-            service.removeInsuranceProviderFromService(this);
+            if (service.Insurance_Providers.Contains(this))
+            {
+                service.removeInsuranceProviderFromService(this);
+            }
+            
 
         }
 
@@ -134,7 +148,12 @@ namespace Hospital_System.Models
                 throw new InvalidOperationException("The patient has already agreed with the provider");
             }
             _patients.Add(patient);
-            patient.AddInsuranceProviderToPatient(this);
+
+            if (!patient.PatientProviders.Contains(this))
+            {
+                patient.AddInsuranceProviderToPatient(this);
+            }
+            
         }
 
         public void RemovePatientFromProvider(Patient patient)
@@ -148,7 +167,11 @@ namespace Hospital_System.Models
                 throw new InvalidOperationException("The patient already doesnt have an agreement with the provider");
             }
             _patients.Remove(patient);
-            patient.RemoveInsuranceProviderFromPatient(this);
+            if (patient.PatientProviders.Contains(this))
+            {
+                patient.RemoveInsuranceProviderFromPatient(this);
+            }
+            
         }
         //==================================================================================================
 
@@ -188,8 +211,26 @@ namespace Hospital_System.Models
             _insuranceProviders.Clear();
             foreach (var provider in containerInsuranceProviders)
             {
+                if(provider.Services == null || provider.Services.Count == 0)
+                {
+                    throw new InvalidOperationException("Each provider must cover at least one service.");
+                }
 
-                new Insurance_Provider(provider.Id, provider.Name);
+                var initialService = provider.Services.First();
+                var newProvider = new Insurance_Provider(
+                    provider.Id,
+                    provider.Name,
+                    initialService
+                );
+                
+                foreach(var additionalService in provider.Services.Skip(1))
+                {
+                    newProvider.AddServiceToProvide(additionalService);
+                }
+                foreach(var patient in provider.Patients)
+                {
+                    newProvider.AddPatientToProvider(patient);
+                }
             }
         }
     }

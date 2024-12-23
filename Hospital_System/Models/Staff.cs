@@ -48,11 +48,17 @@ namespace Hospital_System.Models
 
         private static readonly int MaxWorkingHours = 12;
 
-        public Staff(int id, string name, string position)
+        public Staff(int id, string name, string position, Shift initialShift)
         {
             Id = id;
             Name = name;
             Position = position;
+
+            if(initialShift == null)
+            {
+                throw new ArgumentException("A staff member must be assigned to at least one shift");
+            }
+            addShiftToStaff(initialShift);
             AddStaff(this);
         }
         
@@ -72,6 +78,11 @@ namespace Hospital_System.Models
                 
             }
             _shifts.Add(shift);
+            if (!shift.Staffs.Contains(this))
+            {
+                shift.asssignStaffToShift(this);
+            }
+            
         }
         public void removeShiftFromStaff(Shift shift)
         {
@@ -86,6 +97,10 @@ namespace Hospital_System.Models
                 
             }
             _shifts.Remove(shift);
+            if (shift.Staffs.Contains(this))
+            {
+                shift.deleteStaff();
+            }
         }
         public IReadOnlyList<Shift> GetShifts()
         {
@@ -133,33 +148,38 @@ namespace Hospital_System.Models
         //Staff-supports- Appointments
             public void AddAppointmentToStaff(Appointment appointment)
             {
-            if (appointment == null)
-            {
-                throw new ArgumentNullException(nameof(appointment));
-            }
-            if (_appointments.Contains(appointment))
-            {
-                throw new InvalidOperationException("This staff member is already supports the appointment.");
-            }
+                if (appointment == null)
+                {
+                    throw new ArgumentNullException(nameof(appointment));
+                }
+                if (_appointments.Contains(appointment))
+                {
+                    throw new InvalidOperationException("This staff member is already supports the appointment.");
+                }
 
-            _appointments.Add(appointment);
-            appointment.addStaffToAppointment(this);
-
+                _appointments.Add(appointment);
+                if (!appointment.Staffs.Contains(this))
+                {
+                    appointment.addStaffToAppointment(this);
+                } 
             }
 
             public void RemoveAppointmentFromStaff(Appointment appointment)
             {
-            if (appointment == null)
-            {
-                throw new ArgumentNullException(nameof(appointment));
+                if (appointment == null)
+                {
+                    throw new ArgumentNullException(nameof(appointment));
+                }
+                if (!_appointments.Contains(appointment))
+                {
+                    throw new InvalidOperationException("The appointment doesn't supported by this staff member.");
+                }
+                _appointments.Remove(appointment);
+                if (appointment.Staffs.Contains(this))
+                {
+                    appointment.removeStaffFromAppointment(this);
+                } 
             }
-            if (!_appointments.Contains(appointment))
-            {
-                throw new InvalidOperationException("The appointment doesn't supported by this staff member.");
-            }
-            _appointments.Remove(appointment);
-            appointment.removeStaffFromAppointment(this);
-        }
         //==================================================================================================================
 
         public override bool Equals(object? obj)
@@ -198,8 +218,23 @@ namespace Hospital_System.Models
             _staffList.Clear();
             foreach (var staf in containerStaff)
             {
+                if(staf.GetShifts ==  null || staf.GetShifts().Count == 0)
+                {
+                    throw new InvalidOperationException("Each staff member must be assigned to least one shift.");
+                }
 
-                new Staff(staf.Id,staf.Name,staf.Position);
+                var initialShift = staf.GetShifts().First();
+                var newStaff = new Staff(
+                    staf.Id,
+                    staf.Name,
+                    staf.Position,
+                    initialShift);
+
+                foreach(var appointment in staf.Appointments)
+                {
+                    newStaff.AddAppointmentToStaff(appointment);
+                }
+    
             }
         }
     }

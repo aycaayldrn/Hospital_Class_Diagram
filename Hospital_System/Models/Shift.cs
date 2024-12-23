@@ -29,6 +29,9 @@ namespace Hospital_System.Models
             get { return _staff; }
         }
 
+        private List<Staff> _staffMembers = new List<Staff>();
+        public IReadOnlyList<Staff> Staffs => _staffMembers.AsReadOnly();
+
         public Shift(DateTime startTime, DateTime endTime, string day )
         {
             if(endTime <= startTime)
@@ -104,9 +107,7 @@ namespace Hospital_System.Models
             {
                 _staff.removeShiftFromStaff(this);
             }
-            _staff = null;
-
-           
+            _staff = null;    
         }
 
 //==================================================================================================================
@@ -148,41 +149,7 @@ namespace Hospital_System.Models
         }
         
 //==================================================================================================================
-//Shift-Nurse
 
-        public void assignNurseToShift(Nurse nurse)
-        {
-            if (nurse == null)
-            {
-                throw new ArgumentNullException(nameof(nurse));
-            }
-            if (_nurses.Contains(nurse))
-            {
-                throw new InvalidOperationException("The nurse is already assigned to the nurse");
-            }
-            _nurses.Add(nurse);
-            nurse.assignShiftToNurse(this);
-        }
-
-        public void removeNurseFromShift(Nurse nurse)
-        {
-            if (nurse == null)
-            {
-                throw new ArgumentNullException(nameof(nurse));
-            }
-            if (!_nurses.Contains(nurse))
-            {
-                throw new InvalidOperationException("The shift is not assigned to this nurse");
-            }
-            if (_nurses.Count == 1)
-            {
-                throw new InvalidOperationException("There should be at least one nurse assigned to the shift.");
-            }
-            _nurses.Remove(nurse);
-            nurse.removeShiftFromNurse(this);
-
-        }
-//==================================================================================================================
         public override bool Equals(object? obj)
         {
             if (obj == null || !(obj is Shift))

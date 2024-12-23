@@ -33,6 +33,8 @@ namespace Hospital_System.Models
             }
         }
         
+
+
         public float Dosage { get; set; } 
         public int Duration { get; set; }
         public bool RedPrescription { get; set; }
@@ -46,13 +48,20 @@ namespace Hospital_System.Models
         
         
         
-        public Prescription(int id, string medicationName, float dosage, int duration, bool redPrescription)
+        public Prescription(int id, string medicationName, float dosage, int duration, bool redPrescription, Bill initialBill)
         {
             Id = id;
             MedicationName = medicationName;
             Dosage = dosage;
             Duration = duration;
             RedPrescription = redPrescription;
+            
+
+            if (initialBill == null)
+            {
+                throw new ArgumentException("A prescription must be included in at least one bill");
+            }
+            addBillToPrescription(initialBill);
             AddPrescription(this);
         }
         public Prescription(){ }
@@ -96,7 +105,10 @@ namespace Hospital_System.Models
             {
                 _physician.removePrescriptiont(this);
             }
-            diffrentPhysician.addPrescriptiont(this);
+            if (!diffrentPhysician.GetPrescriptions().Contains(this))
+            {
+                diffrentPhysician.addPrescriptiont(this);
+            }
             _physician = diffrentPhysician;
         }
 
@@ -127,7 +139,11 @@ namespace Hospital_System.Models
             }
 
             _bills.Add(bill);
-            bill.assignPrescriptionToBill(this);
+            if (!bill.GetPrescriptions().Contains(this))
+            {
+                bill.assignPrescriptionToBill(this);
+            }
+            
         }
 
         public void RemoveBillFromPrescription(Bill bill)
@@ -149,11 +165,16 @@ namespace Hospital_System.Models
 
 
             _bills.Remove(bill);
-            bill.removePrescriptionFromBill(this);
+
+            if (bill.GetPrescriptions().Contains(this))
+            {
+                bill.removePrescriptionFromBill(this);
+            }
+            
         }
 
-//==================================================================================================================
-
+        //==================================================================================================================
+        //patient-prescription
 
         public void assignPatientPrescription(Patient patient)
         {
@@ -249,7 +270,34 @@ namespace Hospital_System.Models
             foreach (var pre in containerPrescriptions)
             {
 
-                new Prescription(pre.Id, pre.MedicationName, pre.Dosage, pre.Duration, pre.RedPrescription);
+                if(pre.Bills == null || pre.Bills.Count == 0)
+                {
+                    throw new InvalidOperationException("Each prescription must have at least one bill ");
+
+                }
+
+                var initialBill = pre.Bills.First();
+                var newPrescription = new Prescription(
+                    pre.Id,
+                    pre.MedicationName,
+                    pre.Dosage,
+                    pre.Duration,
+                    pre.RedPrescription,
+                    initialBill
+                );
+
+                foreach(var additionalBill in pre.Bills.Skip(1)){
+                    newPrescription.addBillToPrescription( additionalBill );
+                }
+                if (pre.Patient != null)
+                {
+                    newPrescription.assignPatientPrescription( pre.Patient );
+                }
+                if(pre._physician != null)
+                {
+                    newPrescription.assignPrescriptionToPhysycian(pre._physician);
+                }
+
             }
         }
 //==================================================================================================================

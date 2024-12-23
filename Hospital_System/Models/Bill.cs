@@ -64,10 +64,16 @@ namespace Hospital_System.Models
 
 
 
-        public Bill(int number, double totalCost)
+        public Bill(int number, double totalCost, Service service)
         {
             Number = number;
             TotalCost = totalCost;
+
+            if(service == null)
+            {
+                throw new ArgumentException("A bill must be include at least one service");
+            }
+            AddServiceToBill(service);
             addBill(this);
         }
         public Bill() { }
@@ -141,8 +147,10 @@ namespace Hospital_System.Models
             }
 
             _prescriptions.Add(prescription);
-            prescription.addBillToPrescription(this);
-
+            if (!prescription.Bills.Contains(this))
+            {
+                prescription.addBillToPrescription(this);
+            }
 
         }
 
@@ -161,7 +169,15 @@ namespace Hospital_System.Models
             
 
             _prescriptions.Remove(prescription);
-            prescription.RemoveBillFromPrescription(this);
+
+            if (prescription.Bills.Contains(this))
+            {
+                prescription.RemoveBillFromPrescription(this);
+            }            
+        }
+        public IReadOnlyList<Prescription> GetPrescriptions()
+        {
+            return _prescriptions.AsReadOnly();
         }
 
 
@@ -180,7 +196,10 @@ namespace Hospital_System.Models
             }
 
             _services.Add(service);
-            service.assignBillToService(this);
+            if (!service.Bills.Contains(this))
+            {
+                service.assignBillToService(this);
+            }
             UpdateTotalCost();
         }
     
@@ -202,7 +221,11 @@ namespace Hospital_System.Models
             }
 
             _services.Remove(service);
-            service.RemoveBillFromService(this);
+            if (service.Bills.Contains(this))
+            {
+                service.RemoveBillFromService(this);
+            }
+            
             UpdateTotalCost();
         }
 
@@ -218,7 +241,12 @@ namespace Hospital_System.Models
                 throw new InvalidOperationException("This Bill is already includes the appointment.");
             }
             _appointments.Add(appointment);
-            appointment.AddBillToAppointment(this);
+
+            if (!appointment.Bills.Contains(this))
+            {
+                appointment.AddBillToAppointment(this);
+            }
+
             UpdateTotalCost();
         }
 
@@ -232,26 +260,31 @@ namespace Hospital_System.Models
                 throw new InvalidOperationException("This Bill does not includes the appointment.");
             }
             _appointments.Remove(appointment);
-            appointment.RemoveBillFromAppointment(this);
+
+            if (appointment.Bills.Contains(this))
+            {
+                appointment.RemoveBillFromAppointment(this);
+            }
+
             UpdateTotalCost();
         }
 
         //==================================================================================================================
         //Class Extent Methods
         internal static void addBill(Bill bill)
-    {
-        if (bill == null)
         {
-            throw new ArgumentException("Bill cannot be null");
-        }
+            if (bill == null)
+            {
+                throw new ArgumentException("Bill cannot be null");
+            }
 
 
-        if (_billList.Exists(a => a.Equals(bill)))
-        {
-            throw new InvalidOperationException("Bill already added");
+            if (_billList.Exists(a => a.Equals(bill)))
+            {
+                throw new InvalidOperationException("Bill already added");
+            }
+            _billList.Add(bill);
         }
-        _billList.Add(bill);
-    }
 
 
 
@@ -285,7 +318,30 @@ namespace Hospital_System.Models
         foreach (var bill in containerBills)
         {
 
-            new Bill(bill.Number, bill.TotalCost);
+           if (bill.Services == null || bill.Services.Count == 0)
+           {
+                throw new InvalidOperationException("Each bill must have at least one service.");
+           }
+
+                var initialService = bill.Services.First();
+                var newBill = new Bill(
+                    bill.Number,
+                    bill.TotalCost,
+                    initialService
+                );
+
+                foreach( var additionalService in bill.Services.Skip(1))
+                {
+                    newBill.AddServiceToBill(additionalService);
+                }
+                if(bill.Patient != null)
+                {
+                    newBill.assignPatientBill(bill.Patient);
+                }
+                foreach (var prescription in bill.GetPrescriptions())
+                {
+                    newBill.assignPrescriptionToBill(prescription);
+                }
         }
     }
     //==================================================================================================================        

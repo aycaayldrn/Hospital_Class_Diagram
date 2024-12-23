@@ -16,7 +16,9 @@ namespace Hospital_System.Models
         {
             get { return _department; }
         }
-        private List<Patient> _doctorsPatients = new List<Patient>();
+        
+
+        public Department? HeadedDepartment { get; private set; } // not all doctors are head of a department
        
         public Doctor(int id, string name)
         {
@@ -36,7 +38,11 @@ namespace Hospital_System.Models
                 
             }
             if (_department != department)
+            {
                 throw new InvalidOperationException("Doctor must be part of the department to become head");
+            }
+            
+            
             department.assignHeadOfDepartment(this);
             
         }
@@ -47,54 +53,24 @@ namespace Hospital_System.Models
             {
                 throw new ArgumentException("Department cannot be null");
             }
+            if(HeadedDepartment == null)
+            {
+                return;
+            }
 
             if (department.GetHeadOfDepartment() != this)
             {
                 throw new InvalidOperationException("Doctor is not the head of this department");
             }
 
-            department.removeHeadOfDepartment();
+            department.removeHeadOfDepartment(this);
+            HeadedDepartment = null;
 
         }
 
 
 
 
-//==================================================================================================================
-//Associations: Agregation Doctor-patient
-        public void addPatientToDoctor(Patient patient)
-        {
-            if (patient==null)
-            {
-                throw new ArgumentException("Patient can't be null");
-            }
-
-            if (_doctorsPatients.Contains(patient))
-            {
-                throw new InvalidOperationException("Patient is already assigned to this department");
-                
-            }
-            _doctorsPatients.Add(patient);
-        }    
-        
-        public void removePatientFromDoctor(Patient patient)
-        {
-            if (patient==null)
-            {
-                throw new ArgumentException("Patient can't be null");
-            }
-
-            if (!_doctorsPatients.Contains(patient))
-            {
-                throw new InvalidOperationException("No such patient in list");
-                
-            }
-            _doctorsPatients.Remove(patient);
-        }
-        public IReadOnlyList<Patient> GetPatients()
-        {
-            return _doctorsPatients.AsReadOnly();
-        }
 //==================================================================================================================
 //Associations: Agregation Doctor-department
         public void asssignDoctorToDepartment(Department department)

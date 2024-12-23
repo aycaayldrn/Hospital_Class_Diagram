@@ -68,6 +68,7 @@ namespace Hospital_System.Models
             }
 
             _serviceList.Add(service);
+
         }
 
         public static void RemoveService(Service service)
@@ -103,11 +104,16 @@ namespace Hospital_System.Models
             if (!_bills.Contains(bill))
             {
                 _bills.Add(bill);
-                bill.AddServiceToBill(this);
+                
             }
             else
             {
                 throw new InvalidOperationException("Bill already assigned to this service.");
+            }
+
+            if (!bill.Services.Contains(this))
+            {
+                bill.AddServiceToBill(this);
             }
         }
 
@@ -122,11 +128,15 @@ namespace Hospital_System.Models
             if (_bills.Contains(bill))
             {
                 _bills.Remove(bill);
-                bill.RemoveServiceFromBill(this);
+                
             }
             else
             {
                 throw new InvalidOperationException("The specified bill is not associated with this service.");
+            }
+            if (bill.Services.Contains(this))
+            {
+                bill.RemoveServiceFromBill(this);
             }
 
         }
@@ -144,7 +154,11 @@ namespace Hospital_System.Models
             }
 
             _insuranceProviders.Add(insurance_provider);
-            insurance_provider.AddServiceToProvide(this);
+            if (!insurance_provider.Services.Contains(this))
+            {
+                insurance_provider.AddServiceToProvide(this);
+            }
+            
         }
 
         public void removeInsuranceProviderFromService(Insurance_Provider insurance_provider)
@@ -159,7 +173,11 @@ namespace Hospital_System.Models
             }
 
             _insuranceProviders.Remove(insurance_provider);
-            insurance_provider.RemoveServiceFromProvider(this);
+            if (insurance_provider.Services.Contains(this))
+            {
+                insurance_provider.RemoveServiceFromProvider(this);
+            }
+            
         }
         //===================================================================================================================
         public override bool Equals(object? obj)

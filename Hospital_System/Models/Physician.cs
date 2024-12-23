@@ -58,6 +58,11 @@ namespace Hospital_System.Models;
                 
             }
             _prescriptions.Add(prescription);
+
+            if (!prescription._physician.Equals(this))
+            {
+                prescription.assignPrescriptionToPhysycian(this);
+            }
         }    
         
         public void removePrescriptiont(Prescription prescription)
@@ -73,15 +78,66 @@ namespace Hospital_System.Models;
                 
             }
             _prescriptions.Remove(prescription);
+
+            if (prescription._physician.Equals(this))
+            {
+                prescription.assignPrescriptionToPhysycian(this);
+            }
         }
+
         public IReadOnlyList<Prescription> GetPrescriptions()
         {
             return _prescriptions.AsReadOnly();
         }
-        
-//==================================================================================================================
-//class extent methods
-        internal static void AddPhysician(Physician physician)
+
+    //==================================================================================================================
+    //Associations: Agregation Physician-patient
+
+    //public void addPatientToPhysician(Patient patient)
+    //{
+    //    if (patient == null)
+    //    {
+    //        throw new ArgumentException("Patient can't be null");
+    //    }
+
+    //    if (_patients.Contains(patient))
+    //    {
+    //        throw new InvalidOperationException("Patient is already assigned to this department");
+
+    //    }
+    //    _patients.Add(patient);
+    //    if (!patient.Physicians.Contains(this))
+    //    {
+    //        patient.assignPhysicianToPatient(this);
+    //    }
+    //}
+
+    //public void removePatientFromPhysician(Patient patient)
+    //{
+    //    if (patient == null)
+    //    {
+    //        throw new ArgumentException("Patient can't be null");
+    //    }
+
+    //    if (!_patients.Contains(patient))
+    //    {
+    //        throw new InvalidOperationException("No such patient in list");
+
+    //    }
+    //    _patients.Remove(patient);
+    //    if (patient.Physicians.Contains(this))
+    //    {
+    //        patient.deletePatient();
+    //    }
+    //}
+    //public IReadOnlyList<Patient> GetPatients()
+    //{
+    //    return _patients.AsReadOnly();
+    //}
+    //==================================================================================================================
+
+    //class extent methods
+    internal static void AddPhysician(Physician physician)
         {
             if (physician == null)
             {
@@ -146,19 +202,27 @@ namespace Hospital_System.Models;
      
 
         public Prescription WritePrescription(int id, string medicationName, float dosage, int duration,
-            bool redPrescription)
+            bool redPrescription, Bill initialBill)
         {
-            return new Prescription(id, medicationName, dosage, duration, redPrescription);
+            return new Prescription(id, medicationName, dosage, duration, redPrescription, initialBill);
         }
 
-        public Appointment ScheduleAppointment(DateTime date, Appointment.AppointmentType type)
+        public Appointment ScheduleAppointment(DateTime date, Appointment.AppointmentType type, Bill initialBill, Staff staff)
         {
             if (type == Appointment.AppointmentType.Surgery)
             {
                 throw new InvalidOperationException("Only surgeons can schedule surgery appointments.");
             }
+            if (initialBill == null)
+            {
+                throw new ArgumentException("An appointment must be included in at least one bill.");
+            }
 
-            return new Appointment(date, type, this);
+            if (staff == null)
+            {
+                throw new ArgumentException("An appointment must be supported by at least one staff member.");
+            }
+            return new Appointment(date, type, this, initialBill,staff  );
         }
 
         public void AssignPatient(Patient patient)

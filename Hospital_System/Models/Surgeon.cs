@@ -108,9 +108,19 @@ namespace Hospital_System.Models
         //     _surgeonList = containerSurgeons?? new List<Surgeon>();
         // }
 
-        public Appointment ScheduleSurgery(DateTime date)
+        public Appointment ScheduleSurgery(DateTime date, Bill initialBill, Staff staff)
         {
-            return new Appointment(date, Appointment.AppointmentType.Surgery, this);
+            if (initialBill == null)
+            {
+                throw new ArgumentException("An appointment must be included in at least one bill.");
+            }
+
+            if (staff == null)
+            {
+                throw new ArgumentException("An appointment must be supported by at least one staff member.");
+            }
+
+            return new Appointment(date, Appointment.AppointmentType.Surgery, this, initialBill, staff);
         }
 
         public static void LoadExtent(IEnumerable<Surgeon> containerSurgeons)

@@ -66,6 +66,7 @@ namespace Hospital_System.Models
             Certifications = certifications ?? new List<string>();
             addNurse(this);
         }
+
 //==================================================================================================================
 //Associations: Agregation nurse-department
         public void asssignNurseToDepartment(Department department)
@@ -118,41 +119,6 @@ namespace Hospital_System.Models
             _department = null;
 
            
-        }
-
-//==================================================================================================================
-//Nurse-Shift
-    
-        public void assignShiftToNurse(Shift shift)
-        {
-            if (shift == null)
-            {
-                throw new ArgumentNullException(nameof(shift));
-            }
-            if (_shifts.Contains(shift))
-            {
-                throw new InvalidOperationException("The shift has already assigned to this nurse");
-            }
-            _shifts.Add(shift);
-            shift.assignNurseToShift(this);
-        }
-
-        public void removeShiftFromNurse(Shift shift)
-        {
-            if (shift == null)
-            {
-                throw new ArgumentNullException(nameof(shift));
-            }
-            if (!_shifts.Contains(shift))
-            {
-                throw new InvalidOperationException("The shift is not assigned to this nurse");
-            }
-            if(_shifts.Count == 1)
-            {
-                throw new InvalidOperationException("There should be at least one shift the nurse has assigned.");
-            }
-            _shifts.Remove(shift);
-            shift.removeNurseFromShift(this);
         }
     
 //==================================================================================================================
@@ -207,36 +173,37 @@ namespace Hospital_System.Models
 //==================================================================================================================
 //Asspciation with attribute: nurse-Patient
 
-        public void AddShiftToNurseForPatient(Nurse_Shift shift)
-        {
-            if (shift == null)
-                throw new ArgumentNullException(nameof(shift), "Shift cannot be null.");
+        //public void AddShiftToNurseForPatient(Nurse_Shift shift, Patient patient, )
+        //{
+        //    if (shift == null)
+        //        throw new ArgumentNullException(nameof(shift), "Shift cannot be null.");
 
-            if (!_shiftsForPatients.Contains(shift))
-            { 
-                _shiftsForPatients.Add(shift);
-            }
-            else
-            {
-                throw new InvalidOperationException("The nurse already assigned to this patient-realated shift");
-            }
-        }
+        //    if (!_shiftsForPatients.Contains(shift))
+        //    {
+        //        new Nurse_Shift(patient, this);
+        //        _shiftsForPatients.Add(shift);
+        //    }
+        //    else
+        //    {
+        //        throw new InvalidOperationException("The nurse already assigned to this patient-realated shift");
+        //    }
+        //}
 
-        public void RemoveShiftFromNurseForPatient(Nurse_Shift shift)
-        {
-            if (shift == null)
-                { throw new ArgumentNullException(nameof(shift), "Shift cannot be null."); }
+        //public void RemoveShiftFromNurseForPatient(Nurse_Shift shift)
+        //{
+        //    if (shift == null)
+        //        { throw new ArgumentNullException(nameof(shift), "Shift cannot be null."); }
 
-            if (!_shiftsForPatients.Contains(shift))
-            {
-                throw new InvalidOperationException("This shift is not assigned to nurse");
-            }
+        //    if (!_shiftsForPatients.Contains(shift))
+        //    {
+        //        throw new InvalidOperationException("This shift is not assigned to nurse");
+        //    }
 
-            _shiftsForPatients.Remove(shift);
-        }
+        //    _shiftsForPatients.Remove(shift);
+        //}
 
-        //==================================================================================================================  
-        //Helper methods
+//==================================================================================================================  
+//Helper methods
         public override bool Equals(object? obj)
         {
             if (obj==null||!(obj is Nurse))

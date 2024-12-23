@@ -15,6 +15,7 @@ namespace Hospital_System.Models
         
         private List<Equipment> _equipmentsList = new List<Equipment>();
         private List<Room> _roomList = new List<Room>();
+        public IReadOnlyList<Room> Rooms => _roomList.AsReadOnly();
         private List<Nurse> _nursesInDepartment = new List<Nurse>();
         private List<Doctor> _doctorsInDepartment = new List<Doctor>();
         
@@ -40,9 +41,15 @@ namespace Hospital_System.Models
         }
         
         
-        public Department(string name)
+        public Department(string name, Room initialRoom)
         {
             Name = name;
+
+            if(initialRoom == null)
+            {
+                throw new ArgumentException("Each department must have at least one room");
+            }
+            addRoomToDepartment(initialRoom);
             addDepartment(this);
         }
         public Department(){}
@@ -63,17 +70,54 @@ namespace Hospital_System.Models
                 throw new ArgumentException("Doctor cannot be null");
             }
 
+            if (_headOfDepartment == doctor)
+            {
+                return;
+            }
+
             if (!_doctorsInDepartment.Contains(doctor))
             {
                 throw new InvalidOperationException("Doctor must be part of the department to become head");
             }
 
+            if (doctor.HeadedDepartment != null && doctor.HeadedDepartment != this)
+            {
+                throw new InvalidOperationException("Doctor is already heading another department.");
+            }
+
             _headOfDepartment = doctor;
+
+            if (doctor.HeadedDepartment != this)
+            {
+                doctor.becomeHeadOfDepartment(this);
+            }
         }
 
-        public void removeHeadOfDepartment()
+        public void removeHeadOfDepartment(Doctor doctor)
         {
+            if(_headOfDepartment == null){ 
+   
+                throw new InvalidOperationException("No head assigned to this department.");
+            }
+
+            if (_headOfDepartment != doctor)
+            {
+                throw new InvalidOperationException("The specified doctor is not the head of this department.");
+            }
+
+            if (doctor.HeadedDepartment == null)
+            {
+                 return; 
+            }
+
+            var currentHead = _headOfDepartment;
+
             _headOfDepartment = null;
+
+            if (currentHead.HeadedDepartment == this)
+            {
+                currentHead.deleteDoctorFromBeingHead(this);
+            }
         }
         
         
@@ -95,6 +139,10 @@ namespace Hospital_System.Models
                 
             }
             _doctorsInDepartment.Add(doctor);
+            if(doctor.Department != this)
+            {
+                doctor.asssignDoctorToDepartment(this);
+            }
         }
         public void removeDoctorFromDepartment(Doctor doctor)
         {
@@ -109,6 +157,10 @@ namespace Hospital_System.Models
                 
             }
             _doctorsInDepartment.Remove(doctor);
+            if (doctor.Department == this)
+            {
+                doctor.deleteDoctor();
+            }
         }
         
         
@@ -134,6 +186,10 @@ namespace Hospital_System.Models
                 
             }
             _nursesInDepartment.Add(nurse);
+            if (nurse.Department != this)
+            {
+                nurse.asssignNurseToDepartment(this);
+            }
         }
         public void removeNurseFromDepartment(Nurse nurse)
         {
@@ -148,6 +204,10 @@ namespace Hospital_System.Models
                 
             }
             _nursesInDepartment.Remove(nurse);
+            if (nurse.Department == this)
+            {
+                nurse.deleteNurse();
+            }
         }
         
         
@@ -160,7 +220,7 @@ namespace Hospital_System.Models
 
 //==================================================================================================================
 
-//Associations 
+//Associations Room-Department
         public void addRoomToDepartment(Room room)
         {
             if (room==null)
@@ -175,6 +235,11 @@ namespace Hospital_System.Models
 
             }
             _roomList.Add(room);
+            if (room.Department != this)
+            {
+                room.assignRoomToDepartment(this);
+            }
+
         } 
         public void removeRoomFromDepartment(Room room)
         {
@@ -203,7 +268,7 @@ namespace Hospital_System.Models
         }
 
 //==================================================================================================================        
-//Associations 
+//Associations Equipment-Department
 
         public void addEquipmentToDepartment(Equipment equipment)
         {
@@ -219,6 +284,10 @@ namespace Hospital_System.Models
 
             }
             _equipmentsList.Add(equipment);
+            if (equipment.Department != this)
+            {
+                equipment.assignToDepartment(this);
+            }
         }
 
         public void removeEquipmentFromDepartment(Equipment equipment)
@@ -298,8 +367,31 @@ namespace Hospital_System.Models
             _departmentList.Clear();
             foreach (var dep in containerDepartments)
             {
-                
-                new Department(dep.Name);
+                if(dep.Rooms == null || dep.Rooms.Count == 0)
+                {
+                    throw new InvalidOperationException("Each department must have at least one room.");
+                }
+
+                var initialRoom = dep.Rooms.First();
+                var newDepartment = new Department(
+                    dep.Name,
+                    initialRoom);
+
+                foreach (var aditionalRoom in dep.Rooms.Skip(1)){
+                    newDepartment.addRoomToDepartment(aditionalRoom);
+                }
+                foreach(var equipment in dep._equipmentsList)
+                {
+                    newDepartment.addEquipmentToDepartment(equipment);
+                }
+                foreach(var doctor in dep.GetDoctors())
+                {
+                    newDepartment.addDoctorToDepartment(doctor);
+                }
+                if(dep._headOfDepartment != null)
+                {
+                    newDepartment.assignHeadOfDepartment(dep.HeadOfDepaartment);
+                }
             }
         }
         
