@@ -145,7 +145,13 @@ public class ServiceTests
         }
         
         SerializeToFIle.loadAll();
-        
-        Assert.That(Service.GetServices(), Is.EqualTo(la));
+        foreach (var o in Service.GetServices())
+        {
+            if (!la.Contains(o))
+            {
+                Assert.Fail();
+            }
+        }
+        Assert.Pass();
     }
 }

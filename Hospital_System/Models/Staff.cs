@@ -78,7 +78,7 @@ namespace Hospital_System.Models
                 
             }
             _shifts.Add(shift);
-            if (!shift.Staffs.Contains(this))
+            if (shift.Staff==null||!shift.Staff.Equals(this))
             {
                 shift.asssignStaffToShift(this);
             }
@@ -97,7 +97,7 @@ namespace Hospital_System.Models
                 
             }
             _shifts.Remove(shift);
-            if (shift.Staffs.Contains(this))
+            if (shift.Staff.Equals(this))
             {
                 shift.deleteStaff();
             }

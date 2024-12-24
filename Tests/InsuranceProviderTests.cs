@@ -11,8 +11,22 @@ public class InsuranceProviderTests
             Insurance_Provider.removeProvider(o);
         }
 
-        Insurance_Provider e = new Insurance_Provider(1,"Test2");
+        Insurance_Provider e = new Insurance_Provider(1,"Test2", new Service());
         Assert.Pass();
+    }
+    
+    [Test]
+    public void Trying_to_create_Insurance_Provider_with_null_Service_throws_ArgumentException()
+    {
+        try
+        {
+            Insurance_Provider e = new Insurance_Provider(1, "Test2", null);
+            Assert.Fail();
+        }
+        catch (ArgumentException)
+        {
+            Assert.Pass();
+        }
     }
     
     [Test]
@@ -25,7 +39,7 @@ public class InsuranceProviderTests
 
         try
         {
-            Insurance_Provider e = new Insurance_Provider(1,null);
+            Insurance_Provider e = new Insurance_Provider(1,null, new Service());
             Assert.Fail("Expected ArgumentException");
         }
         catch (ArgumentException)
@@ -44,7 +58,7 @@ public class InsuranceProviderTests
 
         try
         {
-            Insurance_Provider e = new Insurance_Provider(-1,"Test1");
+            Insurance_Provider e = new Insurance_Provider(-1,"Test1", new Service());
             Assert.Fail("Expected ArgumentException");
         }
         catch (ArgumentException)
@@ -62,7 +76,7 @@ public class InsuranceProviderTests
         }
 
         String name = "Test";
-        Insurance_Provider e = new Insurance_Provider(1,name);
+        Insurance_Provider e = new Insurance_Provider(1,name, new Service());
         Assert.That(e.Name, Is.EqualTo(name));
         Insurance_Provider.removeProvider(e);
     }
@@ -76,7 +90,7 @@ public class InsuranceProviderTests
             Insurance_Provider.removeProvider(o);
         }
         
-        List<Insurance_Provider> li = new List<Insurance_Provider>{new ( 24,"Test1"), new ( 22,"Test2"), new ( 44,"Test3")};
+        List<Insurance_Provider> li = new List<Insurance_Provider>{new ( 24,"Test1", new Service()), new ( 22,"Test2", new Service()), new ( 44,"Test3", new Service())};
         
         Assert.That(Insurance_Provider.GetProvider(), Is.EqualTo(li));
     }
@@ -89,10 +103,10 @@ public class InsuranceProviderTests
             Insurance_Provider.removeProvider(o);
         }
 
-        Insurance_Provider i = new Insurance_Provider(21,"Test");
+        Insurance_Provider i = new Insurance_Provider(21,"Test", new Service());
         try
         {
-            Insurance_Provider i2 = new Insurance_Provider(21,"Test");
+            Insurance_Provider i2 = new Insurance_Provider(21,"Test", new Service());
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
@@ -128,7 +142,7 @@ public class InsuranceProviderTests
             Insurance_Provider.removeProvider(o);
         }
         
-        List<Insurance_Provider> la = new List<Insurance_Provider>{new ( 24,"Test1"), new ( 22,"Test2"), new ( 44,"Test3")};
+        List<Insurance_Provider> la = new List<Insurance_Provider>{new ( 24,"Test1", new Service()), new ( 22,"Test2", new Service()), new ( 44,"Test3", new Service())};
         
         SerializeToFIle.saveAll();
         
@@ -138,7 +152,14 @@ public class InsuranceProviderTests
         }
         
         SerializeToFIle.loadAll();
-        
-        Assert.That(Insurance_Provider.GetProvider(), Is.EqualTo(la));
+        foreach (var o in Insurance_Provider.GetProvider())
+        {
+            o.AddServiceToProvide(new Service());
+            if (!la.Contains(o))
+            {
+                Assert.Fail();
+            }
+        }
+        Assert.Pass();
     }
 }

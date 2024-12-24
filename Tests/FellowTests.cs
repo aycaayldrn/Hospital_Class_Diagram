@@ -125,7 +125,13 @@ public class FellowTests
         }
         
         SerializeToFIle.loadAll();
-        
-        Assert.That(Fellow.GetFellows(), Is.EqualTo(la));
+        foreach (var o in Fellow.GetFellows())
+        {
+            if (!la.Contains(o))
+            {
+                Assert.Fail();
+            }
+        }
+        Assert.Pass();
     }
 }

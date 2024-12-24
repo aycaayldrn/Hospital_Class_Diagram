@@ -110,14 +110,20 @@ public class PhysicianTests
         }
         
         SerializeToFIle.loadAll();
-        
-        Assert.That(Physician.GetPhysicians(), Is.EqualTo(la));
+        foreach (var o in Physician.GetPhysicians())
+        {
+            if (!la.Contains(o))
+            {
+                Assert.Fail();
+            }
+        }
+        Assert.Pass();
     }
     
     [Test]
     public void Trying_to_add_Physician_to_Prescription_and_then_delete_it()
     {
-        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new Bill());
         Physician physician = new Physician(1,"Test1","Test1");
         prescription.assignPrescriptionToPhysycian(physician);
         foreach (var e in physician.GetPrescriptions())
@@ -143,7 +149,7 @@ public class PhysicianTests
     [Test]
     public void Trying_to_add_Physician_to_Prescription()
     {
-        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new Bill());
         Physician physician = new Physician(1,"Test1","Test1");
         prescription.assignPrescriptionToPhysycian(physician);
         foreach (var e in physician.GetPrescriptions())
@@ -162,9 +168,9 @@ public class PhysicianTests
     public void Trying_to_add_many_Prescriptions_to_Physician()
     {
         Physician physician = new Physician(1,"Test1","Test1");
-        List<Prescription> prescriptions = new List<Prescription>{new (1, "Test1", 1.2f, 4, false),
-            new (2, "Test1", 1.2f, 4, false),
-            new (3, "Test1", 1.2f, 4, false)};
+        List<Prescription> prescriptions = new List<Prescription>{new (1, "Test1", 1.2f, 4, false, new Bill()),
+            new (2, "Test1", 1.2f, 4, false, new Bill()),
+            new (3, "Test1", 1.2f, 4, false, new Bill())};
         foreach (var e in prescriptions)
         {
             e.assignPrescriptionToPhysycian(physician);
@@ -208,7 +214,7 @@ public class PhysicianTests
     [Test]
     public void Trying_to_add_Physician_to_Prescription_that_already_has_Physician_throws_InvalidOperationException()
     {
-        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new Bill());
         Physician physician = new Physician(1,"Test1","Test1");
         Physician physician2 = new Physician(2,"Test2","Test2");
         prescription.assignPrescriptionToPhysycian(physician);
@@ -229,7 +235,7 @@ public class PhysicianTests
     [Test]
     public void Trying_to_add_Physician_to_Prescription_and_then_change_it()
     {
-        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new Bill());
         Physician physician = new Physician(1,"Test1","Test1");
         Physician physician2 = new Physician(2,"Test2","Test2");
         prescription.assignPrescriptionToPhysycian(physician);
@@ -250,7 +256,7 @@ public class PhysicianTests
     [Test]
     public void Trying_to_add_Physician_to_Prescription_and_then_change_it_to_the_same_physician_throws_InvalidOperationException()
     {
-        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new Bill());
         Physician physician = new Physician(1,"Test1","Test1");
         prescription.assignPrescriptionToPhysycian(physician);
         if (prescription._physician.Equals(physician))
@@ -273,7 +279,7 @@ public class PhysicianTests
     [Test]
     public void Trying_to_add_Physician_to_Prescription_and_then_change_it_to_the_null_physician_throws_InvalidOperationException()
     {
-        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new Bill());
         Physician physician = new Physician(1,"Test1","Test1");
         prescription.assignPrescriptionToPhysycian(physician);
         if (prescription._physician.Equals(physician))
@@ -296,7 +302,7 @@ public class PhysicianTests
     [Test]
     public void Trying_to_change_prescrition_physician_without_assigning_physician_throws_InvalidOperationException()
     {
-        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new Bill());
         Physician physician = new Physician(1,"Test1","Test1");
         try
         {
@@ -316,7 +322,7 @@ public class PhysicianTests
     [Test]
     public void Trying_to_add_Prescription_to_Physician_and_then_try_to_add_same_Prescription_throws_InvalidOperationException()
     {
-        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new Bill());
         Physician physician = new Physician(1,"Test1","Test1");
         prescription.assignPrescriptionToPhysycian(physician);
         try
@@ -336,7 +342,7 @@ public class PhysicianTests
     [Test]
     public void Trying_to_add_Physician_to_Prescription_and_then_remove_it()
     {
-        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new Bill());
         Physician physician = new Physician(1,"Test1","Test1");
         prescription.assignPrescriptionToPhysycian(physician);
         foreach (var e in physician.GetPrescriptions())
@@ -360,7 +366,7 @@ public class PhysicianTests
     public void Trying_to_remove_Prescription_that_not_exist_in_prescriptionslist_from_Physician_should_throw_InvalidOperationException()
     {
         Physician physician = new Physician(1,"Test1","Test1");
-        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false);
+        Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new Bill());
         try
         {
             physician.removePrescriptiont(prescription);

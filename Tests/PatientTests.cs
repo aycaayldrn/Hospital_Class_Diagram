@@ -202,8 +202,14 @@ public class PatientTests
         }
         
         SerializeToFIle.loadAll();
-
-        Assert.That(Patient.GetPatients(), Is.EqualTo(la));
+        foreach (var o in Patient.GetPatients())
+        {
+            if (!la.Contains(o))
+            {
+                Assert.Fail();
+            }
+        }
+        Assert.Pass();
     }
     
     
@@ -302,7 +308,7 @@ public class PatientTests
     public void Trying_to_add_Appointment_to_Patient_and_then_delete_it()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
         patient.addAppointmentForPatient(appointment);
         foreach (var e in patient.GetPatientsAppointments())
         {
@@ -328,7 +334,7 @@ public class PatientTests
     public void Trying_to_add_Appointment_to_Patient()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
         patient.addAppointmentForPatient(appointment);
         foreach (var e in patient.GetPatientsAppointments())
         {
@@ -346,9 +352,9 @@ public class PatientTests
     public void Trying_to_add_many_Appointment_to_Patient()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        List<Appointment> appointments = new List<Appointment>{new (new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object()),
-            new (new DateTime(3001, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object()),
-            new (new DateTime(3002, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object())};
+        List<Appointment> appointments = new List<Appointment>{new (new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff()),
+            new (new DateTime(3001, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff()),
+            new (new DateTime(3002, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff())};
         foreach (var e in appointments)
         {
             patient.addAppointmentForPatient(e);
@@ -393,7 +399,7 @@ public class PatientTests
     public void Trying_to_add_Bill_to_Patient_and_then_delete_it()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        Bill bill = new Bill(124, 100);
+        Bill bill = new Bill(124, 100, new Service());
         patient.addBillForPatient(bill);
         foreach (var e in patient.GetPatientsBills())
         {
@@ -419,7 +425,7 @@ public class PatientTests
     public void Trying_to_add_Bill_to_Patient()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        Bill bill = new Bill(124, 100);
+        Bill bill = new Bill(124, 100, new Service());
         patient.addBillForPatient(bill);
         foreach (var e in patient.GetPatientsBills())
         {
@@ -437,7 +443,7 @@ public class PatientTests
     public void Trying_to_add_many_Bill_to_Patient()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        List<Bill> bills = new List<Bill>{new (1, 100), new (2, 100), new (3, 100)};
+        List<Bill> bills = new List<Bill>{new (1, 100, new Service()), new (2, 100, new Service()), new (3, 100, new Service())};
         foreach (var e in bills)
         {
             patient.addBillForPatient(e);

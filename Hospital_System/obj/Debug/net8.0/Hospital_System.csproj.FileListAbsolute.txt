@@ -76,7 +76,6 @@ C:/Users/kerya/Desktop/HMS/Hospital_Class_Diagram/Hospital_System/obj/Debug/net8
 /Users/jakubmordal/Documents/Sem5_2024_25/BYT/CHANGEOFSERIALIZATION/Hospital_System/obj/Debug/net8.0/Hospital_System.pdb
 /Users/jakubmordal/Documents/Sem5_2024_25/BYT/CHANGEOFSERIALIZATION/Hospital_System/obj/Debug/net8.0/Hospital_System.genruntimeconfig.cache
 /Users/jakubmordal/Documents/Sem5_2024_25/BYT/CHANGEOFSERIALIZATION/Hospital_System/obj/Debug/net8.0/ref/Hospital_System.dll
-<<<<<<< HEAD
 C:\Users\aycay\source\repos\Hospital_System\Hospital_System\obj\Debug\net8.0\Hospital_System.GeneratedMSBuildEditorConfig.editorconfig
 C:\Users\aycay\source\repos\Hospital_System\Hospital_System\obj\Debug\net8.0\Hospital_System.AssemblyInfoInputs.cache
 C:\Users\aycay\source\repos\Hospital_System\Hospital_System\obj\Debug\net8.0\Hospital_System.AssemblyInfo.cs
@@ -85,7 +84,6 @@ C:\Users\aycay\source\repos\Hospital_System\Hospital_System\obj\Debug\net8.0\Hos
 C:\Users\aycay\source\repos\Hospital_System\Hospital_System\obj\Debug\net8.0\Hospital_System.dll
 C:\Users\aycay\source\repos\Hospital_System\Hospital_System\obj\Debug\net8.0\refint\Hospital_System.dll
 C:\Users\aycay\source\repos\Hospital_System\Hospital_System\obj\Debug\net8.0\Hospital_System.pdb
-=======
 C:\Users\kerya\Desktop\hsm\Hospital_Class_Diagram\Hospital_System\bin\Debug\net8.0\Hospital_System.exe
 C:\Users\kerya\Desktop\hsm\Hospital_Class_Diagram\Hospital_System\bin\Debug\net8.0\Hospital_System.deps.json
 C:\Users\kerya\Desktop\hsm\Hospital_Class_Diagram\Hospital_System\bin\Debug\net8.0\Hospital_System.runtimeconfig.json

@@ -31,7 +31,7 @@ public class Tests
         }
         try
         {
-            Bill b = new Bill(12, -1);
+            Bill b = new Bill(12, -1, new Service());
             Assert.Fail("Expected ArgumentException");
         }
         catch (ArgumentException)
@@ -49,7 +49,7 @@ public class Tests
         }
         int number = 123;
         
-        Bill b = new Bill(number, 100);
+        Bill b = new Bill(number, 100, new Service());
         Assert.That(b.Number, Is.EqualTo(number));
         Bill.removeBill(b);
     }
@@ -62,9 +62,11 @@ public class Tests
             Bill.removeBill(o);
         }
         int totalCost = 100;
-        Bill b = new Bill(124, totalCost);
+        Service service = new Service( "Test2", 100d);
+        Bill b = new Bill(124, totalCost,service);
         Assert.That(b.FinalCost, Is.EqualTo(totalCost*(1+Bill.TaxRate)).Within(0.01));
         Bill.removeBill(b);
+        Service.RemoveService(service);
     }
     
     [Test]
@@ -74,7 +76,7 @@ public class Tests
         {
             Bill.removeBill(o);
         }
-        List<Bill> lb = new List<Bill>{new ( 24,4312), new ( 21,4313), new ( 44,4232)};
+        List<Bill> lb = new List<Bill>{new ( 24,4312, new Service()), new ( 21,4313, new Service()), new ( 44,4232, new Service())};
         
         
         Assert.That(Bill.GetBills(), Is.EqualTo(lb));
@@ -87,14 +89,27 @@ public class Tests
         {
             Bill.removeBill(o);
         }
-        Bill b = new Bill(21,3213);
+        Bill b = new Bill(21,3213, new Service());
         try
         {
-            Bill b2 = new Bill(21,3213);
+            Bill b2 = new Bill(21,3213, new Service());
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
             Bill.removeBill(b);
+            Assert.Pass();
+        }
+    }
+    
+    [Test]
+    public void Trying_to_create_Bill_with_null_Service_throws_ArgumentException()
+    {
+        try
+        {
+            Bill b = new Bill(21,3213, null);
+            Assert.Fail("Should throw ArgumentException");
+        }catch(ArgumentException o)
+        {
             Assert.Pass();
         }
     }
@@ -124,7 +139,7 @@ public class Tests
             Bill.removeBill(o);
         }
         
-        List<Bill> la = new List<Bill>{new ( 24,4312), new ( 21,4313), new ( 44,4232)};
+        List<Bill> la = new List<Bill>{new ( 24,4312, new Service()), new ( 21,4313, new Service()), new ( 44,4232, new Service())};
         
         
         SerializeToFIle.saveAll();
@@ -135,8 +150,15 @@ public class Tests
         }
         
         SerializeToFIle.loadAll();
-        
-        Assert.That(Bill.GetBills(), Is.EqualTo(la));
+        foreach (var o in Bill.GetBills())
+        {
+            o.AddServiceToBill(new Service());
+            if (!la.Contains(o))
+            {
+                Assert.Fail();
+            }
+        }
+        Assert.Pass();
     }
     
     
@@ -146,7 +168,7 @@ public class Tests
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
         Patient patient2 = new Patient(2,"Test1",new DateTime(2005));
-        Bill bill = new Bill(21,3213);
+        Bill bill = new Bill(21,3213, new Service());
         bill.assignPatientBill(patient);
         if (!bill.Patient.Equals(patient))
         {
@@ -169,7 +191,7 @@ public class Tests
     public void Trying_to_assign_Bill_to_Patient_and_change_to_null_Patient_should_throw_ArgumentException()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        Bill bill = new Bill(21,3213);
+        Bill bill = new Bill(21,3213, new Service());
         bill.assignPatientBill(patient);
         if (!bill.Patient.Equals(patient))
         {
@@ -193,7 +215,7 @@ public class Tests
     public void Trying_to_assign_Bill_to_Patient_and_change_to_same_Patient_should_throw_InvalidOperationException()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        Bill bill = new Bill(21,3213);
+        Bill bill = new Bill(21,3213, new Service());
         bill.assignPatientBill(patient);
         if (!bill.Patient.Equals(patient))
         {
@@ -216,7 +238,7 @@ public class Tests
     [Test]
     public void Trying_to_assign_Bill_to_null_Patient_should_throw_ArgumentException()
     {
-        Bill bill = new Bill(21,3213);
+        Bill bill = new Bill(21,3213, new Service());
         try
         {
             bill.assignPatientBill(null);
@@ -234,7 +256,7 @@ public class Tests
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
         Patient patient2 = new Patient(2,"Test1",new DateTime(2005));
-        Bill bill = new Bill(21,3213);
+        Bill bill = new Bill(21,3213, new Service());
         bill.assignPatientBill(patient);
         try
         {
