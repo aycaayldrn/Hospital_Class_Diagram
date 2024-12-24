@@ -162,4 +162,106 @@ public class InsuranceProviderTests
         }
         Assert.Pass();
     }
+    
+    [Test]
+    public void Trying_to_add_Service_to_Provider_and_then_delete_it()
+    { 
+        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new Service());
+        Service service = new Service("Test", 100d);
+        provider.AddServiceToProvide(service);
+        if (provider.Services.Contains(service)&&service.Insurance_Providers.Contains(provider)){
+            provider.RemoveServiceFromProvider(service);
+            if (provider.Services.Contains(service)||service.Insurance_Providers.Contains(provider))
+            {
+                Assert.Fail();
+            }
+            Service.RemoveService(service);
+            Insurance_Provider.removeProvider(provider);
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_Service_to_Provider()
+    {
+        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new Service());
+        Service service = new Service("Test", 100d);
+        provider.AddServiceToProvide(service);
+        if (provider.Services.Contains(service)&&service.Insurance_Providers.Contains(provider)){
+            Service.RemoveService(service);
+            Insurance_Provider.removeProvider(provider);
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_many_Services_to_Provider()
+    {
+        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new Service());
+        List<Service> services = new List<Service>{new ("Test", 100d),
+            new ("Test1", 100d),
+            new ("Test2", 100d)};
+        foreach (var e in services)
+        {
+            provider.AddServiceToProvide(e);
+        }
+        services.Add(new Service());
+
+        foreach (var e in provider.Services)
+        {
+            if (services.Contains(e))
+            {
+
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+        services.Remove(new Service());
+        Insurance_Provider.removeProvider(provider);
+        foreach (var e in services)
+        {
+            Service.RemoveService(e);
+        }
+        Assert.Pass();
+    }
+    
+    [Test]
+    public void Trying_to_add_null_Service_to_Provider_throws_ArgumentException()
+    {
+        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new Service());
+        try
+        {
+            provider.AddServiceToProvide(null);
+            Assert.Fail("Expected ArgumentException");
+        }
+        catch (ArgumentException argumentException)
+        {
+            Insurance_Provider.removeProvider(provider);
+            Assert.Pass();   
+        }
+    }
+    
+    [Test]
+    public void Trying_to_add_Service_to_Provider_and_then_try_to_add_same_Service_throws_InvalidOperationException()
+    {
+        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new Service());
+        Service service = new Service("Test", 100d);
+        provider.AddServiceToProvide(service);
+        try
+        {
+            provider.AddServiceToProvide(service);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException)
+        {
+            Service.RemoveService(service);
+            Insurance_Provider.removeProvider(provider);
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
 }

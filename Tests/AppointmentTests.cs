@@ -185,80 +185,8 @@ public class AppointmentTests
         Assert.Pass();
     }
     
-    // [Test]
-    // public void Trying_to_assign_Bill_to_Patient_and_change_Department()
-    // {
-    //     Patient patient = new Patient(1,"Test1",new DateTime(2005));
-    //     Patient patient2 = new Patient(2,"Test1",new DateTime(2005));
-    //     Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
-    //     appointment.assignPatient(patient);
-    //     if (!appointment.Patient.Equals(patient))
-    //     {
-    //         Assert.Fail();
-    //     }
-    //     appointment.changeAppointment(patient2);
-    //
-    //     if (patient2.Equals(appointment.Patient))
-    //     {
-    //         Patient.RemovePatient(patient2);
-    //         Patient.RemovePatient(patient);
-    //         Appointment.removeAppointment(appointment);
-    //         Assert.Pass();
-    //     }else{
-    //         Assert.Fail();
-    //     }
-    // }
-    //
-    // [Test]
-    // public void Trying_to_assign_Bill_to_Patient_and_change_to_null_Patient_should_throw_ArgumentException()
-    // {
-    //     Patient patient = new Patient(1,"Test1",new DateTime(2005));
-    //     Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
-    //     appointment.assignPatient(patient);
-    //     if (!appointment.Patient.Equals(patient))
-    //     {
-    //         Assert.Fail();
-    //     }
-    //
-    //     try
-    //     {
-    //         appointment.changeAppointment(null);
-    //         Assert.Fail("Expected ArgumentException");
-    //     }
-    //     catch (ArgumentException ae)
-    //     {
-    //         Patient.RemovePatient(patient);
-    //         Appointment.removeAppointment(appointment);
-    //         Assert.Pass();
-    //     }
-    // }
-    
-    // [Test]
-    // public void Trying_to_assign_Bill_to_Patient_and_change_to_same_Patient_should_throw_InvalidOperationException()
-    // {
-    //     Patient patient = new Patient(1,"Test1",new DateTime(2005));
-    //     Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
-    //     appointment.assignPatient(patient);
-    //     if (!appointment.Patient.Equals(patient))
-    //     {
-    //         Assert.Fail();
-    //     }
-    //
-    //     try
-    //     {
-    //         appointment.changeAppointment(patient);
-    //         Assert.Fail("Expected InvalidOperationException");
-    //     }
-    //     catch (InvalidOperationException ae)
-    //     {
-    //         Patient.RemovePatient(patient);
-    //         Appointment.removeAppointment(appointment);
-    //         Assert.Pass();
-    //     }
-    // }
-    
     [Test]
-    public void Trying_to_assign_Bill_to_null_Patient_should_throw_ArgumentException()
+    public void Trying_to_assign_Appointment_to_null_Patient_should_throw_ArgumentException()
     {
         Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
         try
@@ -274,7 +202,7 @@ public class AppointmentTests
     }
     
     [Test]
-    public void Trying_to_assign_Bill_to_Patient_when_it_already_assigned_to_another_should_throw_InvalidOperationException()
+    public void Trying_to_assign_Appointment_to_Patient_when_it_already_assigned_to_another_should_throw_InvalidOperationException()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
         Patient patient2 = new Patient(2,"Test1",new DateTime(2005));
@@ -294,124 +222,125 @@ public class AppointmentTests
         }
     }
     
-    // [Test]
-    // public void Trying_to_add_Staff_to_Appointment_and_then_delete_it()
-    // {
-    //     Staff staff = new Staff(2,"Test2","test");
-    //     Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
-    //     appointment.addStaffToAppointment(staff);
-    //     if (appointment.Staffs.Contains(staff) && staff.Appointments.Contains(appointment)) {
-    //         appointment.removeStaffFromAppointment(staff);
-    //         if (appointment.Staffs.Contains(staff) || staff.Appointments.Contains(appointment))
-    //         {
-    //             Assert.Fail();
-    //         }
-    //         Staff.RemoveStaff(staff); 
-    //         Appointment.removeAppointment(appointment); 
-    //         Assert.Pass();
-    //     }
-    //     Assert.Fail();
-    // }
+    [Test]
+    public void Trying_to_add_Staff_to_Appointment_and_then_delete_it()
+    {
+        Staff staff = new Staff(2,"Test2","test" , new Shift());
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        appointment.addStaffToAppointment(staff);
+        if (appointment.Staffs.Contains(staff) && staff.Appointments.Contains(appointment)) {
+            appointment.removeStaffFromAppointment(staff);
+            if (appointment.Staffs.Contains(staff) || staff.Appointments.Contains(appointment))
+            {
+                Assert.Fail();
+            }
+            Staff.RemoveStaff(staff); 
+            Appointment.removeAppointment(appointment); 
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
     
-    // [Test]
-    // public void Trying_to_add_Staff_to_Appointment()
-    // {
-    //     Staff staff = new Staff(2,"Test2","test");
-    //     Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
-    //     appointment.addStaffToAppointment(staff);
-    //     if (appointment.Staffs.Contains(staff) && staff.Appointments.Contains(appointment)) {
-    //         Staff.RemoveStaff(staff); 
-    //         Appointment.removeAppointment(appointment); 
-    //         Assert.Pass();
-    //     }
-    //     Assert.Fail();
-    // }
+    [Test]
+    public void Trying_to_add_Staff_to_Appointment()
+    {
+        Staff staff = new Staff(2,"Test2","test", new Shift());
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        appointment.addStaffToAppointment(staff);
+        if (appointment.Staffs.Contains(staff) && staff.Appointments.Contains(appointment)) {
+            Staff.RemoveStaff(staff); 
+            Appointment.removeAppointment(appointment); 
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
     
-    // [Test]
-    // public void Trying_to_add_many_Staff_to_Appointment()
-    // {
-    //     Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
-    //     List<Staff> staffs = new List<Staff>{new (1,"Test2","test"),
-    //         new (2,"Test2","test"),
-    //         new (3,"Test2","test")};
-    //     foreach (var e in staffs)
-    //     {
-    //         appointment.addStaffToAppointment(e);
-    //     }
-    //
-    //     foreach (var e in appointment.Staffs)
-    //     {
-    //         if (staffs.Contains(e)&& e.Appointments.Contains(appointment))
-    //         {
-    //             
-    //         }
-    //         else
-    //         {
-    //             Assert.Fail();
-    //         }
-    //     }
-    //     Appointment.removeAppointment(appointment);
-    //     foreach (var e in staffs)
-    //     {
-    //         Staff.RemoveStaff(e);
-    //     }
-    //     Assert.Pass();
-    // }
-    //
-    // [Test]
-    // public void Trying_to_add_null_Staff_to_Appointment_throws_ArgumentNullException()
-    // {
-    //     Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
-    //     try
-    //     {
-    //         appointment.addStaffToAppointment(null);
-    //         Assert.Fail("Expected ArgumentException");
-    //     }
-    //     catch (ArgumentException argumentException)
-    //     {
-    //         Appointment.removeAppointment(appointment);
-    //         Assert.Pass();   
-    //     }
-    // }
+    [Test]
+    public void Trying_to_add_many_Staff_to_Appointment()
+    {
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        List<Staff> staffs = new List<Staff>{new (1,"Test2","test", new Shift()),
+            new (2,"Test2","test", new Shift()),
+            new (3,"Test2","test", new Shift())};
+        foreach (var e in staffs)
+        {
+            appointment.addStaffToAppointment(e);
+        }
+        staffs.Add(new Staff());
+        foreach (var e in appointment.Staffs)
+        {
+            if (staffs.Contains(e) && e.Appointments.Contains(appointment))
+            {
+                
+            }
+            else
+            {
+                Assert.Fail(e.ToString());
+            }
+        }
+        staffs.Remove(new Staff());
+        Appointment.removeAppointment(appointment);
+        foreach (var e in staffs)
+        {
+            Staff.RemoveStaff(e);
+        }
+        Assert.Pass();
+    }
     
-    // [Test]
-    // public void Trying_to_add_Staff_to_Appointment_and_then_try_to_add_same_Prescription_throws_InvalidOperationException()
-    // {
-    //     Staff staff = new Staff(2,"Test2","test");
-    //     Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
-    //     appointment.addStaffToAppointment(staff);
-    //     try
-    //     {
-    //         appointment.addStaffToAppointment(staff);
-    //         Assert.Fail("Expected InvalidOperationException");
-    //     }
-    //     catch (InvalidOperationException)
-    //     {
-    //         Staff.RemoveStaff(staff); 
-    //         Appointment.removeAppointment(appointment); 
-    //         Assert.Pass();
-    //     }
-    //     Assert.Fail();
-    // }
+    [Test]
+    public void Trying_to_add_null_Staff_to_Appointment_throws_ArgumentNullException()
+    {
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        try
+        {
+            appointment.addStaffToAppointment(null);
+            Assert.Fail("Expected ArgumentException");
+        }
+        catch (ArgumentException argumentException)
+        {
+            Appointment.removeAppointment(appointment);
+            Assert.Pass();   
+        }
+    }
     
-    // [Test]
-    // public void Trying_to_add_Appointment_to_Staff_and_then_remove_it()
-    // {
-    //     Staff staff = new Staff(2,"Test2","test");
-    //     Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object());
-    //     appointment.addStaffToAppointment(staff);
-    //     if (appointment.Staffs.Equals(staff) && staff.Appointments.Contains(appointment)) {
-    //         staff.RemoveAppointmentFromStaff(appointment);
-    //         if (appointment.Staffs.Contains(staff) || staff.Appointments.Contains(appointment))
-    //         {
-    //             Assert.Fail();
-    //         }
-    //         Staff.RemoveStaff(staff); 
-    //         Appointment.removeAppointment(appointment); 
-    //         Assert.Pass();
-    //     }
-    //     Assert.Fail();
-    // }
+    [Test]
+    public void Trying_to_add_Staff_to_Appointment_and_then_try_to_add_same_Prescription_throws_InvalidOperationException()
+    {
+        Staff staff = new Staff(2,"Test2","test", new Shift());
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        appointment.addStaffToAppointment(staff);
+        try
+        {
+            appointment.addStaffToAppointment(staff);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException)
+        {
+            Staff.RemoveStaff(staff); 
+            Appointment.removeAppointment(appointment); 
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_Appointment_to_Staff_and_then_remove_it()
+    {
+        Staff staff = new Staff(2,"Test2","test", new Shift());
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        appointment.addStaffToAppointment(staff);
+        if (appointment.Staffs.Contains(staff) && staff.Appointments.Contains(appointment)) {
+            staff.RemoveAppointmentFromStaff(appointment);
+            if (appointment.Staffs.Contains(staff) || staff.Appointments.Contains(appointment))
+            {
+                Assert.Fail();
+            }
+            Staff.RemoveStaff(staff); 
+            Appointment.removeAppointment(appointment); 
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
     
     [Test]
     public void Trying_to_remove_Appointment_that_not_exist_in_list_from_Staff_should_throw_InvalidOperationException()
@@ -450,5 +379,111 @@ public class AppointmentTests
             Assert.Pass();
         }
         Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_remove_Bill_that_not_exist_in_list_from_Appointment_should_throw_InvalidOperationException()
+    {
+        Bill bill = new Bill(21,3213, new Service());
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        try
+        {
+            bill.RemoveAppointmentFromBill(appointment);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException argumentException)
+        {
+            Bill.removeBill(bill);
+            Appointment.removeAppointment(appointment);
+            Assert.Pass();   
+        }
+    }
+    
+    [Test]
+    public void Trying_to_add_Bill_to_Appointment_and_then_remove_it()
+    {
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        Bill bill = new Bill(21,3213, new Service());
+        appointment.AddBillToAppointment(bill);
+        if (bill.Appointments.Contains(appointment)&&appointment.Bills.Contains(bill)){
+            bill.RemoveAppointmentFromBill(appointment);
+            if (bill.Appointments.Contains(appointment)||appointment.Bills.Contains(bill))
+            {
+                Assert.Fail();
+            }
+            Bill.removeBill(bill);
+            Appointment.removeAppointment(appointment);
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_Bill_to_Appointment_and_then_try_to_add_same_Bill_throws_InvalidOperationException()
+    {
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        Bill bill = new Bill(21,3213, new Service());
+        appointment.AddBillToAppointment(bill);
+        try
+        {
+            appointment.AddBillToAppointment(bill);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException)
+        {
+            Bill.removeBill(bill);
+            Appointment.removeAppointment(appointment);
+            Assert.Pass();
+        }
+        Assert.Fail();
+    }
+    
+    
+    [Test]
+    public void Trying_to_add_null_Bill_to_Appointment_throws_ArgumentException()
+    {
+        Bill bill = new Bill(21,3213, new Service());
+        try
+        {
+            bill.AddAppointmentToBill(null);
+            Assert.Fail("Expected ArgumentException");
+        }
+        catch (ArgumentException argumentException)
+        {
+            Bill.removeBill(bill);
+            Assert.Pass();   
+        }
+    }
+    
+    [Test]
+    public void Trying_to_add_many_Bills_to_Appointment()
+    {
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        List<Bill> bills = new List<Bill>{new (25, 3213, new Service()),
+            new (22, 312, new Service()),
+            new (23, 432, new Service())};
+        foreach (var e in bills)
+        {
+            appointment.AddBillToAppointment(e);
+        }
+        bills.Add(new Bill());
+        foreach (var e in appointment.Bills)
+        {
+            if (bills.Contains(e))
+            {
+                
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+        bills.Remove(new Bill());
+        Appointment.removeAppointment(appointment);
+        foreach (var e in bills)
+        {
+            Bill.removeBill(e);
+        }
+        Assert.Pass();
     }
 }

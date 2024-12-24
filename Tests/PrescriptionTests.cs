@@ -156,4 +156,118 @@ public class PrescriptionTests
         }
         Assert.Pass();
     }
+    
+        [Test]
+    public void Trying_to_add_Bill_to_Prescription_and_then_delete_it()
+    {
+        Bill bill = new Bill(21, 3213, new Service());
+        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new Bill());
+        prescription.addBillToPrescription(bill);
+        if (bill.Prescriptions.Contains(prescription) && prescription.Bills.Contains(bill))
+        {
+            prescription.RemoveBillFromPrescription(bill);
+            if (bill.Prescriptions.Contains(prescription) || prescription.Bills.Contains(bill))
+            {
+                Assert.Fail();
+            }
+
+            Prescription.RemovePrescription(prescription);
+            Bill.removeBill(bill);
+            Assert.Pass();
+        }
+
+        Assert.Fail();
+    }
+
+    [Test]
+    public void Trying_to_add_Bill_to_Prescription()
+    {
+        Bill bill = new Bill(21, 3213, new Service());
+        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new Bill());
+        prescription.addBillToPrescription(bill);
+        if (bill.Prescriptions.Contains(prescription) && prescription.Bills.Contains(bill))
+        {
+            Prescription.RemovePrescription(prescription);
+            Bill.removeBill(bill);
+            Assert.Pass();
+        }
+
+        Assert.Fail();
+    }
+
+    [Test]
+    public void Trying_to_add_many_Bills_to_Prescription()
+    {
+        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new Bill());
+        List<Bill> bills = new List<Bill> {
+            new(21, 3213, new Service()),
+            new(22, 3213, new Service()),
+            new(23, 3213, new Service())
+        };
+        foreach (var e in bills)
+        {
+            prescription.addBillToPrescription(e);
+        }
+        
+        bills.Add(new Bill());
+
+        foreach (var e in prescription.Bills)
+        {
+            if (bills.Contains(e))
+            {
+
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+        
+        bills.Remove(new Bill());
+
+        Prescription.RemovePrescription(prescription);
+        foreach (var e in bills)
+        {
+            Bill.removeBill(e);
+        }
+
+        Assert.Pass();
+    }
+
+    [Test]
+    public void Trying_to_add_null_Bill_to_Prescription_throws_ArgumentException()
+    {
+        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new Bill());
+        try
+        {
+            prescription.RemoveBillFromPrescription(null);
+            Assert.Fail("Expected ArgumentException");
+        }
+        catch (ArgumentException argumentException)
+        {
+            Prescription.RemovePrescription(prescription);
+            Assert.Pass();
+        }
+    }
+
+    [Test]
+    public void Trying_to_add_Bill_to_Service_and_then_try_to_add_same_Bill_throws_InvalidOperationException()
+    {
+        Bill bill = new Bill(21, 3213, new Service());
+        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new Bill());
+        prescription.addBillToPrescription(bill);
+        try
+        {
+            prescription.addBillToPrescription(bill);
+            Assert.Fail("Expected InvalidOperationException");
+        }
+        catch (InvalidOperationException)
+        {
+            Prescription.RemovePrescription(prescription);
+            Bill.removeBill(bill);
+            Assert.Pass();
+        }
+
+        Assert.Fail();
+    }
 }

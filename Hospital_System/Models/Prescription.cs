@@ -207,29 +207,6 @@ namespace Hospital_System.Models
             }
             _patient = null;
         }
-        
-        
-        
-        
-        // public void changePrescription(Patient newPatient)
-        // {
-        //     if (newPatient== null)
-        //     {
-        //         throw new ArgumentException("Patient cannot be null");
-        //     }
-        //
-        //     if (_patient==newPatient)
-        //     {
-        //         throw new InvalidOperationException("Patients are the same!");
-        //     }
-        //
-        //     if (_patient!=null)
-        //     {
-        //         _patient.removePrescriptionFromPatient(this);
-        //     }
-        //     newPatient.addPrescriptionForPatient(this);
-        //     _patient = newPatient;
-        // }
 //==================================================================================================================
 //Class Extent Methods
         internal static void AddPrescription(Prescription prescription)

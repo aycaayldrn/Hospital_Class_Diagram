@@ -672,7 +672,7 @@ public class DepartmentTests
         Assert.Fail();
     }
     
-        [Test]
+    [Test]
     public void Trying_to_add_Doctor_to_Department_and_then_delete_it()
     {
         Department department = new Department("Test", new Room());

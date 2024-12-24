@@ -268,21 +268,17 @@ namespace Hospital_System.Models
             if (appointment==null)
             {
                 throw new ArgumentException("Appointment cannot be null!");
-
             }
 
             if (_appointments.Contains(appointment))
             {
                 throw new InvalidOperationException("room already exists in the list");
-
             }
             _appointments.Add(appointment);
         }
 
         public void removeAppointmentFromPatient(Appointment appointment)
         {
-            
-            
             if (appointment == null)
             {
                 throw new ArgumentException("Appointment cannot be null!");

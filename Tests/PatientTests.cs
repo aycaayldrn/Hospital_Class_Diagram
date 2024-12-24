@@ -213,95 +213,95 @@ public class PatientTests
     }
     
     
-    // [Test]
-    // public void Trying_to_add_Insurance_Provider_to_Patient_and_then_delete_it()
-    // {
-    //     Patient patient = new Patient(1,"Test1",new DateTime(2005));
-    //     Insurance_Provider provider = new Insurance_Provider(1, "Test2");
-    //     patient.AddInsuranceProviderToPatient(provider);
-    //     foreach (var e in patient.PatientProviders)
-    //     {
-    //         if (e.Id == provider.Id)
-    //         {
-    //             patient.RemoveInsuranceProviderFromPatient(provider);
-    //             foreach (var e2 in patient.PatientProviders)
-    //             {
-    //                 if (e2.Id == provider.Id)
-    //                 {
-    //                     Assert.Fail("Insurance Provider has not been deleted");
-    //                 }
-    //             }
-    //             Patient.RemovePatient(patient);
-    //             Insurance_Provider.removeProvider(provider);
-    //             Assert.Pass();
-    //         }
-    //     }
-    //     Assert.Fail("Insurance Provider has not been added");
-    // }
-    //
-    // [Test]
-    // public void Trying_to_add_Insurance_Provider_to_Patient()
-    // {
-    //     Patient patient = new Patient(2,"Test1",new DateTime(2005));
-    //     Insurance_Provider provider = new Insurance_Provider(2, "Test2");
-    //     Console.WriteLine(patient.PatientProviders.Count);
-    //     patient.AddInsuranceProviderToPatient(provider);
-    //     foreach (var e in patient.PatientProviders)
-    //     {
-    //         if (e.Id == provider.Id)
-    //         {
-    //             Insurance_Provider.removeProvider(provider);
-    //             Patient.RemovePatient(patient);
-    //             Assert.Pass();
-    //         }
-    //     }
-    //     Assert.Fail();
-    // }
-    //
-    // [Test]
-    // public void Trying_to_add_many_Insurance_Providers_to_Patient()
-    // {
-    //     Patient patient = new Patient(1,"Test1",new DateTime(2005));
-    //     List<Insurance_Provider> providers = new List<Insurance_Provider>{new (1,"Test2"), new (2,"Test2"), new (3,"Test2")};
-    //     foreach (var e in providers)
-    //     {
-    //         patient.AddInsuranceProviderToPatient(e);
-    //     }
-    //
-    //     foreach (var e in patient.PatientProviders)
-    //     {
-    //         if (providers.Exists(e => providers.Count==patient.PatientProviders.Count))
-    //         {
-    //             
-    //         }
-    //         else
-    //         {
-    //             Assert.Fail();
-    //         }
-    //     }
-    //     Patient.RemovePatient(patient);
-    //     foreach (var e in providers)
-    //     {
-    //         Insurance_Provider.removeProvider(e);
-    //     }
-    //     Assert.Pass();
-    // }
-    //
-    // [Test]
-    // public void Trying_to_add_null_Insurance_Provider_to_Patient_throws_ArgumentNullException()
-    // {
-    //     Patient patient = new Patient(1,"Test1",new DateTime(2005));
-    //     try
-    //     {
-    //         patient.AddInsuranceProviderToPatient(null);
-    //         Assert.Fail("Expected ArgumentException");
-    //     }
-    //     catch (ArgumentException argumentException)
-    //     {
-    //         Patient.RemovePatient(patient);
-    //         Assert.Pass();   
-    //     }
-    // }
+    [Test]
+    public void Trying_to_add_Insurance_Provider_to_Patient_and_then_delete_it()
+    {
+        Patient patient = new Patient(1,"Test1",new DateTime(2005));
+        Insurance_Provider provider = new Insurance_Provider(1, "Test2", new Service());
+        patient.AddInsuranceProviderToPatient(provider);
+        foreach (var e in patient.PatientProviders)
+        {
+            if (e.Id == provider.Id)
+            {
+                patient.RemoveInsuranceProviderFromPatient(provider);
+                foreach (var e2 in patient.PatientProviders)
+                {
+                    if (e2.Id == provider.Id)
+                    {
+                        Assert.Fail("Insurance Provider has not been deleted");
+                    }
+                }
+                Patient.RemovePatient(patient);
+                Insurance_Provider.removeProvider(provider);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail("Insurance Provider has not been added");
+    }
+    
+    [Test]
+    public void Trying_to_add_Insurance_Provider_to_Patient()
+    {
+        Patient patient = new Patient(2,"Test1",new DateTime(2005));
+        Insurance_Provider provider = new Insurance_Provider(2, "Test2", new Service());
+        Console.WriteLine(patient.PatientProviders.Count);
+        patient.AddInsuranceProviderToPatient(provider);
+        foreach (var e in patient.PatientProviders)
+        {
+            if (e.Id == provider.Id)
+            {
+                Insurance_Provider.removeProvider(provider);
+                Patient.RemovePatient(patient);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail();
+    }
+    
+    [Test]
+    public void Trying_to_add_many_Insurance_Providers_to_Patient()
+    {
+        Patient patient = new Patient(1,"Test1",new DateTime(2005));
+        List<Insurance_Provider> providers = new List<Insurance_Provider>{new (1,"Test2", new Service()), new (2,"Test2", new Service()), new (3,"Test2", new Service())};
+        foreach (var e in providers)
+        {
+            patient.AddInsuranceProviderToPatient(e);
+        }
+    
+        foreach (var e in patient.PatientProviders)
+        {
+            if (providers.Exists(e => providers.Count==patient.PatientProviders.Count))
+            {
+                
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+        Patient.RemovePatient(patient);
+        foreach (var e in providers)
+        {
+            Insurance_Provider.removeProvider(e);
+        }
+        Assert.Pass();
+    }
+    
+    [Test]
+    public void Trying_to_add_null_Insurance_Provider_to_Patient_throws_ArgumentNullException()
+    {
+        Patient patient = new Patient(1,"Test1",new DateTime(2005));
+        try
+        {
+            patient.AddInsuranceProviderToPatient(null);
+            Assert.Fail("Expected ArgumentException");
+        }
+        catch (ArgumentException argumentException)
+        {
+            Patient.RemovePatient(patient);
+            Assert.Pass();   
+        }
+    }
     
     
     [Test]
@@ -535,4 +535,93 @@ public class PatientTests
     //         Assert.Pass();
     //     }
     // }
+    
+        [Test]
+    public void Trying_to_add_Prescription_to_Patient_and_then_delete_it()
+    {
+        Patient patient = new Patient(1,"Test1",new DateTime(2005));
+        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new Bill());
+        patient.addPrescriptionForPatient(prescription);
+        foreach (var e in patient.GetPatientsPrescriptions())
+        {
+            if (e.Equals(prescription))
+            {
+                patient.removePrescriptionFromPatient(prescription);
+                foreach (var e2 in patient.GetPatientsPrescriptions())
+                {
+                    if (e2.Equals(prescription))
+                    {
+                        Assert.Fail("Bill has not been deleted");
+                    }
+                }
+                Patient.RemovePatient(patient);
+                Prescription.RemovePrescription(prescription);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail("Bill has not been added");
+    }
+    
+    [Test]
+    public void Trying_to_add_Prescription_to_Patient()
+    {
+        Patient patient = new Patient(1,"Test1",new DateTime(2005));
+        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new Bill());
+        patient.addPrescriptionForPatient(prescription);
+        foreach (var e in patient.GetPatientsPrescriptions())
+        {
+            if (e.Equals(prescription))
+            {
+                Patient.RemovePatient(patient);
+                Prescription.RemovePrescription(prescription);
+                Assert.Pass();
+            }
+        }
+        Assert.Fail("Bill has not been added");
+    }
+    
+    [Test]
+    public void Trying_to_add_many_Prescription_to_Patient()
+    {
+        Patient patient = new Patient(1,"Test1",new DateTime(2005));
+        List<Prescription> prescriptions = new List<Prescription>{new (1, "Test", 0.3f, 4, false, new Bill()), new (2, "Test", 0.3f, 4, false, new Bill()), new (3, "Test", 0.3f, 4, false, new Bill())};
+        foreach (var e in prescriptions)
+        {
+            patient.addPrescriptionForPatient(e);
+        }
+    
+        foreach (var e in patient.GetPatientsPrescriptions())
+        {
+            if (prescriptions.Contains(e))
+            {
+                
+            }
+            else
+            {
+                Assert.Fail();
+            }
+        }
+        Patient.RemovePatient(patient);
+        foreach (var e in prescriptions)
+        {
+            Prescription.RemovePrescription(e);
+        }
+        Assert.Pass();
+    }
+    
+    [Test]
+    public void Trying_to_add_null_Prescription_to_Patient_throws_ArgumentNullException()
+    {
+        Patient patient = new Patient(1,"Test1",new DateTime(2005));
+        try
+        {
+            patient.addPrescriptionForPatient(null);
+            Assert.Fail("Expected ArgumentException");
+        }
+        catch (ArgumentException argumentException)
+        {
+            Patient.RemovePatient(patient);
+            Assert.Pass();   
+        }
+    }
 }

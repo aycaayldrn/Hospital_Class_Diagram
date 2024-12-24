@@ -180,7 +180,7 @@ namespace Hospital_System.Models
 
             if (_bills.Contains(bill))
             {
-                return;
+                throw new InvalidOperationException("Bill already added");
             }
             _bills.Add(bill);
 
