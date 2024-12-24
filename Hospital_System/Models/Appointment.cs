@@ -54,6 +54,11 @@ namespace Hospital_System.Models
             get { return _patient; }
         }
         
+        private Physician _physician;
+        public Physician Physician
+        {
+            get { return _physician; }
+        }  
         
 
         public Appointment(DateTime date, AppointmentType type, object assignedDoctor, Bill initialBill, Staff staff) 
@@ -82,6 +87,36 @@ namespace Hospital_System.Models
         }
 
         public Appointment(){}
+
+        //==================================================================================================================        
+        //Associations: Appointment-Physician
+
+        public void AddPhysicianToAppointment(Physician physician)
+        {
+            if(physician == null) { throw new ArgumentNullException("Physician can't be null");}
+
+            if(_physician == physician)
+            {
+                throw new InvalidOperationException("Physician already assigned");
+            }
+            _physician = physician;
+
+            if (physician.GetAppointments().Contains(this))
+            {
+                physician.addAppointmentForPhysician(this);
+            }
+        }
+
+        public void RemovePhysicianFromAppointment(Physician physician)
+        {
+            if (physician == null) { throw new ArgumentNullException("Physician can't be null"); }
+
+            if ( _physician.GetAppointments().Contains(this))
+            {
+                _physician.RemoveAppointmentFromPhysician(this);
+            }
+            _physician= null;
+        }
 
         //==================================================================================================================        
         //Associations: Appointment->"supported by"-Staff

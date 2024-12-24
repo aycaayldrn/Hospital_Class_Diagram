@@ -31,15 +31,12 @@ namespace Hospital_System.Models
             set => _availability = value;
         }
 
-        Dictionary<int, Department> _departmentForRoom = new Dictionary<int, Department>();
 
         private static List<Room> _roomList = new List<Room>();
 
         private List<Patient> _patients = new List<Patient>();
         public IReadOnlyList<Patient> Patients => _patients.AsReadOnly();
 
-
-        public int Number { get; set; }
 
         
         private RoomType _type;
@@ -50,24 +47,17 @@ namespace Hospital_System.Models
         }
         
 
-        public Room(int number, RoomType type, RoomAvailability availability)
-        {
-            if(number <= 0)
-            {
-                throw new ArgumentException("Room number must be grater than zero");
-            }
-
-            Number = number;   
+        public Room(RoomType type, RoomAvailability availability) //new changes: room number deleted bc it is qualifer 
+        {  
             Type = type;
             Availability = availability;
             AddRoom(this);
         }
+
         public Room() { }
         
         
-        
-       
-        private Department _department;
+        private Department _department; //association 1
         public Department Department
         {
             get { return _department; }
@@ -75,6 +65,8 @@ namespace Hospital_System.Models
         
 //==================================================================================================================
 //Associations Room-Department
+
+       
         public void assignRoomToDepartment(Department department)
         {
             if (department==null)
@@ -82,12 +74,13 @@ namespace Hospital_System.Models
                 throw new ArgumentException("Room cannot be null");
             }
             
-            if (_department!= null)
+            if (_department != null)
             {
                 throw new InvalidOperationException("Room already assigned to department");
             }
 
             _department = department;
+
             if (!department.GetDepartmentRooms().Contains(this))
             {
                 department.addRoomToDepartment(this);
@@ -148,7 +141,7 @@ namespace Hospital_System.Models
             foreach (var room in containerRooms)
             {
 
-                new Room(room.Number, room.Type, room.Availability);
+                new Room( room.Type, room.Availability);
             }
         }
 //==================================================================================================================
@@ -189,30 +182,39 @@ namespace Hospital_System.Models
         }
         //==================================================================================================================
         //Helper methods
+        //public override bool Equals(object? obj)
+        //{
+        //    if (obj == null || !(obj is Room))
+        //    {
+        //        return false;
+        //    }
+
+        //    Room other = (Room)obj;
+
+        //    return this.Number == other.Number;
+        //}
+
+        //since number is not inside constructor, we check equality by reference, not sure if it correct?
         public override bool Equals(object? obj)
         {
-            if (obj == null || !(obj is Room))
+            if(obj == null || !(obj is Room))
             {
                 return false;
             }
-
-            Room other = (Room)obj;
-
-            return this.Number == other.Number;
+            return this ==  (Room)obj;
         }
+
+
         public override int GetHashCode()
         {
-            return Number.GetHashCode();
+            //return Number.GetHashCode();
+            return base.GetHashCode();
         }
         
         public override string ToString()
         {
-            return "Room Number: "+Number+ "Type: "+Type+ "Availability: " + Availability;
+            return "Type: "+Type+ "Availability: " + Availability;
         }
-
-        
-
-        
 
        
     }

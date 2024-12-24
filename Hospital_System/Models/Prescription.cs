@@ -16,7 +16,8 @@ namespace Hospital_System.Models
         private List<Bill> _bills = new List<Bill>();
         public IReadOnlyList<Bill> Bills => _bills.AsReadOnly();
 
-        public Physician _physician;
+        private Physician _physician;
+        public Physician Physician => _physician;
         public int Id { get; set; }
         
         private string _medicationName;
@@ -82,6 +83,7 @@ namespace Hospital_System.Models
             }
 
             _physician = physician;
+
             if (!physician.GetPrescriptions().Contains(this))
             {
                 physician.addPrescriptiont(this);

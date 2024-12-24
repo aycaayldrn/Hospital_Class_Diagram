@@ -30,8 +30,8 @@ namespace Hospital_System.Models
 
         public Room _room;
 
-        private List<Physician> _physicians = new List<Physician>();
-        public IReadOnlyList<Physician> Physicians => _physicians.AsReadOnly();
+        private Physician _physician;
+        public Physician Physician => _physician;
 
 
         public bool HasHealthInsurance => _patientProviders.Count > 0;
@@ -116,15 +116,7 @@ namespace Hospital_System.Models
                 }
                 _treatments = value.Where(item => !string.IsNullOrWhiteSpace(item)).ToList();
             }
-        }
-        
-        
-
-        private Physician _doctor;
-        public Physician Doctor
-        {
-            get { return _doctor; }
-        }
+        } 
         
         public Patient(){}
         public Patient(int id, string name, DateTime birthDate)
@@ -139,65 +131,65 @@ namespace Hospital_System.Models
             AddPatient(this);
         }
 
-//==================================================================================================================
-//Associations: Agregation: Patient-Physician
+        //==================================================================================================================
+        //Associations: Agregation: Patient-Physician
 
-        //public void assignPhysicianToPatient(Physician doctor)
-        //{
-        //    if (doctor == null)
-        //    {
-        //        throw new ArgumentException("Doctor cannot be null");
-        //    }
+        public void assignPhysicianToPatient(Physician physician)
+        {
+            if (physician == null)
+            {
+                throw new ArgumentException("Doctor cannot be null");
+            }
 
-        //    if (_doctor != null)
-        //    {
-        //        throw new InvalidOperationException("Doctor already assigned to patient");
-        //    }
+            if (_physician != null)
+            {
+                throw new InvalidOperationException("Doctor already assigned to patient");
+            }
 
-        //    _doctor = doctor;
-        //    if (!doctor.GetPatients().Contains(this))
-        //    {
-        //        doctor.addPatientToPhysician(this);
-        //    }
-        //}
-        
-        
-        //public void changePhysician(Physician diffrentDoctor)
-        //{
-        //    if (diffrentDoctor== null)
-        //    {
-        //        throw new ArgumentException("Doctor cannot be null");
-        //    }
-
-        //    if (_doctor==diffrentDoctor)
-        //    {
-        //        throw new InvalidOperationException("Doctors are the same!");
-        //    }
-
-        //    if (_doctor!=null)
-        //    {
-        //        _doctor.removePatientFromPhysician(this);
-        //    }
-        //    diffrentDoctor.addPatientToPhysician(this);
-        //    _doctor = diffrentDoctor;
-        //}
-        
-        //public void deletePatient()
-        //{
-        //    if (_doctor != null && _doctor.GetPatients().Contains(this))
-        //    {
-        //        _doctor.removePatientFromPhysician(this);
-        //    }
-        //    _doctor = null;
-
-           
-        //}
+            _physician = physician;
+            if (!physician.GetPatients().Contains(this))
+            {
+                physician.addPatientToPhysician(this);
+            }
+        }
 
 
+        public void changePhysician(Physician diffrentDoctor)
+        {
+            if (diffrentDoctor == null)
+            {
+                throw new ArgumentException("Doctor cannot be null");
+            }
+
+            if (_physician == diffrentDoctor)
+            {
+                throw new InvalidOperationException("Doctors are the same!");
+            }
+
+            if (_physician != null)
+            {
+                _physician.removePatientFromPhysician(this);
+            }
+            diffrentDoctor.addPatientToPhysician(this);
+            _physician = diffrentDoctor;
+        }
+
+        public void deletePatient()
+        {
+            if (_physician != null && _physician.GetPatients().Contains(this))
+            {
+                _physician.removePatientFromPhysician(this);
+            }
+            _physician = null;
 
 
-//==================================================================================================================
-//Associations: Patient- agrees with- Provider
+        }
+
+
+
+
+        //==================================================================================================================
+        //Associations: Patient- agrees with- Provider
 
         public void AddInsuranceProviderToPatient(Insurance_Provider provider)
         {
