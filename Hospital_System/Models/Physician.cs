@@ -118,7 +118,7 @@ namespace Hospital_System.Models;
             }
             _prescriptions.Remove(prescription);
 
-            if (prescription._physician!=null&&prescription._physician.Equals(this))
+            if (prescription.Physician != null && prescription.Physician == this)
             {
                 prescription.deletePrescriptionByPhyscian();
             }

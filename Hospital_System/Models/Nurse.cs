@@ -15,8 +15,8 @@ namespace Hospital_System.Models
         private List<Shift> _shifts = new List<Shift>();
         public IReadOnlyList<Shift> Shifts => _shifts.AsReadOnly();
 
-        private List<Nurse_Shift> _shiftsForPatients = new List<Nurse_Shift>();
-        public IReadOnlyList<Nurse_Shift> Nurse_Shifts => _shiftsForPatients.AsReadOnly();
+        private List<Nurse_Shift> _nurseShifts = new List<Nurse_Shift>();
+        public IReadOnlyList<Nurse_Shift> Nurse_Shifts => _nurseShifts.AsReadOnly();
 
         public int Id { get; set; }
         
@@ -166,40 +166,70 @@ namespace Hospital_System.Models
                 new Nurse(nurse.Id, nurse.Name, nurse.Certifications);
             }
         }
-//==================================================================================================================
-//Asspciation with attribute: nurse-Patient
+        //==================================================================================================================
+        //Asspciation with attribute: nurse-Patient
 
-        //public void AddShiftToNurseForPatient(Nurse_Shift shift, Patient patient, )
-        //{
-        //    if (shift == null)
-        //        throw new ArgumentNullException(nameof(shift), "Shift cannot be null.");
+        public void AddPatient(Nurse_Shift shift, Patient patient, DateTime nurseShiftStart, DateTime nurseShiftEnd)
+        {
+            if (shift == null)
+                throw new ArgumentNullException(nameof(shift), "Shift cannot be null.");
 
-        //    if (!_shiftsForPatients.Contains(shift))
-        //    {
-        //        new Nurse_Shift(patient, this);
-        //        _shiftsForPatients.Add(shift);
-        //    }
-        //    else
-        //    {
-        //        throw new InvalidOperationException("The nurse already assigned to this patient-realated shift");
-        //    }
-        //}
+            if (patient == null)
+                throw new ArgumentNullException(nameof(patient), "Patient cannot be null.");
 
-        //public void RemoveShiftFromNurseForPatient(Nurse_Shift shift)
-        //{
-        //    if (shift == null)
-        //        { throw new ArgumentNullException(nameof(shift), "Shift cannot be null."); }
+            bool alreadyExists = _nurseShifts.Any(ns => ns.Patient == patient);
+            if (alreadyExists)
+            {
+                throw new InvalidOperationException("This Patient is already assigned to this Nurse.");
+            }
 
-        //    if (!_shiftsForPatients.Contains(shift))
-        //    {
-        //        throw new InvalidOperationException("This shift is not assigned to nurse");
-        //    }
+            bool hasOverlap = _nurseShifts.Any(ns => ns.Patient == patient && 
+            (
+                (nurseShiftStart < ns.EndTime && nurseShiftEnd > ns.StartTime) || 
+                (nurseShiftStart == ns.StartTime && nurseShiftEnd == ns.EndTime) 
+            ));
 
-        //    _shiftsForPatients.Remove(shift);
-        //}
+            if (hasOverlap)
+            {
+                throw new InvalidOperationException("Overlapping shift detected for this patient and nurse.");
+            }
 
-//==================================================================================================================  
-//Helper methods
+            if (!_nurseShifts.Contains(shift))
+            {
+                new Nurse_Shift(new List<Nurse> { this }, patient, nurseShiftStart, nurseShiftEnd);
+            }
+            else
+            {
+                throw new InvalidOperationException("The nurse already assigned to this patient-realated shift");
+            }
+        }
+
+        public void RemoveShiftFromNurseForPatient(Nurse_Shift shift)
+        {
+            if (shift == null)
+            { throw new ArgumentNullException(nameof(shift), "Shift cannot be null."); }
+
+            if (!_nurseShifts.Contains(shift))
+            {
+                throw new InvalidOperationException("This shift is not assigned to nurse");
+            }
+
+            _nurseShifts.Remove(shift);
+
+            if (shift.Patient != null && shift.Patient.GetNurseShiftsInternal().Contains(shift))
+            {
+                shift.Patient.GetNurseShiftsInternal().Remove(shift);
+            }
+        }
+
+        public  IReadOnlyCollection<Nurse_Shift> GetNurseShifts(){
+            return _nurseShifts.AsReadOnly();
+        }
+
+        public List<Nurse_Shift> GetNurseShiftsInternal() => _nurseShifts;
+
+        //==================================================================================================================  
+        //Helper methods
         public override bool Equals(object? obj)
         {
             if (obj==null||!(obj is Nurse))
@@ -210,10 +240,7 @@ namespace Hospital_System.Models
             Nurse a = (Nurse)obj;
 
             return this.Id==a.Id&& string.Equals(this._name, a._name, StringComparison.OrdinalIgnoreCase);
-        }
-        
-        
-        
+        }      
         
         public override int GetHashCode()
         {
