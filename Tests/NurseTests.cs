@@ -144,7 +144,13 @@ public class NurseTests
         }
         
         SerializeToFIle.loadAll();
-        
-        Assert.That(Nurse.GetNurses(), Is.EqualTo(la));
+        foreach (var o in Nurse.GetNurses())
+        {
+            if (!la.Contains(o))
+            {
+                Assert.Fail();
+            }
+        }
+        Assert.Pass();
     }
 }

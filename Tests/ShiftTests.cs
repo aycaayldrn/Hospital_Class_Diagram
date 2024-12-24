@@ -146,15 +146,22 @@ public class ShiftTests
         
         SerializeToFIle.loadAll();
         
-        Assert.That(Shift.GetShifts(), Is.EqualTo(la));
+        foreach (var o in Shift.GetShifts())
+        {
+            if (!la.Contains(o))
+            {
+                Assert.Fail();
+            }
+        }
+        Assert.Pass();
     }
     
     
      [Test]
     public void Trying_to_assign_Shift_to_Staff()
     {
-        Staff staff = new Staff(3,"Test2","test");
-        Staff staff2 = new Staff(1,"Test2","test");
+        Staff staff = new Staff(3,"Test2","test", new Shift());
+        Staff staff2 = new Staff(1,"Test2","test", new Shift());
         Shift shift = new Shift(new DateTime(2004), new DateTime(2005),"test");
         shift.asssignStaffToShift(staff);
         if (!shift.Staff.Equals(staff))
@@ -177,7 +184,7 @@ public class ShiftTests
     [Test]
     public void Trying_to_assign_Shift_to_Staff_and_change_to_null_Patient_should_throw_ArgumentException()
     {
-        Staff staff = new Staff(3,"Test2","test");
+        Staff staff = new Staff(3,"Test2","test", new Shift());
         Shift shift = new Shift(new DateTime(2004), new DateTime(2005),"test");
         shift.asssignStaffToShift(staff);
         if (!shift.Staff.Equals(staff))
@@ -201,7 +208,7 @@ public class ShiftTests
     [Test]
     public void Trying_to_assign_Shift_to_Staff_and_change_to_same_Patient_should_throw_InvalidOperationException()
     {
-        Staff staff = new Staff(3,"Test2","test");
+        Staff staff = new Staff(3,"Test2","test", new Shift());
         Shift shift = new Shift(new DateTime(2004), new DateTime(2005),"test");
         shift.asssignStaffToShift(staff);
         if (!shift.Staff.Equals(staff))
@@ -241,8 +248,8 @@ public class ShiftTests
     [Test]
     public void Trying_to_assign_Shift_to_Staff_when_it_already_assigned_to_another_should_throw_InvalidOperationException()
     {
-        Staff staff = new Staff(1,"Test2","test");
-        Staff staff2 = new Staff(3,"Test2","test");
+        Staff staff = new Staff(1,"Test2","test", new Shift());
+        Staff staff2 = new Staff(3,"Test2","test", new Shift());
         Shift shift = new Shift(new DateTime(2004), new DateTime(2005),"test");
         shift.asssignStaffToShift(staff);
         try

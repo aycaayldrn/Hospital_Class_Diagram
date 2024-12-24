@@ -101,15 +101,17 @@ namespace Hospital_System.Models
                 throw new InvalidOperationException("Physicians are the same!");
             }
 
-            if (_physician != null)
+            if (_physician == null)
             {
-                _physician.removePrescriptiont(this);
+                throw new InvalidOperationException("Physcian wasn't assigned");
             }
+            var ph = _physician;
+            _physician = diffrentPhysician;
+            ph.removePrescriptiont(this);
             if (!diffrentPhysician.GetPrescriptions().Contains(this))
             {
                 diffrentPhysician.addPrescriptiont(this);
             }
-            _physician = diffrentPhysician;
         }
 
 
@@ -117,9 +119,10 @@ namespace Hospital_System.Models
         {
             if (_physician != null && _physician.GetPrescriptions().Contains(this))
             {
-                _physician.removePrescriptiont(this);
+                var ph = _physician;
+                _physician = null;
+                ph.removePrescriptiont(this);
             }
-            _physician = null;
 
 
         }

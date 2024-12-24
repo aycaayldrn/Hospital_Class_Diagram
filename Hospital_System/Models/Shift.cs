@@ -29,9 +29,6 @@ namespace Hospital_System.Models
             get { return _staff; }
         }
 
-        private List<Staff> _staffMembers = new List<Staff>();
-        public IReadOnlyList<Staff> Staffs => _staffMembers.AsReadOnly();
-
         public Shift(DateTime startTime, DateTime endTime, string day )
         {
             if(endTime <= startTime)

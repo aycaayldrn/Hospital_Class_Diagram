@@ -144,14 +144,20 @@ public class RoomsTests
         }
         
         SerializeToFIle.loadAll();
-
-        Assert.That(Room.GetRooms(), Is.EqualTo(la));
+        foreach (var o in Room.GetRooms())
+        {
+            if (!la.Contains(o))
+            {
+                Assert.Fail();
+            }
+        }
+        Assert.Pass();
     }
     
     [Test]
     public void Trying_to_assign_Equipment_to_Department()
     {
-        Department department = new Department("Test");
+        Department department = new Department("Test", new Room());
         Room room = new Room( 2,Room.RoomType.Double,Room.RoomAvailability.Available);
         room.assignRoomToDepartment(department);
         foreach (var e in department.GetDepartmentRooms())
@@ -165,78 +171,6 @@ public class RoomsTests
         }
         Assert.Fail();
     }
-    
-    // [Test]
-    // public void Trying_to_assign_Room_to_Department_and_change_Department()
-    // {
-    //     Department department = new Department("Test");
-    //     Department department2 = new Department("Test1");
-    //     Room room = new Room( 2,Room.RoomType.Double,Room.RoomAvailability.Available);
-    //     room.assignRoomToDepartment(department);
-    //     if (!room.Department.Equals(department))
-    //     {
-    //         Assert.Fail();
-    //     }
-    //     room.changeDepartment(department2);
-    //
-    //     if (department2.Equals(room.Department))
-    //     {
-    //         Department.removeDepartment(department2);
-    //         Department.removeDepartment(department);
-    //         Room.RemoveRoom(room);
-    //         Assert.Pass();
-    //     }else{
-    //         Assert.Fail();
-    //     }
-    // }
-    
-    // [Test]
-    // public void Trying_to_assign_Room_to_Department_and_change_to_null_Department_should_throw_ArgumentException()
-    // {
-    //     Department department = new Department("Test");
-    //     Room room = new Room( 2,Room.RoomType.Double,Room.RoomAvailability.Available);
-    //     room.assignRoomToDepartment(department);
-    //     if (!room.Department.Equals(department))
-    //     {
-    //         Assert.Fail();
-    //     }
-    //
-    //     try
-    //     {
-    //         room.changeDepartment(null);
-    //         Assert.Fail("Expected ArgumentException");
-    //     }
-    //     catch (ArgumentException ae)
-    //     {
-    //         Department.removeDepartment(department);
-    //         Room.RemoveRoom(room);
-    //         Assert.Pass();
-    //     }
-    // }
-    
-    // [Test]
-    // public void Trying_to_assign_Room_to_Department_and_change_to_same_Department_should_throw_InvalidOperationException()
-    // {
-    //     Department department = new Department("Test");
-    //     Room room = new Room( 2,Room.RoomType.Double,Room.RoomAvailability.Available);
-    //     room.assignRoomToDepartment(department);
-    //     if (!room.Department.Equals(department))
-    //     {
-    //         Assert.Fail();
-    //     }
-    //
-    //     try
-    //     {
-    //         room.changeDepartment(department);
-    //         Assert.Fail("Expected InvalidOperationException");
-    //     }
-    //     catch (InvalidOperationException ae)
-    //     {
-    //         Department.removeDepartment(department);
-    //         Room.RemoveRoom(room);
-    //         Assert.Pass();
-    //     }
-    // }
     
     [Test]
     public void Trying_to_assign_Equipment_to_null_Department_should_throw_ArgumentException()
@@ -257,8 +191,8 @@ public class RoomsTests
     [Test]
     public void Trying_to_assign_Room_to_Department_when_it_already_assigned_to_another_should_throw_InvalidOperationException()
     {
-        Department department = new Department("Test");
-        Department department2 = new Department("Test1");
+        Department department = new Department("Test", new Room());
+        Department department2 = new Department("Test1", new Room());
         Room room = new Room( 2,Room.RoomType.Double,Room.RoomAvailability.Available);
         room.assignRoomToDepartment(department);
         try

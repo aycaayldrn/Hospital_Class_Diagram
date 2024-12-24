@@ -20,10 +20,11 @@ namespace Hospital_System.Models
         private List<Doctor> _doctorsInDepartment = new List<Doctor>();
         
         
-        private Doctor _headOfDepartment;
-        public Doctor HeadOfDepaartment
+        private Doctor? _headOfDepartment;
+        public Doctor? HeadOfDepaartment
         {
             get { return _headOfDepartment; }
+            set { _headOfDepartment = value; }
         }
 
         private string _name;
@@ -105,16 +106,10 @@ namespace Hospital_System.Models
                 throw new InvalidOperationException("The specified doctor is not the head of this department.");
             }
 
-            if (doctor.HeadedDepartment == null)
-            {
-                 return; 
-            }
-
             var currentHead = _headOfDepartment;
+            HeadOfDepaartment = null;
 
-            _headOfDepartment = null;
-
-            if (currentHead.HeadedDepartment == this)
+            if (currentHead.HeadedDepartment!=null&&currentHead.HeadedDepartment.Equals(this))
             {
                 currentHead.deleteDoctorFromBeingHead(this);
             }
@@ -205,7 +200,7 @@ namespace Hospital_System.Models
             _nursesInDepartment.Remove(nurse);
             if (nurse.Department == this)
             {
-                nurse.deleteNurse();
+                nurse.deleteNurseDepartment();
             }
         }
         

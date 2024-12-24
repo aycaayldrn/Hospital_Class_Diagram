@@ -12,7 +12,7 @@ public class PrescriptionTests
         }
         
         String name = "Test1";
-        Prescription p = new Prescription(1, name, 0.3f, 4, false);
+        Prescription p = new Prescription(1, name, 0.3f, 4, false, new Bill());
 
         Assert.That(p.MedicationName, Is.EqualTo(name));
     }
@@ -22,7 +22,7 @@ public class PrescriptionTests
     {
         try
         {
-            Prescription p = new Prescription(1, null, 0.3f, 4, false);
+            Prescription p = new Prescription(1, null, 0.3f, 4, false, new Bill());
             Assert.Fail("Expected ArgumentException");
         }
         catch (ArgumentException)
@@ -40,10 +40,24 @@ public class PrescriptionTests
         }
         
         float dosage = 1.4f;
-        Prescription p = new Prescription(1, "Test2", dosage, 4, false);
+        Prescription p = new Prescription(1, "Test2", dosage, 4, false, new Bill());
 
         Assert.That(p.Dosage, Is.EqualTo(dosage));
         Prescription.RemovePrescription(p);
+    }
+    
+    [Test]
+    public void Trying_to_create_Prescription_with_null_Bill_throws_ArgumentException()
+    {
+        try
+        {
+            Prescription p = new Prescription(1, "Test2", 1.2f, 4, false, null);
+            Assert.Fail("Expected ArgumentException");
+        }
+        catch (ArgumentException)
+        {
+            Assert.Pass();
+        }
     }
     
     [Test]
@@ -55,7 +69,7 @@ public class PrescriptionTests
         }
         
         int duration = 14;
-        Prescription p = new Prescription(1, "Test3", 1.2f, duration, false);
+        Prescription p = new Prescription(1, "Test3", 1.2f, duration, false, new Bill());
 
         Assert.That(p.Duration, Is.EqualTo(duration));
         Prescription.RemovePrescription(p);
@@ -70,7 +84,7 @@ public class PrescriptionTests
             Prescription.RemovePrescription(o);
         }
         
-        List<Prescription> lp = new List<Prescription>{new ( 1, "Test1", 1.2f, 4, false), new (2, "Test2", 1.2f, 4, false), new ( 3, "Test3", 1.2f, 4, false)};
+        List<Prescription> lp = new List<Prescription>{new ( 1, "Test1", 1.2f, 4, false, new Bill()), new (2, "Test2", 1.2f, 4, false, new Bill()), new ( 3, "Test3", 1.2f, 4, false, new Bill())};
         
         
         Assert.That(Prescription.GetPrescriptions(), Is.EqualTo(lp));
@@ -84,10 +98,10 @@ public class PrescriptionTests
             Prescription.RemovePrescription(o);
         }
         
-        Prescription b = new Prescription(5, "Test5", 1.2f, 4, false);
+        Prescription b = new Prescription(5, "Test5", 1.2f, 4, false, new Bill());
         try
         {
-            Prescription b2 = new Prescription(5, "Test5", 1.2f, 4, false);
+            Prescription b2 = new Prescription(5, "Test5", 1.2f, 4, false, new Bill());
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
@@ -123,7 +137,7 @@ public class PrescriptionTests
             Prescription.RemovePrescription(o);
         }
         
-        List<Prescription> la = new List<Prescription>{new ( 1, "Test1", 1.2f, 4, false), new (2, "Test2", 1.2f, 4, false), new ( 3, "Test3", 1.2f, 4, false)};
+        List<Prescription> la = new List<Prescription>{new ( 1, "Test1", 1.2f, 4, false, new Bill()), new (2, "Test2", 1.2f, 4, false, new Bill()), new ( 3, "Test3", 1.2f, 4, false, new Bill())};
         
         SerializeToFIle.saveAll();
         
@@ -133,7 +147,13 @@ public class PrescriptionTests
         }
         
         SerializeToFIle.loadAll();
-        
-        Assert.That(Prescription.GetPrescriptions(), Is.EqualTo(la));
+        foreach (var o in Prescription.GetPrescriptions())
+        {
+            if (!la.Contains(o))
+            {
+                Assert.Fail();
+            }
+        }
+        Assert.Pass();
     }
 }

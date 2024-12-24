@@ -42,6 +42,7 @@ namespace Hospital_System.Models
                 throw new InvalidOperationException("Doctor must be part of the department to become head");
             }
             
+            HeadedDepartment = department;
             
             department.assignHeadOfDepartment(this);
             
@@ -55,17 +56,15 @@ namespace Hospital_System.Models
             }
             if(HeadedDepartment == null)
             {
-                return;
+                throw new InvalidOperationException("Department cannot be null");
             }
 
             if (department.GetHeadOfDepartment() != this)
             {
                 throw new InvalidOperationException("Doctor is not the head of this department");
             }
-
-            department.removeHeadOfDepartment(this);
             HeadedDepartment = null;
-
+            department.removeHeadOfDepartment(this);
         }
 
 
