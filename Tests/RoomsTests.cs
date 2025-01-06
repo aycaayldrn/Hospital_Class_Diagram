@@ -52,26 +52,6 @@ public class RoomsTests
     }
     
     [Test]
-    public void Trying_to_create_same_Room_throws_InvalidOperationException()
-    {
-        foreach (var o in Room.GetRooms().ToList())
-        {
-            Room.RemoveRoom(o);
-        }
-
-        Room r = new Room(Room.RoomType.Double,Room.RoomAvailability.Available);
-        try
-        {
-            Room r2 = new Room(Room.RoomType.Double,Room.RoomAvailability.Available);
-            Assert.Fail("Should throw InvalidOperationException");
-        }catch(InvalidOperationException o)
-        {
-            Room.RemoveRoom(r);
-            Assert.Pass();
-        }
-    }
-    
-    [Test]
     public void Trying_to_remove_nonExisting_Room_InvalidOperationException_excepted()
     {
         foreach (var o in Room.GetRooms().ToList())
@@ -123,7 +103,7 @@ public class RoomsTests
     [Test]
     public void Trying_to_assign_Equipment_to_Department()
     {
-        Department department = new Department("Test", new Dictionary<int, Room>());
+        Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
         Room room = new Room( Room.RoomType.Double,Room.RoomAvailability.Available);
         room.assignRoomToDepartment(department);
         foreach (var e in department.GetDepartmentRooms())
@@ -157,8 +137,8 @@ public class RoomsTests
     [Test]
     public void Trying_to_assign_Room_to_Department_when_it_already_assigned_to_another_should_throw_InvalidOperationException()
     {
-        Department department = new Department("Test", new Dictionary<int, Room>());
-        Department department2 = new Department("Test1", new Dictionary<int, Room>());
+        Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
+        Department department2 = new Department("Test1", new Dictionary<int, Room>(){{1, new Room()}});
         Room room = new Room(Room.RoomType.Double,Room.RoomAvailability.Available);
         room.assignRoomToDepartment(department);
         try

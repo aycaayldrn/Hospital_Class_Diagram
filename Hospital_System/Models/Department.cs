@@ -368,16 +368,18 @@ namespace Hospital_System.Models
             {
                 throw new InvalidOperationException("Department not found!");
             }
-            //have to remove all of equipment,rooms before deleting dep!
-            
-            for (int i = department._equipmentsList.Count-1; i >=0; i--)
+
+            for (int i = department._equipmentsList.Count - 1; i >= 0; i--)
             {
                 department._equipmentsList[i].deleteEquipment();
             }
 
             foreach (var room in department._roomNumber.Values.ToList())
             {
-                room.deleteRoom();
+                if (room.Department != null)
+                {
+                    room.deleteRoom();
+                }
             }
 
             department._equipmentsList.Clear();

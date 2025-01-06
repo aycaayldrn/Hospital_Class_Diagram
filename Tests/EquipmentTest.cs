@@ -97,7 +97,7 @@ public class EquipmentTest
     [Test]
     public void Trying_to_assign_Equipment_to_Department()
     {
-        Department department = new Department("Test", new Dictionary<int, Room>());
+        Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
         Equipment equipment = new Equipment(1,"Test");
         equipment.assignToDepartment(department);
         foreach (var e in department.GetEquipments())
@@ -115,8 +115,8 @@ public class EquipmentTest
     [Test]
     public void Trying_to_assign_Equipment_to_Department_and_change_Department()
     {
-        Department department = new Department("Test", new Dictionary<int, Room>());
-        Department department2 = new Department("Test1", new Dictionary<int, Room>());
+        Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
+        Department department2 = new Department("Test1", new Dictionary<int, Room>(){{1, new Room()}});
         Equipment equipment = new Equipment(1,"Test");
         equipment.assignToDepartment(department);
         if (!equipment.Department.Equals(department))
@@ -139,7 +139,7 @@ public class EquipmentTest
     [Test]
     public void Trying_to_assign_Equipment_to_Department_and_change_to_null_Department_should_throw_ArgumentException()
     {
-        Department department = new Department("Test", new Dictionary<int, Room>());
+        Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
         Equipment equipment = new Equipment(1,"Test");
         equipment.assignToDepartment(department);
         if (!equipment.Department.Equals(department))
@@ -163,7 +163,7 @@ public class EquipmentTest
     [Test]
     public void Trying_to_assign_Equipment_to_Department_and_change_to_same_Department_should_throw_InvalidOperationException()
     {
-        Department department = new Department("Test", new Dictionary<int, Room>());
+        Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
         Equipment equipment = new Equipment(1,"Test");
         equipment.assignToDepartment(department);
         if (!equipment.Department.Equals(department))
@@ -203,8 +203,8 @@ public class EquipmentTest
     [Test]
     public void Trying_to_assign_Equipment_to_Department_when_it_already_assigned_to_another_should_throw_InvalidOperationException()
     {
-        Department department = new Department("Test", new Dictionary<int, Room>());
-        Department department2 = new Department("Test1", new Dictionary<int, Room>());
+        Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
+        Department department2 = new Department("Test1", new Dictionary<int, Room>(){{1, new Room()}});
         Equipment equipment = new Equipment(1,"Test");
         equipment.assignToDepartment(department);
         try

@@ -88,12 +88,12 @@ namespace Hospital_System.Models
         }
         public void deleteRoom()
         {
-            
-            if (_department != null && _department.GetDepartmentRooms().Contains(this))
-            {
-                _department.removeRoomFromDepartment(this);
-            }
+            Department department = _department;
             _department = null;
+            if (department!=null&&department.GetDepartmentRooms().Contains(this))
+            {
+                department.removeRoomFromDepartment(this);
+            }
         }
         
   
@@ -125,10 +125,9 @@ namespace Hospital_System.Models
             {
                 throw new InvalidOperationException("Room not found");
             }
-            
-            
-            room.deleteRoom();
+
             _roomList.Remove(room);
+            room.deleteRoom();
         }
         
         public static IReadOnlyList<Room> GetRooms()
