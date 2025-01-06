@@ -239,7 +239,8 @@ namespace Hospital_System.Models
             _room?.RemovePatientFromRoom(this);
 
             _room = room;
-            if (!room.GetRoomsPatients().Contains(this))
+
+            if (!room.Patients.Contains(this))
             {
                 room.assignPatientToRoom(this);
             }
@@ -247,7 +248,7 @@ namespace Hospital_System.Models
 
         public void RemoveRoomFromPatient(Room room)
         {
-            if (_room != null && _room.GetRoomsPatients().Contains(this))
+            if (_room != null && _room.Patients.Contains(this))
             {
                 _room.RemovePatientFromRoom(this);
             }

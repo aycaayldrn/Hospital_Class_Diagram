@@ -145,23 +145,32 @@ namespace Hospital_System.Models
             }
         }
 //==================================================================================================================
-//Room--patient - Room can be occupied by max 2 patients
+//Room--patient 
         public void assignPatientToRoom(Patient patient)
         {
             if (patient == null)
                 throw new ArgumentNullException(nameof(patient), "Patient cannot be null.");
 
+            if(Availability != RoomAvailability.Available)
+                throw new InvalidOperationException("Room is not available for assignment.");
+            
+
+            if(Type == RoomType.Single && _patients.Count >= 1)
+                throw new InvalidOperationException("Single room can only have one patient.");
+            else if (Type == RoomType.Double && _patients.Count >= 2)
+                throw new InvalidOperationException("Double room can only have two patients.");
+            else if (Type == RoomType.ICU && _patients.Count >= 1)
+                throw new InvalidOperationException("ICU room can only have one patient.");
+
             if (_patients.Contains(patient))
+            {
                 throw new InvalidOperationException("This patient is already assigned to the room.");
-
-            if (_patients.Count >= 2)
-                throw new InvalidOperationException("The room already has two patients. Cannot assign more.");
-
-            if (patient._room != null)
-                patient._room.RemovePatientFromRoom(patient);
+            }  
 
             _patients.Add(patient);
             patient.AssignRoomToPatient(this);
+
+            Availability = RoomAvailability.Occupied;
         }
 
         public void RemovePatientFromRoom(Patient patient)
@@ -174,6 +183,12 @@ namespace Hospital_System.Models
 
             _patients.Remove(patient);
             patient.RemoveRoomFromPatient(this);
+
+            Availability = _patients.Count > 0 ? RoomAvailability.Occupied : RoomAvailability.Available;
+        }
+        public bool IsAvailable()
+        {
+            return Availability == RoomAvailability.Available;
         }
 
         public IReadOnlyCollection<Patient> GetRoomsPatients()

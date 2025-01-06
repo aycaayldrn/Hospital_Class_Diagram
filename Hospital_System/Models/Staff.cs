@@ -48,17 +48,29 @@ namespace Hospital_System.Models
 
         private static readonly int MaxWorkingHours = 12;
 
-        public Staff(int id, string name, string position, Shift initialShift)
+        public Staff(int id, string name, string position, List<Shift> initialShifts)
         {
             Id = id;
             Name = name;
             Position = position;
 
-            if(initialShift == null)
+            if(initialShifts == null || initialShifts.Count == 0)
             {
                 throw new ArgumentException("A staff member must be assigned to at least one shift");
             }
-            addShiftToStaff(initialShift);
+
+            if (initialShifts.Distinct().Count() != initialShifts.Count)
+            {
+                throw new ArgumentException("Duplicate shifts are not allowed.");
+            }
+
+            foreach (var shift in initialShifts)
+            {
+                if (!_shifts.Contains(shift)){
+                    addShiftToStaff(shift);
+                } 
+            }
+            
             AddStaff(this);
         }
         
@@ -88,7 +100,7 @@ namespace Hospital_System.Models
         {
             if (shift==null)
             {
-                throw new ArgumentException("Shioft can't be null");
+                throw new ArgumentException("Shift can't be null");
             }
 
             if (!_shifts.Contains(shift))
@@ -97,7 +109,7 @@ namespace Hospital_System.Models
                 
             }
             _shifts.Remove(shift);
-            if (shift.Staff.Equals(this))
+            if (shift.Staff == null || shift.Staff.Equals(this))
             {
                 shift.deleteStaff();
             }
@@ -228,7 +240,8 @@ namespace Hospital_System.Models
                     staf.Id,
                     staf.Name,
                     staf.Position,
-                    initialShift);
+                    staf.GetShifts().ToList()
+                );
 
                 foreach(var appointment in staf.Appointments)
                 {

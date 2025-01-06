@@ -42,15 +42,40 @@ namespace Hospital_System.Models
         }
         
         
-        public Department(string name, Room initialRoom) // orijinal association before showing qualifier association is depart 1---- 1..* room
-        {                                                // since department cant be exist without a room assigned
+        public Department(string name, Dictionary<int, Room> initialRooms) // original association before showing qualifier association is depart 1---- 1..* room
+        {                                                                  // since department cant be exist without a room assigned
             Name = name;
 
-            if(initialRoom == null)
+            if(initialRooms == null || initialRooms.Count == 0)
             {
                 throw new ArgumentException("Each department must have at least one room");
             }
-            addRoomToDepartment(initialRoom);
+
+            var duplicateKeys = initialRooms.Keys.GroupBy(key => key)
+                                         .Where(group => group.Count() > 1)
+                                         .Select(group => group.Key)
+                                         .ToList();
+
+            if (duplicateKeys.Any())
+            {
+                throw new ArgumentException($"Duplicate room numbers found: {string.Join(", ", duplicateKeys)}.");
+            }
+
+            foreach (var pair in initialRooms)
+            {
+                if (_roomNumber.ContainsKey(pair.Key))
+                {
+                    throw new InvalidOperationException($"Room number {pair.Key} already exists.");
+                }
+
+                _roomNumber.Add(pair.Key, pair.Value);
+
+                if (pair.Value.Department != this)
+                {
+                    pair.Value.assignRoomToDepartment(this);
+                }
+            }
+
             addDepartment(this);
         }
         public Department(){}
@@ -371,10 +396,10 @@ namespace Hospital_System.Models
                     throw new InvalidOperationException("Each department must have at least one room.");
                 }
 
-                var initialRoom = dep._roomNumber.Values.First();
+                
                 var newDepartment = new Department(
                     dep.Name,
-                    initialRoom);
+                    dep._roomNumber.ToDictionary(pair => pair.Key, pair => pair.Value));
 
                 foreach (var aditionalRoom in dep._roomNumber.Values.Skip(1)){
                     newDepartment.addRoomToDepartment(aditionalRoom);
