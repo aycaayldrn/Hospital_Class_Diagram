@@ -12,10 +12,10 @@ namespace Hospital_System.Models
     {
         private static List<Department> _departmentList = new List<Department>();
         
+        private Dictionary<int, Room> _roomNumber = new Dictionary<int, Room>(); //qualified association
         
         private List<Equipment> _equipmentsList = new List<Equipment>();
-        private List<Room> _roomList = new List<Room>();
-        public IReadOnlyList<Room> Rooms => _roomList.AsReadOnly();
+
         private List<Nurse> _nursesInDepartment = new List<Nurse>();
         private List<Doctor> _doctorsInDepartment = new List<Doctor>();
         
@@ -42,15 +42,40 @@ namespace Hospital_System.Models
         }
         
         
-        public Department(string name, Room initialRoom)
-        {
+        public Department(string name, Dictionary<int, Room> initialRooms) // original association before showing qualifier association is depart 1---- 1..* room
+        {                                                                  // since department cant be exist without a room assigned
             Name = name;
 
-            if(initialRoom == null)
+            if(initialRooms == null || initialRooms.Count == 0)
             {
                 throw new ArgumentException("Each department must have at least one room");
             }
-            addRoomToDepartment(initialRoom);
+
+            var duplicateKeys = initialRooms.Keys.GroupBy(key => key)
+                                         .Where(group => group.Count() > 1)
+                                         .Select(group => group.Key)
+                                         .ToList();
+
+            if (duplicateKeys.Any())
+            {
+                throw new ArgumentException($"Duplicate room numbers found: {string.Join(", ", duplicateKeys)}.");
+            }
+
+            foreach (var pair in initialRooms)
+            {
+                if (_roomNumber.ContainsKey(pair.Key))
+                {
+                    throw new InvalidOperationException($"Room number {pair.Key} already exists.");
+                }
+
+                _roomNumber.Add(pair.Key, pair.Value);
+
+                if (pair.Value.Department != this)
+                {
+                    pair.Value.assignRoomToDepartment(this);
+                }
+            }
+
             addDepartment(this);
         }
         public Department(){}
@@ -215,6 +240,8 @@ namespace Hospital_System.Models
 //==================================================================================================================
 
 //Associations Room-Department
+
+        public Dictionary<int, Room> GetRooms() => _roomNumber != null ? new Dictionary<int, Room>(_roomNumber) : new Dictionary<int, Room>();
         public void addRoomToDepartment(Room room)
         {
             if (room==null)
@@ -223,12 +250,14 @@ namespace Hospital_System.Models
 
             }
 
-            if (_roomList.Contains(room))
+            if (_roomNumber.ContainsValue(room))
             {
                 throw new InvalidOperationException("room already exists in the list");
 
             }
-            _roomList.Add(room);
+
+            _roomNumber.Add(room.GetHashCode(), room);
+
             if (room.Department != this)
             {
                 room.assignRoomToDepartment(this);
@@ -243,12 +272,12 @@ namespace Hospital_System.Models
                 throw new ArgumentException("Room cannot be null!");
             }
 
-            if (!_roomList.Contains(room))
+            if (!_roomNumber.ContainsValue(room))
             {
                 throw new  InvalidOperationException("No such element in the list");
             }
 
-            _roomList.Remove(room);
+            _roomNumber.Remove(room.GetHashCode());
             
             if (room.Department == this)
             {
@@ -258,7 +287,7 @@ namespace Hospital_System.Models
         
         public IReadOnlyList<Room> GetDepartmentRooms()
         {
-            return _roomList.AsReadOnly();
+            return _roomNumber.Values.ToList().AsReadOnly();
         }
 
 //==================================================================================================================        
@@ -346,12 +375,13 @@ namespace Hospital_System.Models
                 department._equipmentsList[i].deleteEquipment();
             }
 
-            for (int i =  department._roomList.Count-1;i >=0; i--)
+            foreach (var room in department._roomNumber.Values.ToList())
             {
-                department._roomList[i].deleteRoom();
+                room.deleteRoom();
             }
+
             department._equipmentsList.Clear();
-            department._roomList.Clear();
+            department._roomNumber.Clear();
             _departmentList.Remove(department);
         }
 
@@ -361,17 +391,17 @@ namespace Hospital_System.Models
             _departmentList.Clear();
             foreach (var dep in containerDepartments)
             {
-                if(dep.Rooms == null || dep.Rooms.Count == 0)
+                if(dep._roomNumber == null || dep._roomNumber.Count == 0)
                 {
                     throw new InvalidOperationException("Each department must have at least one room.");
                 }
 
-                var initialRoom = dep.Rooms.First();
+                
                 var newDepartment = new Department(
                     dep.Name,
-                    initialRoom);
+                    dep._roomNumber.ToDictionary(pair => pair.Key, pair => pair.Value));
 
-                foreach (var aditionalRoom in dep.Rooms.Skip(1)){
+                foreach (var aditionalRoom in dep._roomNumber.Values.Skip(1)){
                     newDepartment.addRoomToDepartment(aditionalRoom);
                 }
                 foreach(var equipment in dep._equipmentsList)

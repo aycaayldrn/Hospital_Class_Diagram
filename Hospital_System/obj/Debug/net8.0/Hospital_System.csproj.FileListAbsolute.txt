@@ -100,3 +100,10 @@ C:\Users\kerya\Desktop\hsm\Hospital_Class_Diagram\Hospital_System\obj\Debug\net8
 C:\Users\kerya\Desktop\hsm\Hospital_Class_Diagram\Hospital_System\obj\Debug\net8.0\Hospital_System.genruntimeconfig.cache
 C:\Users\kerya\Desktop\hsm\Hospital_Class_Diagram\Hospital_System\obj\Debug\net8.0\ref\Hospital_System.dll
 >>>>>>> 3fb77a57110bcf741e6e9eea298c3b50c06edf02
+C:\Users\aycay\source\repos\Hospital_System\Hospital_System\bin\Debug\net8.0\Hospital_System.exe
+C:\Users\aycay\source\repos\Hospital_System\Hospital_System\bin\Debug\net8.0\Hospital_System.deps.json
+C:\Users\aycay\source\repos\Hospital_System\Hospital_System\bin\Debug\net8.0\Hospital_System.runtimeconfig.json
+C:\Users\aycay\source\repos\Hospital_System\Hospital_System\bin\Debug\net8.0\Hospital_System.dll
+C:\Users\aycay\source\repos\Hospital_System\Hospital_System\bin\Debug\net8.0\Hospital_System.pdb
+C:\Users\aycay\source\repos\Hospital_System\Hospital_System\obj\Debug\net8.0\Hospital_System.genruntimeconfig.cache
+C:\Users\aycay\source\repos\Hospital_System\Hospital_System\obj\Debug\net8.0\ref\Hospital_System.dll

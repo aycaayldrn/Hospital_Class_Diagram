@@ -64,16 +64,24 @@ namespace Hospital_System.Models
 
 
 
-        public Bill(int number, double totalCost, Service service)
+        public Bill(int number, double totalCost, List<Service> services)
         {
             Number = number;
             TotalCost = totalCost;
 
-            if(service == null)
+            if(services == null || services.Count == 0)
             {
-                throw new ArgumentException("A bill must be include at least one service");
+                throw new ArgumentException("A bill must include at least one service");
             }
-            AddServiceToBill(service);
+
+            foreach (var service in services)
+            {
+                if (!_services.Contains(service))
+                {
+                    AddServiceToBill(service);
+                }
+            }
+
             addBill(this);
         }
         public Bill() { }
@@ -323,11 +331,11 @@ namespace Hospital_System.Models
                 throw new InvalidOperationException("Each bill must have at least one service.");
            }
 
-                var initialService = bill.Services.First();
+                
                 var newBill = new Bill(
                     bill.Number,
                     bill.TotalCost,
-                    initialService
+                    bill.Services.ToList()
                 );
 
                 foreach( var additionalService in bill.Services.Skip(1))

@@ -25,13 +25,13 @@ namespace Hospital_System.Models
         private List<Insurance_Provider> _patientProviders = new List<Insurance_Provider>();
         public IReadOnlyList<Insurance_Provider> PatientProviders => _patientProviders.AsReadOnly();
 
-        private List<Nurse_Shift> _shiftsForPatients = new List<Nurse_Shift>();
-        public IReadOnlyList<Nurse_Shift> Nurse_Shifts => _shiftsForPatients.AsReadOnly();
+        private List<Nurse_Shift> _nurseShifts = new List<Nurse_Shift>();
+        public IReadOnlyList<Nurse_Shift> Nurse_Shifts => _nurseShifts.AsReadOnly();
 
         public Room _room;
 
-        private List<Physician> _physicians = new List<Physician>();
-        public IReadOnlyList<Physician> Physicians => _physicians.AsReadOnly();
+        private Physician _physician;
+        public Physician Physician => _physician;
 
 
         public bool HasHealthInsurance => _patientProviders.Count > 0;
@@ -116,15 +116,7 @@ namespace Hospital_System.Models
                 }
                 _treatments = value.Where(item => !string.IsNullOrWhiteSpace(item)).ToList();
             }
-        }
-        
-        
-
-        private Physician _doctor;
-        public Physician Doctor
-        {
-            get { return _doctor; }
-        }
+        } 
         
         public Patient(){}
         public Patient(int id, string name, DateTime birthDate)
@@ -139,65 +131,65 @@ namespace Hospital_System.Models
             AddPatient(this);
         }
 
-//==================================================================================================================
-//Associations: Agregation: Patient-Physician
+        //==================================================================================================================
+        //Associations: Agregation: Patient-Physician
 
-        //public void assignPhysicianToPatient(Physician doctor)
-        //{
-        //    if (doctor == null)
-        //    {
-        //        throw new ArgumentException("Doctor cannot be null");
-        //    }
+        public void assignPhysicianToPatient(Physician physician)
+        {
+            if (physician == null)
+            {
+                throw new ArgumentException("Doctor cannot be null");
+            }
 
-        //    if (_doctor != null)
-        //    {
-        //        throw new InvalidOperationException("Doctor already assigned to patient");
-        //    }
+            if (_physician != null)
+            {
+                throw new InvalidOperationException("Doctor already assigned to patient");
+            }
 
-        //    _doctor = doctor;
-        //    if (!doctor.GetPatients().Contains(this))
-        //    {
-        //        doctor.addPatientToPhysician(this);
-        //    }
-        //}
-        
-        
-        //public void changePhysician(Physician diffrentDoctor)
-        //{
-        //    if (diffrentDoctor== null)
-        //    {
-        //        throw new ArgumentException("Doctor cannot be null");
-        //    }
-
-        //    if (_doctor==diffrentDoctor)
-        //    {
-        //        throw new InvalidOperationException("Doctors are the same!");
-        //    }
-
-        //    if (_doctor!=null)
-        //    {
-        //        _doctor.removePatientFromPhysician(this);
-        //    }
-        //    diffrentDoctor.addPatientToPhysician(this);
-        //    _doctor = diffrentDoctor;
-        //}
-        
-        //public void deletePatient()
-        //{
-        //    if (_doctor != null && _doctor.GetPatients().Contains(this))
-        //    {
-        //        _doctor.removePatientFromPhysician(this);
-        //    }
-        //    _doctor = null;
-
-           
-        //}
+            _physician = physician;
+            if (!physician.GetPatients().Contains(this))
+            {
+                physician.addPatientToPhysician(this);
+            }
+        }
 
 
+        public void changePhysician(Physician diffrentDoctor)
+        {
+            if (diffrentDoctor == null)
+            {
+                throw new ArgumentException("Doctor cannot be null");
+            }
+
+            if (_physician == diffrentDoctor)
+            {
+                throw new InvalidOperationException("Doctors are the same!");
+            }
+
+            if (_physician != null)
+            {
+                _physician.removePatientFromPhysician(this);
+            }
+            diffrentDoctor.addPatientToPhysician(this);
+            _physician = diffrentDoctor;
+        }
+
+        public void deletePatient()
+        {
+            if (_physician != null && _physician.GetPatients().Contains(this))
+            {
+                _physician.removePatientFromPhysician(this);
+            }
+            _physician = null;
 
 
-//==================================================================================================================
-//Associations: Patient- agrees with- Provider
+        }
+
+
+
+
+        //==================================================================================================================
+        //Associations: Patient- agrees with- Provider
 
         public void AddInsuranceProviderToPatient(Insurance_Provider provider)
         {
@@ -247,7 +239,8 @@ namespace Hospital_System.Models
             _room?.RemovePatientFromRoom(this);
 
             _room = room;
-            if (!room.GetRoomsPatients().Contains(this))
+
+            if (!room.Patients.Contains(this))
             {
                 room.assignPatientToRoom(this);
             }
@@ -255,7 +248,7 @@ namespace Hospital_System.Models
 
         public void RemoveRoomFromPatient(Room room)
         {
-            if (_room != null && _room.GetRoomsPatients().Contains(this))
+            if (_room != null && _room.Patients.Contains(this))
             {
                 _room.RemovePatientFromRoom(this);
             }
@@ -400,42 +393,68 @@ namespace Hospital_System.Models
         {
             return _bills.AsReadOnly();
         }
-//==================================================================================================================
-//Association with Attribute: Patient-Nurse (Nurse_Shift)
+        //==================================================================================================================
+        //Association with Attribute: Patient-Nurse (Nurse_Shift)
 
-        //public void AddShiftToNurseForPatient(Nurse_Shift shift)
-        //{
-        //    if (shift == null)
-        //       { throw new ArgumentNullException(nameof(shift), "Shift cannot be null."); }
+        public void AddShiftToNurseForPatient(Nurse_Shift shift, List<Nurse> nurseList, DateTime nurseShiftStart, DateTime nurseShiftEnd)
+        {
+            if (shift == null)
+            { throw new ArgumentNullException(nameof(shift), "Shift cannot be null."); }
 
-        //    if (!_shiftsForPatients.Contains(shift))
-        //    { 
-        //        _shiftsForPatients.Add(shift);
-        //    }
-        //    else
-        //    {
-        //        throw new InvalidOperationException("The shift with nurse has already assigned to this patient");
-        //    }
+            if (nurseList == null || !nurseList.Any())
+            { throw new ArgumentNullException(nameof(nurseList), "Nurse cannot be null."); }
 
-        //    if(shift.Patient != this) {
-        //        shift.Add
-        //}
+            bool nurseAlreadyAssigned = _nurseShifts.Any(ns => 
+                ns.Nurses.Intersect(nurseList).Any() && 
+                (
+                    (nurseShiftStart < ns.EndTime && nurseShiftEnd > ns.StartTime) || 
+                    (nurseShiftStart == ns.StartTime && nurseShiftEnd == ns.EndTime) 
+                )
+            );
 
-        //public void RemoveShiftFromNurseForPatient(Nurse_Shift shift)
-        //{
-        //    if (shift == null)
-        //        throw new ArgumentNullException(nameof(shift), "Shift cannot be null.");
+            if (nurseAlreadyAssigned) { throw new InvalidOperationException("One of the nurses in the list is already assigned to this patient during the specified time."); }
 
-        //    if (!_shiftsForPatients.Contains(shift))
-        //    {
-        //        throw new InvalidOperationException("There is no assigned shift to delete.");
-        //    }
-        //    _shiftsForPatients.Remove(shift);
-        //}
+            if (!_nurseShifts.Contains(shift))
+            {
+                new Nurse_Shift(nurseList, this, nurseShiftStart, nurseShiftEnd);
+            }
+            else
+            {
+                throw new InvalidOperationException("The shift with nurse has already assigned to this patient");
+            }
+        }
 
-//==================================================================================================================
+        public void RemoveShiftFromNurseForPatient(Nurse_Shift shift)
+        {
+            if (shift == null)
+                throw new ArgumentNullException(nameof(shift), "Shift cannot be null.");
 
-//Class Extent Methods
+            if (!_nurseShifts.Contains(shift))
+            {
+                throw new InvalidOperationException("There is no assigned shift to delete.");
+            }
+            _nurseShifts.Remove(shift);
+
+            foreach (var nurse in shift.Nurses)
+            {
+                if (nurse.GetNurseShiftsInternal().Contains(shift))
+                {
+                    nurse.GetNurseShiftsInternal().Remove(shift);
+                }
+            }
+
+        }
+
+        public IReadOnlyCollection<Nurse_Shift> GetNurseShifts()
+        {
+                return _nurseShifts.AsReadOnly();
+        }
+
+        public List<Nurse_Shift> GetNurseShiftsInternal() => _nurseShifts;
+
+        //==================================================================================================================
+
+        //Class Extent Methods
         internal static void AddPatient(Patient patient)
         {
             if (patient == null)

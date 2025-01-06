@@ -54,9 +54,14 @@ namespace Hospital_System.Models
             get { return _patient; }
         }
         
+        private Physician _physician;
+        public Physician Physician
+        {
+            get { return _physician; }
+        }  
         
 
-        public Appointment(DateTime date, AppointmentType type, object assignedDoctor, Bill initialBill, Staff staff) 
+        public Appointment(DateTime date, AppointmentType type, object assignedDoctor, List<Bill> initialBills, List<Staff> staffs) 
         {
             if(type == AppointmentType.Surgery && assignedDoctor is not Surgeon)
             {
@@ -67,21 +72,66 @@ namespace Hospital_System.Models
             Type = type;
             AssignedDoctor = assignedDoctor;
 
-            if(initialBill == null)
+            if(initialBills == null || initialBills.Count == 0)
             {
                 throw new ArgumentException("An appointment must be included in at least one bill");
             }
-            AddBillToAppointment(initialBill);
 
-            if(staff == null)
+            foreach (var bill in initialBills)
+            {
+                if (!_bills.Contains(bill))
+                {
+                    AddBillToAppointment(bill);
+                }
+            }
+            
+            if(staffs == null || staffs.Count == 0)
             {
                 throw new ArgumentException("An appointment must be supported by at least one staff member");
             }
-            addStaffToAppointment(staff);
+
+            foreach (var staff in staffs)
+            {
+                if (!_staffMembers.Contains(staff))
+                {
+                    addStaffToAppointment(staff);
+                }
+            }
+            
             addAppointment(this);
         }
 
         public Appointment(){}
+
+        //==================================================================================================================        
+        //Associations: Appointment-Physician
+
+        public void AddPhysicianToAppointment(Physician physician)
+        {
+            if(physician == null) { throw new ArgumentNullException("Physician can't be null");}
+
+            if(_physician == physician)
+            {
+                throw new InvalidOperationException("Physician already assigned");
+            }
+            _physician = physician;
+
+            if (physician.GetAppointments().Contains(this))
+            {
+                physician.addAppointmentForPhysician(this);
+            }
+        }
+
+        public void RemovePhysicianFromAppointment(Physician physician)
+        {
+            if (physician == null) { throw new ArgumentNullException("Physician can't be null"); }
+
+            if ( _physician.GetAppointments().Contains(this))
+            {
+                _physician.RemoveAppointmentFromPhysician(this);
+            }
+            _physician= null;
+        }
 
         //==================================================================================================================        
         //Associations: Appointment->"supported by"-Staff
@@ -266,14 +316,13 @@ namespace Hospital_System.Models
                 {
                     throw new InvalidOperationException("Each appointment must be supported by at least one staff member.");
                 }
-                var initialBill = appointment.Bills.First();
-                var initalStaff = appointment.Staffs.First();
+                
                 var newAppointment = new Appointment(
                    appointment.Date,
                    appointment.Type,
                    appointment.AssignedDoctor,
-                   initialBill,
-                   initalStaff
+                   appointment.Bills.ToList(),
+                   appointment.Staffs.ToList()
                 );
 
                 foreach (var additionalBill in appointment.Bills.Skip(1))

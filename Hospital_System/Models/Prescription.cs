@@ -16,7 +16,8 @@ namespace Hospital_System.Models
         private List<Bill> _bills = new List<Bill>();
         public IReadOnlyList<Bill> Bills => _bills.AsReadOnly();
 
-        public Physician _physician;
+        private Physician _physician;
+        public Physician Physician => _physician;
         public int Id { get; set; }
         
         private string _medicationName;
@@ -48,7 +49,7 @@ namespace Hospital_System.Models
         
         
         
-        public Prescription(int id, string medicationName, float dosage, int duration, bool redPrescription, Bill initialBill)
+        public Prescription(int id, string medicationName, float dosage, int duration, bool redPrescription, List<Bill> initialBills)
         {
             Id = id;
             MedicationName = medicationName;
@@ -57,11 +58,19 @@ namespace Hospital_System.Models
             RedPrescription = redPrescription;
             
 
-            if (initialBill == null)
+            if (initialBills == null || initialBills.Count == 0)
             {
                 throw new ArgumentException("A prescription must be included in at least one bill");
             }
-            addBillToPrescription(initialBill);
+
+            foreach (var bill in initialBills)
+            {
+                if (!_bills.Contains(bill))
+                {
+                    addBillToPrescription(bill);
+                }
+            }
+            
             AddPrescription(this);
         }
         public Prescription(){ }
@@ -82,6 +91,7 @@ namespace Hospital_System.Models
             }
 
             _physician = physician;
+
             if (!physician.GetPrescriptions().Contains(this))
             {
                 physician.addPrescriptiont(this);
@@ -256,14 +266,14 @@ namespace Hospital_System.Models
 
                 }
 
-                var initialBill = pre.Bills.First();
+                
                 var newPrescription = new Prescription(
                     pre.Id,
                     pre.MedicationName,
                     pre.Dosage,
                     pre.Duration,
                     pre.RedPrescription,
-                    initialBill
+                    pre.Bills.ToList()
                 );
 
                 foreach(var additionalBill in pre.Bills.Skip(1)){

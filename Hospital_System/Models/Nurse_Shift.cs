@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 namespace Hospital_System.Models
 {
     [Serializable] 
-    public abstract class Nurse_Shift
+    public class Nurse_Shift
     {
-        public Nurse Nurse;
+        public List<Nurse> Nurses;
         public Patient Patient;
         public DateTime _startTime;
         public DateTime StartTime
@@ -43,20 +43,43 @@ namespace Hospital_System.Models
             }
         }
 
-        protected Nurse_Shift( Nurse nurse, Patient patient, DateTime startTime, DateTime endTime)
+        public Nurse_Shift( List<Nurse> nurseList, Patient patient, DateTime startTime, DateTime endTime)
         {
+            if(nurseList == null || !nurseList.Any())
+            {
+                throw new ArgumentNullException(nameof(patient), "Nurse cannot be null or empty.");
+            }
+
+            if(patient == null)
+            {
+                throw new ArgumentNullException(nameof(patient), "Patient cannot be null.");
+            }
+
+            if (startTime >= endTime)
+            {
+                throw new ArgumentException("Start time must be earlier than end time.");
+            }
+
             StartTime = startTime;
             EndTime = endTime;
             Patient = patient;
-            Nurse = nurse;
+            
+            foreach (Nurse nurse in nurseList)
+            {
+                if (nurse == null)
+                {
+                    throw new ArgumentNullException(nameof(nurse), " Nurse cannot be null");
+                }
+                nurse.GetNurseShiftsInternal().Add(this);
+            }
 
-            //Nurse.AddShiftToNurseForPatient(this);
-            //Patient.AddShiftToNurseForPatient(this);
+            Patient.GetNurseShiftsInternal().Add(this);
         }
 
         public override string ToString()
         {
             return "Start date: " + StartTime + "End date: " + EndTime;
         }
+
     }
 }

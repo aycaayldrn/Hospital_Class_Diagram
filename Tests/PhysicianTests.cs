@@ -154,7 +154,7 @@ public class PhysicianTests
         prescription.assignPrescriptionToPhysycian(physician);
         foreach (var e in physician.GetPrescriptions())
         {
-            if (e.Equals(prescription) && prescription._physician.Equals(physician))
+            if (e.Equals(prescription) && prescription.Physician.Equals(physician))
             {
                 Physician.RemovePhysician(physician);
                 Prescription.RemovePrescription(prescription);
@@ -239,10 +239,10 @@ public class PhysicianTests
         Physician physician = new Physician(1,"Test1","Test1");
         Physician physician2 = new Physician(2,"Test2","Test2");
         prescription.assignPrescriptionToPhysycian(physician);
-        if (prescription._physician.Equals(physician))
+        if (prescription.Physician.Equals(physician))
         {
             prescription.changePhysician(physician2);
-            if (prescription._physician.Equals(physician2))
+            if (prescription.Physician.Equals(physician2))
             {
                 Physician.RemovePhysician(physician);
                 Physician.RemovePhysician(physician2);
@@ -259,7 +259,7 @@ public class PhysicianTests
         Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new Bill());
         Physician physician = new Physician(1,"Test1","Test1");
         prescription.assignPrescriptionToPhysycian(physician);
-        if (prescription._physician.Equals(physician))
+        if (prescription.Physician.Equals(physician))
         {
             try
             {
@@ -282,7 +282,7 @@ public class PhysicianTests
         Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new Bill());
         Physician physician = new Physician(1,"Test1","Test1");
         prescription.assignPrescriptionToPhysycian(physician);
-        if (prescription._physician.Equals(physician))
+        if (prescription.Physician.Equals(physician))
         {
             try
             {
@@ -347,10 +347,10 @@ public class PhysicianTests
         prescription.assignPrescriptionToPhysycian(physician);
         foreach (var e in physician.GetPrescriptions())
         {
-            if (e.Equals(prescription) && prescription._physician.Equals(physician))
+            if (e.Equals(prescription) && prescription.Physician.Equals(physician))
             {
                 physician.removePrescriptiont(prescription);
-                if (physician.GetPrescriptions().Contains(prescription) && prescription._physician.Equals(null))
+                if (physician.GetPrescriptions().Contains(prescription) && prescription.Physician.Equals(null))
                 {
                     Assert.Fail();
                 }

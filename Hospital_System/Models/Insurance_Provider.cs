@@ -32,7 +32,7 @@ namespace Hospital_System.Models
             }
         }
 
-        public Insurance_Provider(int id, string name,Service service)
+        public Insurance_Provider(int id, string name,List<Service> services)
         {
             if(id < 0)
             {
@@ -42,11 +42,19 @@ namespace Hospital_System.Models
             Id = id;
             Name = name;
 
-            if(service == null)
+            if(services == null || services.Count == 0)
             {
                 throw new ArgumentException("An insurance provider must cover at least one service");
             }
-            AddServiceToProvide(service);
+
+            foreach(var service in services)
+            {
+                if (!_services.Contains(service))
+                {
+                    AddServiceToProvide(service);
+                }
+            }
+            
             addProvider(this);
         }
         public Insurance_Provider(){}
@@ -216,11 +224,11 @@ namespace Hospital_System.Models
                     throw new InvalidOperationException("Each provider must cover at least one service.");
                 }
 
-                var initialService = provider.Services.First();
+                
                 var newProvider = new Insurance_Provider(
                     provider.Id,
                     provider.Name,
-                    initialService
+                    provider.Services.ToList()
                 );
                 
                 foreach(var additionalService in provider.Services.Skip(1))

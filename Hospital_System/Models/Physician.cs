@@ -9,13 +9,9 @@ namespace Hospital_System.Models;
     [Serializable]
     public class Physician: Doctor
     {
-        
 
         private static List<Physician> _physicianList = new List<Physician>();
-        private List<Patient> _patients = new List<Patient>();
-
         private string _specialization;
-
         public string Specialization
         {
             get => _specialization;
@@ -41,11 +37,54 @@ namespace Hospital_System.Models;
         }
         
         private List<Prescription> _prescriptions = new List<Prescription>();
-        
-//==================================================================================================================
-//Associations: Agregation Physician-prescription
+        private List<Patient> _patients = new List<Patient>();
+        private List<Appointment> _appointments = new List<Appointment>();
 
-        public void addPrescriptiont(Prescription prescription)
+    //==================================================================================================================
+    //Associations: Agregation Physician-appointment
+
+    public void addAppointmentForPhysician(Appointment appointment)
+    {
+        if (appointment == null) { throw new ArgumentNullException("Appointment cant be null"); }
+
+        if (_appointments.Contains(appointment))
+        {
+            throw new InvalidOperationException("Appointment already exists ");
+        }
+
+        _appointments.Add(appointment);
+
+        if(appointment.Physician != this)
+        {
+            appointment.AddPhysicianToAppointment(this);
+        }
+    }
+
+    public void RemoveAppointmentFromPhysician(Appointment appointment)
+    {
+        if (appointment == null) { throw new ArgumentNullException("Appointment cant be null"); }
+
+        if (!_appointments.Contains(appointment))
+        {
+            throw new InvalidOperationException("Appointment is not on the list ");
+        }
+
+        _appointments.Remove(appointment);
+
+        if (appointment.Physician == this)
+        {
+            appointment.RemovePhysicianFromAppointment(this);
+        }
+    }
+
+    public IReadOnlyList<Appointment> GetAppointments()
+    {
+        return _appointments.AsReadOnly();
+    }
+    //==================================================================================================================
+    //Associations: Agregation Physician-prescription
+
+    public void addPrescriptiont(Prescription prescription)
         {
             if (prescription==null)
             {
@@ -54,12 +93,12 @@ namespace Hospital_System.Models;
 
             if (_prescriptions.Contains(prescription))
             {
-                throw new InvalidOperationException("Prerscription  already exists ");
+                throw new InvalidOperationException("Prerscription already exists ");
                 
             }
             _prescriptions.Add(prescription);
 
-            if (!prescription._physician.Equals(this))
+            if (prescription.Physician != this)
             {
                 prescription.assignPrescriptionToPhysycian(this);
             }
@@ -79,7 +118,7 @@ namespace Hospital_System.Models;
             }
             _prescriptions.Remove(prescription);
 
-            if (prescription._physician!=null&&prescription._physician.Equals(this))
+            if (prescription.Physician != null && prescription.Physician == this)
             {
                 prescription.deletePrescriptionByPhyscian();
             }
@@ -93,47 +132,47 @@ namespace Hospital_System.Models;
     //==================================================================================================================
     //Associations: Agregation Physician-patient
 
-    //public void addPatientToPhysician(Patient patient)
-    //{
-    //    if (patient == null)
-    //    {
-    //        throw new ArgumentException("Patient can't be null");
-    //    }
+    public void addPatientToPhysician(Patient patient)
+    {
+        if (patient == null)
+        {
+            throw new ArgumentException("Patient can't be null");
+        }
 
-    //    if (_patients.Contains(patient))
-    //    {
-    //        throw new InvalidOperationException("Patient is already assigned to this department");
+        if (_patients.Contains(patient))
+        {
+            throw new InvalidOperationException("Patient is already assigned to this department");
 
-    //    }
-    //    _patients.Add(patient);
-    //    if (!patient.Physicians.Contains(this))
-    //    {
-    //        patient.assignPhysicianToPatient(this);
-    //    }
-    //}
+        }
+        _patients.Add(patient);
+        if (patient.Physician != this)
+        {
+            patient.assignPhysicianToPatient(this);
+        }
+    }
 
-    //public void removePatientFromPhysician(Patient patient)
-    //{
-    //    if (patient == null)
-    //    {
-    //        throw new ArgumentException("Patient can't be null");
-    //    }
+    public void removePatientFromPhysician(Patient patient)
+    {
+        if (patient == null)
+        {
+            throw new ArgumentException("Patient can't be null");
+        }
 
-    //    if (!_patients.Contains(patient))
-    //    {
-    //        throw new InvalidOperationException("No such patient in list");
+        if (!_patients.Contains(patient))
+        {
+            throw new InvalidOperationException("No such patient in list");
 
-    //    }
-    //    _patients.Remove(patient);
-    //    if (patient.Physicians.Contains(this))
-    //    {
-    //        patient.deletePatient();
-    //    }
-    //}
-    //public IReadOnlyList<Patient> GetPatients()
-    //{
-    //    return _patients.AsReadOnly();
-    //}
+        }
+        _patients.Remove(patient);
+        if (patient.Physician == this)
+        {
+            patient.deletePatient();
+        }
+    }
+    public IReadOnlyList<Patient> GetPatients()
+    {
+        return _patients.AsReadOnly();
+    }
     //==================================================================================================================
 
     //class extent methods
@@ -239,11 +278,6 @@ namespace Hospital_System.Models;
 
             _patients.Add(patient);
 
-        }
-
-        public IReadOnlyList<Patient> GetPatients()
-        {
-            return _patients.AsReadOnly();
         }
 
         public static void LoadExtent(IEnumerable<Physician> containerPhysicians)

@@ -63,7 +63,7 @@ namespace Hospital_System.Models
             
             if (_staff!= null)
             {
-                throw new InvalidOperationException("Staff already assigned to department");
+                throw new InvalidOperationException("Staff already assigned to this shift.");
             }
 
             _staff = staff;
