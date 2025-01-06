@@ -242,8 +242,10 @@ namespace Hospital_System.Models;
 
         public Prescription WritePrescription(int id, string medicationName, float dosage, int duration,
             bool redPrescription, Bill initialBill)
-        {
-            return new Prescription(id, medicationName, dosage, duration, redPrescription, initialBill);
+        {            
+            List<Bill> initialBillL = new List<Bill>();
+            initialBillL.Add(initialBill);
+            return new Prescription(id, medicationName, dosage, duration, redPrescription, initialBillL);
         }
 
         public Appointment ScheduleAppointment(DateTime date, Appointment.AppointmentType type, Bill initialBill, Staff staff)
@@ -261,7 +263,13 @@ namespace Hospital_System.Models;
             {
                 throw new ArgumentException("An appointment must be supported by at least one staff member.");
             }
-            return new Appointment(date, type, this, initialBill,staff  );
+
+            List<Bill> initialBillL = new List<Bill>();
+            initialBillL.Add(initialBill);
+            
+            List<Staff> staffL = new List<Staff>();
+            staffL.Add(staff);
+            return new Appointment(date, type, this, initialBillL, staffL );
         }
 
         public void AssignPatient(Patient patient)

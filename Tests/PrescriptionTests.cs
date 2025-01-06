@@ -12,7 +12,7 @@ public class PrescriptionTests
         }
         
         String name = "Test1";
-        Prescription p = new Prescription(1, name, 0.3f, 4, false, new Bill());
+        Prescription p = new Prescription(1, name, 0.3f, 4, false, new List<Bill>(){new Bill()});
 
         Assert.That(p.MedicationName, Is.EqualTo(name));
     }
@@ -22,7 +22,7 @@ public class PrescriptionTests
     {
         try
         {
-            Prescription p = new Prescription(1, null, 0.3f, 4, false, new Bill());
+            Prescription p = new Prescription(1, null, 0.3f, 4, false, new List<Bill>());
             Assert.Fail("Expected ArgumentException");
         }
         catch (ArgumentException)
@@ -40,7 +40,7 @@ public class PrescriptionTests
         }
         
         float dosage = 1.4f;
-        Prescription p = new Prescription(1, "Test2", dosage, 4, false, new Bill());
+        Prescription p = new Prescription(1, "Test2", dosage, 4, false, new List<Bill>(){new Bill()});
 
         Assert.That(p.Dosage, Is.EqualTo(dosage));
         Prescription.RemovePrescription(p);
@@ -69,7 +69,7 @@ public class PrescriptionTests
         }
         
         int duration = 14;
-        Prescription p = new Prescription(1, "Test3", 1.2f, duration, false, new Bill());
+        Prescription p = new Prescription(1, "Test3", 1.2f, duration, false, new List<Bill>(){new Bill()});
 
         Assert.That(p.Duration, Is.EqualTo(duration));
         Prescription.RemovePrescription(p);
@@ -84,7 +84,7 @@ public class PrescriptionTests
             Prescription.RemovePrescription(o);
         }
         
-        List<Prescription> lp = new List<Prescription>{new ( 1, "Test1", 1.2f, 4, false, new Bill()), new (2, "Test2", 1.2f, 4, false, new Bill()), new ( 3, "Test3", 1.2f, 4, false, new Bill())};
+        List<Prescription> lp = new List<Prescription>{new ( 1, "Test1", 1.2f, 4, false, new List<Bill>(){new Bill()}), new (2, "Test2", 1.2f, 4, false, new List<Bill>(){new Bill()}), new ( 3, "Test3", 1.2f, 4, false, new List<Bill>(){new Bill()})};
         
         
         Assert.That(Prescription.GetPrescriptions(), Is.EqualTo(lp));
@@ -98,10 +98,10 @@ public class PrescriptionTests
             Prescription.RemovePrescription(o);
         }
         
-        Prescription b = new Prescription(5, "Test5", 1.2f, 4, false, new Bill());
+        Prescription b = new Prescription(5, "Test5", 1.2f, 4, false, new List<Bill>(){new Bill()});
         try
         {
-            Prescription b2 = new Prescription(5, "Test5", 1.2f, 4, false, new Bill());
+            Prescription b2 = new Prescription(5, "Test5", 1.2f, 4, false, new List<Bill>(){new Bill()});
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
@@ -137,7 +137,7 @@ public class PrescriptionTests
             Prescription.RemovePrescription(o);
         }
         
-        List<Prescription> la = new List<Prescription>{new ( 1, "Test1", 1.2f, 4, false, new Bill()), new (2, "Test2", 1.2f, 4, false, new Bill()), new ( 3, "Test3", 1.2f, 4, false, new Bill())};
+        List<Prescription> la = new List<Prescription>{new ( 1, "Test1", 1.2f, 4, false, new List<Bill>(){new Bill()}), new (2, "Test2", 1.2f, 4, false, new List<Bill>(){new Bill()}), new ( 3, "Test3", 1.2f, 4, false, new List<Bill>(){new Bill()})};
         
         SerializeToFIle.saveAll();
         
@@ -160,8 +160,8 @@ public class PrescriptionTests
         [Test]
     public void Trying_to_add_Bill_to_Prescription_and_then_delete_it()
     {
-        Bill bill = new Bill(21, 3213, new Service());
-        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new Bill());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
+        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new List<Bill>(){new Bill()});
         prescription.addBillToPrescription(bill);
         if (bill.Prescriptions.Contains(prescription) && prescription.Bills.Contains(bill))
         {
@@ -182,8 +182,8 @@ public class PrescriptionTests
     [Test]
     public void Trying_to_add_Bill_to_Prescription()
     {
-        Bill bill = new Bill(21, 3213, new Service());
-        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new Bill());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
+        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new List<Bill>(){new Bill()});
         prescription.addBillToPrescription(bill);
         if (bill.Prescriptions.Contains(prescription) && prescription.Bills.Contains(bill))
         {
@@ -198,11 +198,11 @@ public class PrescriptionTests
     [Test]
     public void Trying_to_add_many_Bills_to_Prescription()
     {
-        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new Bill());
+        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new List<Bill>(){new Bill()});
         List<Bill> bills = new List<Bill> {
-            new(21, 3213, new Service()),
-            new(22, 3213, new Service()),
-            new(23, 3213, new Service())
+            new(21, 3213, new List<Service>(){new Service()}),
+            new(22, 3213, new List<Service>(){new Service()}),
+            new(23, 3213, new List<Service>(){new Service()})
         };
         foreach (var e in bills)
         {
@@ -237,7 +237,7 @@ public class PrescriptionTests
     [Test]
     public void Trying_to_add_null_Bill_to_Prescription_throws_ArgumentException()
     {
-        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new Bill());
+        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new List<Bill>(){new Bill()});
         try
         {
             prescription.RemoveBillFromPrescription(null);
@@ -253,8 +253,8 @@ public class PrescriptionTests
     [Test]
     public void Trying_to_add_Bill_to_Service_and_then_try_to_add_same_Bill_throws_InvalidOperationException()
     {
-        Bill bill = new Bill(21, 3213, new Service());
-        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new Bill());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
+        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new List<Bill>(){new Bill()});
         prescription.addBillToPrescription(bill);
         try
         {

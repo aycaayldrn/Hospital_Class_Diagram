@@ -158,7 +158,7 @@ public class ServiceTests
         [Test]
     public void Trying_to_add_Provider_to_Service_and_then_delete_it()
     { 
-        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new Service());
+        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new List<Service>(){new Service()});
         Service service = new Service("Test", 100d);
         service.assignInsuranceProviderToService(provider);
         if (provider.Services.Contains(service)&&service.Insurance_Providers.Contains(provider)){
@@ -177,7 +177,7 @@ public class ServiceTests
     [Test]
     public void Trying_to_add_Provider_to_Service()
     {
-        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new Service());
+        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new List<Service>(){new Service()});
         Service service = new Service("Test", 100d);
         service.assignInsuranceProviderToService(provider);
         if (provider.Services.Contains(service)&&service.Insurance_Providers.Contains(provider)){
@@ -192,9 +192,9 @@ public class ServiceTests
     public void Trying_to_add_many_Providers_to_Service()
     {
         Service service = new Service("Test", 100d);
-        List<Insurance_Provider> providers = new List<Insurance_Provider>{new (24,"Test1", new Service()),
-            new (25,"Test1", new Service()),
-            new (26,"Test1", new Service())};
+        List<Insurance_Provider> providers = new List<Insurance_Provider>{new (24,"Test1", new List<Service>(){new Service()}),
+            new (25,"Test1", new List<Service>(){new Service()}),
+            new (26,"Test1", new List<Service>(){new Service()})};
         foreach (var e in providers)
         {
             service.assignInsuranceProviderToService(e);
@@ -238,7 +238,7 @@ public class ServiceTests
     [Test]
     public void Trying_to_add_Provider_to_Service_and_then_try_to_add_same_Provider_throws_InvalidOperationException()
     {
-        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new Service());
+        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new List<Service>(){new Service()});
         Service service = new Service("Test", 100d);
         service.assignInsuranceProviderToService(provider);
         try
@@ -258,7 +258,7 @@ public class ServiceTests
     [Test]
     public void Trying_to_remove_Provider_that_not_exist_in_list_from_Service_should_throw_InvalidOperationException()
     {
-        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new Service());
+        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new List<Service>(){new Service()});
         Service service = new Service("Test", 100d);
         try
         {
@@ -277,7 +277,7 @@ public class ServiceTests
             [Test]
     public void Trying_to_add_Bill_to_Service_and_then_delete_it()
     { 
-        Bill bill = new Bill(21, 3213, new Service());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         Service service = new Service("Test", 100d);
         service.assignBillToService(bill);
         if (bill.Services.Contains(service)&&service.Bills.Contains(bill)){
@@ -296,7 +296,7 @@ public class ServiceTests
     [Test]
     public void Trying_to_add_Bill_to_Service()
     {
-        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new Service());
+        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new List<Service>(){new Service()});
         Service service = new Service("Test", 100d);
         service.assignInsuranceProviderToService(provider);
         if (provider.Services.Contains(service)&&service.Insurance_Providers.Contains(provider)){
@@ -311,9 +311,9 @@ public class ServiceTests
     public void Trying_to_add_many_Bills_to_Service()
     {
         Service service = new Service("Test", 100d);
-        List<Bill> bills = new List<Bill>{new (21, 3213, new Service()),
-            new (22, 3213, new Service()),
-            new (23, 3213, new Service())};
+        List<Bill> bills = new List<Bill>{new (21, 3213, new List<Service>(){new Service()}),
+            new (22, 3213, new List<Service>(){new Service()}),
+            new (23, 3213, new List<Service>(){new Service()})};
         foreach (var e in bills)
         {
             service.assignBillToService(e);
@@ -357,7 +357,7 @@ public class ServiceTests
     [Test]
     public void Trying_to_add_Bill_to_Service_and_then_try_to_add_same_Bill_throws_InvalidOperationException()
     {
-        Bill bill = new Bill(21, 3213, new Service());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         Service service = new Service("Test", 100d);
         service.assignBillToService(bill);
         try
@@ -377,7 +377,7 @@ public class ServiceTests
     [Test]
     public void Trying_to_remove_Bill_that_not_exist_in_list_from_Service_should_throw_InvalidOperationException()
     {
-        Bill bill = new Bill(21, 3213, new Service());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         Service service = new Service("Test", 100d);
         try
         {

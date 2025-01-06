@@ -15,7 +15,7 @@ public class AppointmentTests
         DateTime date = new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day,23,59,59);
         Appointment.AppointmentType at = Appointment.AppointmentType.FollowUp;
         object dd = new object();
-        Appointment a = new Appointment(date, at, dd, new Bill(), new Staff());
+        Appointment a = new Appointment(date, at, dd, new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
         if (a.Date == date && a.Type == at && a.AssignedDoctor == dd)
         {
             Assert.Pass();
@@ -37,7 +37,7 @@ public class AppointmentTests
 
         try
         {
-            Appointment appointment = new Appointment(new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 23, 59, 59), Appointment.AppointmentType.FollowUp, new object(), null, new Staff());
+            Appointment appointment = new Appointment(new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 23, 59, 59), Appointment.AppointmentType.FollowUp, new object(), null, new List<Staff>());
             Assert.Fail("Expected ArgumentException");
         }
         catch (ArgumentException)
@@ -56,7 +56,7 @@ public class AppointmentTests
 
         try
         {
-            Appointment appointment = new Appointment(new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 23, 59, 59), Appointment.AppointmentType.FollowUp, new object(), new Bill(), null);
+            Appointment appointment = new Appointment(new DateTime(DateTime.Today.Year, DateTime.Today.Month, DateTime.Today.Day, 23, 59, 59), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(), null);
             Assert.Fail("Expected ArgumentException");
         }
         catch (ArgumentException)
@@ -75,7 +75,7 @@ public class AppointmentTests
         try
         {
             DateTime date = new DateTime(2005, 3, 12,8,30,0);
-            Appointment a = new Appointment(date, Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+            Appointment a = new Appointment(date, Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(), new List<Staff>());
             Assert.Fail("Should throw ArgumentException");
         }catch(ArgumentException o)
         {
@@ -92,7 +92,7 @@ public class AppointmentTests
         }
         try
         {
-            Appointment a = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.Surgery, new object(), new Bill(), new Staff());
+            Appointment a = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.Surgery, new object(), new List<Bill>(), new List<Staff>());
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
@@ -108,9 +108,9 @@ public class AppointmentTests
             Appointment.removeAppointment(o);
         }
         
-        List<Appointment> la = new List<Appointment>{new ( new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff()),
-                                                     new ( new DateTime(3002,3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff()),
-                                                     new ( new DateTime(3001, 3, 12,8,30,0) , Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff())};
+        List<Appointment> la = new List<Appointment>{new ( new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()}),
+                                                     new ( new DateTime(3002,3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()}),
+                                                     new ( new DateTime(3001, 3, 12,8,30,0) , Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()})};
      
     
         Assert.That(Appointment.GetAppointments(), Is.EquivalentTo(la));
@@ -124,10 +124,10 @@ public class AppointmentTests
             Appointment.removeAppointment(o);
         }
         DateTime date = new DateTime(3004, 3, 12,8,30,0);
-        Appointment a = new Appointment(date , Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        Appointment a = new Appointment(date , Appointment.AppointmentType.FollowUp, new object(),new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
         try
         {
-            Appointment a2 = new Appointment(date , Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+            Appointment a2 = new Appointment(date , Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
@@ -161,9 +161,9 @@ public class AppointmentTests
             Appointment.removeAppointment(o);
         }
         
-        List<Appointment> la = new List<Appointment>{new ( new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff()), 
-            new ( new DateTime(3002,3, 12,8,30,0), Appointment.AppointmentType.Consultation, new object(), new Bill(), new Staff()), 
-            new ( new DateTime(3001, 3, 12,8,30,0) , Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff())};
+        List<Appointment> la = new List<Appointment>{new ( new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()}), 
+            new ( new DateTime(3002,3, 12,8,30,0), Appointment.AppointmentType.Consultation, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()}), 
+            new ( new DateTime(3001, 3, 12,8,30,0) , Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()})};
         
         SerializeToFIle.saveAll();
         foreach (var o in la)
@@ -188,7 +188,7 @@ public class AppointmentTests
     [Test]
     public void Trying_to_assign_Appointment_to_null_Patient_should_throw_ArgumentException()
     {
-        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
         try
         {
             appointment.assignPatient(null);
@@ -206,7 +206,7 @@ public class AppointmentTests
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
         Patient patient2 = new Patient(2,"Test1",new DateTime(2005));
-        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
         appointment.assignPatient(patient);
         try
         {
@@ -225,8 +225,8 @@ public class AppointmentTests
     [Test]
     public void Trying_to_add_Staff_to_Appointment_and_then_delete_it()
     {
-        Staff staff = new Staff(2,"Test2","test" , new Shift());
-        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        Staff staff = new Staff(2,"Test2","test" , new List<Shift>(){new Shift()});
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
         appointment.addStaffToAppointment(staff);
         if (appointment.Staffs.Contains(staff) && staff.Appointments.Contains(appointment)) {
             appointment.removeStaffFromAppointment(staff);
@@ -244,8 +244,8 @@ public class AppointmentTests
     [Test]
     public void Trying_to_add_Staff_to_Appointment()
     {
-        Staff staff = new Staff(2,"Test2","test", new Shift());
-        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        Staff staff = new Staff(2,"Test2","test", new List<Shift>(){new Shift()});
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(),new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
         appointment.addStaffToAppointment(staff);
         if (appointment.Staffs.Contains(staff) && staff.Appointments.Contains(appointment)) {
             Staff.RemoveStaff(staff); 
@@ -258,10 +258,10 @@ public class AppointmentTests
     [Test]
     public void Trying_to_add_many_Staff_to_Appointment()
     {
-        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
-        List<Staff> staffs = new List<Staff>{new (1,"Test2","test", new Shift()),
-            new (2,"Test2","test", new Shift()),
-            new (3,"Test2","test", new Shift())};
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
+        List<Staff> staffs = new List<Staff>{new (1,"Test2","test", new List<Shift>(){new Shift()}),
+            new (2,"Test2","test", new List<Shift>(){new Shift()}),
+            new (3,"Test2","test", new List<Shift>(){new Shift()})};
         foreach (var e in staffs)
         {
             appointment.addStaffToAppointment(e);
@@ -290,7 +290,7 @@ public class AppointmentTests
     [Test]
     public void Trying_to_add_null_Staff_to_Appointment_throws_ArgumentNullException()
     {
-        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
         try
         {
             appointment.addStaffToAppointment(null);
@@ -306,8 +306,8 @@ public class AppointmentTests
     [Test]
     public void Trying_to_add_Staff_to_Appointment_and_then_try_to_add_same_Prescription_throws_InvalidOperationException()
     {
-        Staff staff = new Staff(2,"Test2","test", new Shift());
-        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        Staff staff = new Staff(2,"Test2","test", new List<Shift>(){new Shift()});
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
         appointment.addStaffToAppointment(staff);
         try
         {
@@ -326,8 +326,8 @@ public class AppointmentTests
     [Test]
     public void Trying_to_add_Appointment_to_Staff_and_then_remove_it()
     {
-        Staff staff = new Staff(2,"Test2","test", new Shift());
-        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        Staff staff = new Staff(2,"Test2","test", new List<Shift>(){new Shift()});
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
         appointment.addStaffToAppointment(staff);
         if (appointment.Staffs.Contains(staff) && staff.Appointments.Contains(appointment)) {
             staff.RemoveAppointmentFromStaff(appointment);
@@ -345,8 +345,8 @@ public class AppointmentTests
     [Test]
     public void Trying_to_remove_Appointment_that_not_exist_in_list_from_Staff_should_throw_InvalidOperationException()
     {
-        Staff staff = new Staff(2,"Test2","test", new Shift());
-        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        Staff staff = new Staff(2,"Test2","test", new List<Shift>(){new Shift()});
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
         try
         {
             staff.RemoveAppointmentFromStaff(appointment);
@@ -365,8 +365,8 @@ public class AppointmentTests
     [Test]
     public void Trying_to_remove_Staff_that_not_exist_in_list_from_Appointment_should_throw_InvalidOperationException()
     {
-        Staff staff = new Staff(2,"Test2","test", new Shift());
-        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        Staff staff = new Staff(2,"Test2","test", new List<Shift>(){new Shift()});
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(),new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
         try
         {
             appointment.removeStaffFromAppointment(staff);
@@ -384,8 +384,8 @@ public class AppointmentTests
     [Test]
     public void Trying_to_remove_Bill_that_not_exist_in_list_from_Appointment_should_throw_InvalidOperationException()
     {
-        Bill bill = new Bill(21,3213, new Service());
-        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        Bill bill = new Bill(21,3213, new List<Service>(){new Service()});
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
         try
         {
             bill.RemoveAppointmentFromBill(appointment);
@@ -402,8 +402,8 @@ public class AppointmentTests
     [Test]
     public void Trying_to_add_Bill_to_Appointment_and_then_remove_it()
     {
-        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
-        Bill bill = new Bill(21,3213, new Service());
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
+        Bill bill = new Bill(21,3213, new List<Service>(){new Service()});
         appointment.AddBillToAppointment(bill);
         if (bill.Appointments.Contains(appointment)&&appointment.Bills.Contains(bill)){
             bill.RemoveAppointmentFromBill(appointment);
@@ -421,8 +421,8 @@ public class AppointmentTests
     [Test]
     public void Trying_to_add_Bill_to_Appointment_and_then_try_to_add_same_Bill_throws_InvalidOperationException()
     {
-        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
-        Bill bill = new Bill(21,3213, new Service());
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
+        Bill bill = new Bill(21,3213, new List<Service>(){new Service()});
         appointment.AddBillToAppointment(bill);
         try
         {
@@ -442,7 +442,7 @@ public class AppointmentTests
     [Test]
     public void Trying_to_add_null_Bill_to_Appointment_throws_ArgumentException()
     {
-        Bill bill = new Bill(21,3213, new Service());
+        Bill bill = new Bill(21,3213, new List<Service>(){new Service("Test", 100d)});
         try
         {
             bill.AddAppointmentToBill(null);
@@ -458,10 +458,10 @@ public class AppointmentTests
     [Test]
     public void Trying_to_add_many_Bills_to_Appointment()
     {
-        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
-        List<Bill> bills = new List<Bill>{new (25, 3213, new Service()),
-            new (22, 312, new Service()),
-            new (23, 432, new Service())};
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
+        List<Bill> bills = new List<Bill>{new (25, 3213, new List<Service>(){new Service()}),
+            new (22, 312, new List<Service>(){new Service()}),
+            new (23, 432, new List<Service>(){new Service()})};
         foreach (var e in bills)
         {
             appointment.AddBillToAppointment(e);

@@ -11,7 +11,7 @@ public class InsuranceProviderTests
             Insurance_Provider.removeProvider(o);
         }
 
-        Insurance_Provider e = new Insurance_Provider(1,"Test2", new Service());
+        Insurance_Provider e = new Insurance_Provider(1,"Test2", new List<Service>(){new Service()});
         Assert.Pass();
     }
     
@@ -39,7 +39,7 @@ public class InsuranceProviderTests
 
         try
         {
-            Insurance_Provider e = new Insurance_Provider(1,null, new Service());
+            Insurance_Provider e = new Insurance_Provider(1,null, new List<Service>());
             Assert.Fail("Expected ArgumentException");
         }
         catch (ArgumentException)
@@ -58,7 +58,7 @@ public class InsuranceProviderTests
 
         try
         {
-            Insurance_Provider e = new Insurance_Provider(-1,"Test1", new Service());
+            Insurance_Provider e = new Insurance_Provider(-1,"Test1", new List<Service>());
             Assert.Fail("Expected ArgumentException");
         }
         catch (ArgumentException)
@@ -76,7 +76,7 @@ public class InsuranceProviderTests
         }
 
         String name = "Test";
-        Insurance_Provider e = new Insurance_Provider(1,name, new Service());
+        Insurance_Provider e = new Insurance_Provider(1,name, new List<Service>(){new Service()});
         Assert.That(e.Name, Is.EqualTo(name));
         Insurance_Provider.removeProvider(e);
     }
@@ -90,7 +90,7 @@ public class InsuranceProviderTests
             Insurance_Provider.removeProvider(o);
         }
         
-        List<Insurance_Provider> li = new List<Insurance_Provider>{new ( 24,"Test1", new Service()), new ( 22,"Test2", new Service()), new ( 44,"Test3", new Service())};
+        List<Insurance_Provider> li = new List<Insurance_Provider>{new ( 24,"Test1", new List<Service>(){new Service()}), new ( 22,"Test2", new List<Service>(){new Service()}), new ( 44,"Test3", new List<Service>(){new Service()})};
         
         Assert.That(Insurance_Provider.GetProvider(), Is.EqualTo(li));
     }
@@ -103,10 +103,10 @@ public class InsuranceProviderTests
             Insurance_Provider.removeProvider(o);
         }
 
-        Insurance_Provider i = new Insurance_Provider(21,"Test", new Service());
+        Insurance_Provider i = new Insurance_Provider(21,"Test", new List<Service>(){new Service()});
         try
         {
-            Insurance_Provider i2 = new Insurance_Provider(21,"Test", new Service());
+            Insurance_Provider i2 = new Insurance_Provider(21,"Test", new List<Service>(){new Service()});
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
@@ -142,7 +142,7 @@ public class InsuranceProviderTests
             Insurance_Provider.removeProvider(o);
         }
         
-        List<Insurance_Provider> la = new List<Insurance_Provider>{new ( 24,"Test1", new Service()), new ( 22,"Test2", new Service()), new ( 44,"Test3", new Service())};
+        List<Insurance_Provider> la = new List<Insurance_Provider>{new ( 24,"Test1", new List<Service>(){new Service()}), new ( 22,"Test2", new List<Service>(){new Service()}), new ( 44,"Test3", new List<Service>(){new Service()})};
         
         SerializeToFIle.saveAll();
         
@@ -166,7 +166,7 @@ public class InsuranceProviderTests
     [Test]
     public void Trying_to_add_Service_to_Provider_and_then_delete_it()
     { 
-        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new Service());
+        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new List<Service>(){new Service()});
         Service service = new Service("Test", 100d);
         provider.AddServiceToProvide(service);
         if (provider.Services.Contains(service)&&service.Insurance_Providers.Contains(provider)){
@@ -185,7 +185,7 @@ public class InsuranceProviderTests
     [Test]
     public void Trying_to_add_Service_to_Provider()
     {
-        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new Service());
+        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new List<Service>(){new Service()});
         Service service = new Service("Test", 100d);
         provider.AddServiceToProvide(service);
         if (provider.Services.Contains(service)&&service.Insurance_Providers.Contains(provider)){
@@ -199,7 +199,11 @@ public class InsuranceProviderTests
     [Test]
     public void Trying_to_add_many_Services_to_Provider()
     {
-        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new Service());
+        foreach (var o in Service.GetServices().ToList())
+        {
+            Service.RemoveService(o);
+        }
+        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new List<Service>(){new Service()});
         List<Service> services = new List<Service>{new ("Test", 100d),
             new ("Test1", 100d),
             new ("Test2", 100d)};
@@ -232,7 +236,7 @@ public class InsuranceProviderTests
     [Test]
     public void Trying_to_add_null_Service_to_Provider_throws_ArgumentException()
     {
-        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new Service());
+        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new List<Service>(){new Service()});
         try
         {
             provider.AddServiceToProvide(null);
@@ -248,7 +252,7 @@ public class InsuranceProviderTests
     [Test]
     public void Trying_to_add_Service_to_Provider_and_then_try_to_add_same_Service_throws_InvalidOperationException()
     {
-        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new Service());
+        Insurance_Provider provider = new Insurance_Provider(24,"Test1", new List<Service>(){new Service()});
         Service service = new Service("Test", 100d);
         provider.AddServiceToProvide(service);
         try

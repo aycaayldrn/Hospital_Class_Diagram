@@ -55,7 +55,7 @@ namespace Hospital_System.Models
                                          .Where(group => group.Count() > 1)
                                          .Select(group => group.Key)
                                          .ToList();
-
+            
             if (duplicateKeys.Any())
             {
                 throw new ArgumentException($"Duplicate room numbers found: {string.Join(", ", duplicateKeys)}.");

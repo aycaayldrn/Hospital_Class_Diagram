@@ -13,7 +13,7 @@ public class StaffTests
 
         try
         {
-            Staff s = new Staff(1, null, "test1", new Shift());
+            Staff s = new Staff(1, null, "test1", new List<Shift>());
             
             Assert.Fail("Expected ArgumentNullException");
         }
@@ -33,7 +33,7 @@ public class StaffTests
 
         try
         {
-            Staff s = new Staff(1, "test1", null, new Shift());
+            Staff s = new Staff(1, "test1", null, new List<Shift>());
             
             Assert.Fail("Expected ArgumentNullException");
         }
@@ -66,7 +66,7 @@ public class StaffTests
         }
 
         String name = "Joe";
-        Staff s = new Staff(1, name, "Test2", new Shift());
+        Staff s = new Staff(1, name, "Test2", new List<Shift>(){new Shift()});
 
 
         Assert.That(s.Name, Is.EqualTo(name));
@@ -82,7 +82,7 @@ public class StaffTests
         }
 
         String pos = "type1231";
-        Staff s = new Staff(1, "test2", pos, new Shift());
+        Staff s = new Staff(1, "test2", pos, new List<Shift>(){new Shift()});
 
 
         Assert.That(s.Position, Is.EqualTo(pos));
@@ -98,7 +98,7 @@ public class StaffTests
             Staff.RemoveStaff(o);
         }
 
-        List<Staff> lb = new List<Staff>{new (5,"Test2","test", new Shift()), new (3,"Test3","test", new Shift()), new (4,"Test4","test", new Shift())};
+        List<Staff> lb = new List<Staff>{new (5,"Test2","test", new List<Shift>(){new Shift()}), new (3,"Test3","test", new List<Shift>(){new Shift()}), new (4,"Test4","test", new List<Shift>(){new Shift()})};
         
         Assert.That(Staff.GetStaffMembers(), Is.EqualTo(lb));
     }
@@ -111,10 +111,10 @@ public class StaffTests
             Staff.RemoveStaff(o);
         }
 
-        Staff b = new Staff(1,"Test","test", new Shift());
+        Staff b = new Staff(1,"Test","test", new List<Shift>(){new Shift()});
         try
         {
-            Staff b2 = new Staff(1,"Test","test", new Shift());
+            Staff b2 = new Staff(1,"Test","test", new List<Shift>(){new Shift()});
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
@@ -150,7 +150,7 @@ public class StaffTests
             Staff.RemoveStaff(o);
         }
 
-        List<Staff> la = new List<Staff>{new (5,"Test2","test", new Shift()), new (3,"Test3","test", new Shift()), new (4,"Test4","test", new Shift())};
+        List<Staff> la = new List<Staff>{new (5,"Test2","test", new List<Shift>(){new Shift()}), new (3,"Test3","test", new List<Shift>(){new Shift()}), new (4,"Test4","test", new List<Shift>(){new Shift()})};
         
         SerializeToFIle.saveAll();
         
@@ -174,7 +174,7 @@ public class StaffTests
     [Test]
     public void Trying_to_add_Shift_to_Staff_and_then_delete_it()
     {
-        Staff staff = new Staff(3,"Test2","test", new Shift());
+        Staff staff = new Staff(3,"Test2","test", new List<Shift>(){new Shift()});
         Shift shift = new Shift(new DateTime(2019, 01, 01), new DateTime(2020, 01, 01), "Test");
         staff.addShiftToStaff(shift);
         foreach (var e in staff.GetShifts())
@@ -200,7 +200,7 @@ public class StaffTests
     [Test]
     public void Trying_to_add_Shift_to_Staff()
     {
-        Staff staff = new Staff(3,"Test2","test", new Shift());
+        Staff staff = new Staff(3,"Test2","test", new List<Shift>(){new Shift()});
         Shift shift = new Shift(new DateTime(2019, 01, 01), new DateTime(2020, 01, 01), "Test");
         staff.addShiftToStaff(shift);
         foreach (var e in staff.GetShifts())
@@ -218,7 +218,7 @@ public class StaffTests
     [Test]
     public void Trying_to_add_many_Shift_to_Staff()
     {
-        Staff staff = new Staff(3,"Test2","test", new Shift());
+        Staff staff = new Staff(3,"Test2","test", new List<Shift>(){new Shift()});
         List<Shift> shift = new List<Shift>{new (new DateTime(2019, 01, 01), new DateTime(2020, 01, 01), "Test"),
                                             new (new DateTime(2019, 01, 01), new DateTime(2021, 01, 01), "Test2"),
                                             new (new DateTime(2019, 01, 01), new DateTime(2024, 01, 01), "Test3")};
@@ -250,7 +250,7 @@ public class StaffTests
     [Test]
     public void Trying_to_add_null_Shift_to_Staff_throws_ArgumentNullException()
     {
-        Staff staff = new Staff(3,"Test2","test", new Shift());
+        Staff staff = new Staff(3,"Test2","test", new List<Shift>(){new Shift()});
         try
         {
             staff.addShiftToStaff(null);

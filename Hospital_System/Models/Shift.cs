@@ -163,6 +163,10 @@ namespace Hospital_System.Models
         
         public override int GetHashCode()
         {
+            if (StartTime == EndTime)
+            {
+                return 0;
+            }
             return HashCode.Combine(StartTime, EndTime, Day.ToLowerInvariant());
         }
         

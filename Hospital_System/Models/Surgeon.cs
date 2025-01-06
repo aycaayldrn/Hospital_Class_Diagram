@@ -120,7 +120,13 @@ namespace Hospital_System.Models
                 throw new ArgumentException("An appointment must be supported by at least one staff member.");
             }
 
-            return new Appointment(date, Appointment.AppointmentType.Surgery, this, initialBill, staff);
+
+            List<Bill> initialBillL = new List<Bill>();
+            initialBillL.Add(initialBill);
+            
+            List<Staff> staffL = new List<Staff>();
+            staffL.Add(staff);
+            return new Appointment(date, Appointment.AppointmentType.Surgery, this, initialBillL, staffL);
         }
 
         public static void LoadExtent(IEnumerable<Surgeon> containerSurgeons)

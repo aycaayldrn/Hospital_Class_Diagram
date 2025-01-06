@@ -217,7 +217,7 @@ public class PatientTests
     public void Trying_to_add_Insurance_Provider_to_Patient_and_then_delete_it()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        Insurance_Provider provider = new Insurance_Provider(1, "Test2", new Service());
+        Insurance_Provider provider = new Insurance_Provider(1, "Test2", new List<Service>(){new Service()});
         patient.AddInsuranceProviderToPatient(provider);
         foreach (var e in patient.PatientProviders)
         {
@@ -243,7 +243,7 @@ public class PatientTests
     public void Trying_to_add_Insurance_Provider_to_Patient()
     {
         Patient patient = new Patient(2,"Test1",new DateTime(2005));
-        Insurance_Provider provider = new Insurance_Provider(2, "Test2", new Service());
+        Insurance_Provider provider = new Insurance_Provider(2, "Test2",new List<Service>(){new Service()});
         Console.WriteLine(patient.PatientProviders.Count);
         patient.AddInsuranceProviderToPatient(provider);
         foreach (var e in patient.PatientProviders)
@@ -262,7 +262,7 @@ public class PatientTests
     public void Trying_to_add_many_Insurance_Providers_to_Patient()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        List<Insurance_Provider> providers = new List<Insurance_Provider>{new (1,"Test2", new Service()), new (2,"Test2", new Service()), new (3,"Test2", new Service())};
+        List<Insurance_Provider> providers = new List<Insurance_Provider>{new (1,"Test2", new List<Service>(){new Service()}), new (2,"Test2", new List<Service>(){new Service()}), new (3,"Test2",new List<Service>(){new Service()})};
         foreach (var e in providers)
         {
             patient.AddInsuranceProviderToPatient(e);
@@ -308,7 +308,7 @@ public class PatientTests
     public void Trying_to_add_Appointment_to_Patient_and_then_delete_it()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
         patient.addAppointmentForPatient(appointment);
         foreach (var e in patient.GetPatientsAppointments())
         {
@@ -334,7 +334,7 @@ public class PatientTests
     public void Trying_to_add_Appointment_to_Patient()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+        Appointment appointment = new Appointment(new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
         patient.addAppointmentForPatient(appointment);
         foreach (var e in patient.GetPatientsAppointments())
         {
@@ -352,9 +352,9 @@ public class PatientTests
     public void Trying_to_add_many_Appointment_to_Patient()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        List<Appointment> appointments = new List<Appointment>{new (new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff()),
-            new (new DateTime(3001, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff()),
-            new (new DateTime(3002, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff())};
+        List<Appointment> appointments = new List<Appointment>{new (new DateTime(3000, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()}),
+            new (new DateTime(3001, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()}),
+            new (new DateTime(3002, 3, 12,8,30,0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()})};
         foreach (var e in appointments)
         {
             patient.addAppointmentForPatient(e);
@@ -399,7 +399,7 @@ public class PatientTests
     public void Trying_to_add_Bill_to_Patient_and_then_delete_it()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        Bill bill = new Bill(124, 100, new Service());
+        Bill bill = new Bill(124, 100, new List<Service>(){new Service()});
         patient.addBillForPatient(bill);
         foreach (var e in patient.GetPatientsBills())
         {
@@ -425,7 +425,7 @@ public class PatientTests
     public void Trying_to_add_Bill_to_Patient()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        Bill bill = new Bill(124, 100, new Service());
+        Bill bill = new Bill(124, 100, new List<Service>(){new Service()});
         patient.addBillForPatient(bill);
         foreach (var e in patient.GetPatientsBills())
         {
@@ -443,7 +443,7 @@ public class PatientTests
     public void Trying_to_add_many_Bill_to_Patient()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        List<Bill> bills = new List<Bill>{new (1, 100, new Service()), new (2, 100, new Service()), new (3, 100, new Service())};
+        List<Bill> bills = new List<Bill>{new (1, 100, new List<Service>(){new Service()}), new (2, 100, new List<Service>(){new Service()}), new (3, 100, new List<Service>(){new Service()})};
         foreach (var e in bills)
         {
             patient.addBillForPatient(e);
@@ -540,7 +540,7 @@ public class PatientTests
     public void Trying_to_add_Prescription_to_Patient_and_then_delete_it()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new Bill());
+        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new List<Bill>(){new Bill()});
         patient.addPrescriptionForPatient(prescription);
         foreach (var e in patient.GetPatientsPrescriptions())
         {
@@ -566,7 +566,7 @@ public class PatientTests
     public void Trying_to_add_Prescription_to_Patient()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new Bill());
+        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new List<Bill>(){new Bill()});
         patient.addPrescriptionForPatient(prescription);
         foreach (var e in patient.GetPatientsPrescriptions())
         {
@@ -584,7 +584,7 @@ public class PatientTests
     public void Trying_to_add_many_Prescription_to_Patient()
     {
         Patient patient = new Patient(1,"Test1",new DateTime(2005));
-        List<Prescription> prescriptions = new List<Prescription>{new (1, "Test", 0.3f, 4, false, new Bill()), new (2, "Test", 0.3f, 4, false, new Bill()), new (3, "Test", 0.3f, 4, false, new Bill())};
+        List<Prescription> prescriptions = new List<Prescription>{new (1, "Test", 0.3f, 4, false, new List<Bill>(){new Bill()}), new (2, "Test", 0.3f, 4, false, new List<Bill>(){new Bill()}), new (3, "Test", 0.3f, 4, false, new List<Bill>(){new Bill()})};
         foreach (var e in prescriptions)
         {
             patient.addPrescriptionForPatient(e);

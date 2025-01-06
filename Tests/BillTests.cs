@@ -33,7 +33,7 @@ public class Tests
 
         try
         {
-            Bill b = new Bill(12, -1, new Service());
+            Bill b = new Bill(12, -1, new List<Service>());
             Assert.Fail("Expected ArgumentException");
         }
         catch (ArgumentException)
@@ -52,7 +52,7 @@ public class Tests
 
         int number = 123;
 
-        Bill b = new Bill(number, 100, new Service());
+        Bill b = new Bill(number, 100, new List<Service>(){new Service()});
         Assert.That(b.Number, Is.EqualTo(number));
         Bill.removeBill(b);
     }
@@ -67,7 +67,8 @@ public class Tests
 
         int totalCost = 100;
         Service service = new Service("Test2", 100d);
-        Bill b = new Bill(124, totalCost, service);
+        List<Service> services = new List<Service> { service };
+        Bill b = new Bill(124, totalCost, services);
         Assert.That(b.FinalCost, Is.EqualTo(totalCost * (1 + Bill.TaxRate)).Within(0.01));
         Bill.removeBill(b);
         Service.RemoveService(service);
@@ -82,7 +83,7 @@ public class Tests
         }
 
         List<Bill> lb = new List<Bill>
-            { new(24, 4312, new Service()), new(21, 4313, new Service()), new(44, 4232, new Service()) };
+            { new(24, 4312, new List<Service>(){new Service()}), new(21, 4313, new List<Service>(){new Service()}), new(44, 4232, new List<Service>(){new Service()}) };
 
 
         Assert.That(Bill.GetBills(), Is.EqualTo(lb));
@@ -96,10 +97,10 @@ public class Tests
             Bill.removeBill(o);
         }
 
-        Bill b = new Bill(21, 3213, new Service());
+        Bill b = new Bill(21, 3213, new List<Service>(){new Service()});
         try
         {
-            Bill b2 = new Bill(21, 3213, new Service());
+            Bill b2 = new Bill(21, 3213, new List<Service>(){new Service()});
             Assert.Fail("Should throw InvalidOperationException");
         }
         catch (InvalidOperationException o)
@@ -151,7 +152,7 @@ public class Tests
         }
 
         List<Bill> la = new List<Bill>
-            { new(24, 4312, new Service()), new(21, 4313, new Service()), new(44, 4232, new Service()) };
+            { new(24, 4312, new List<Service>(){new Service()}), new(21, 4313, new List<Service>(){new Service()}), new(44, 4232, new List<Service>(){new Service()}) };
 
 
         SerializeToFIle.saveAll();
@@ -181,7 +182,7 @@ public class Tests
     {
         Patient patient = new Patient(1, "Test1", new DateTime(2005));
         Patient patient2 = new Patient(2, "Test1", new DateTime(2005));
-        Bill bill = new Bill(21, 3213, new Service());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         bill.assignPatientBill(patient);
         if (!bill.Patient.Equals(patient))
         {
@@ -207,7 +208,7 @@ public class Tests
     public void Trying_to_assign_Bill_to_Patient_and_change_to_null_Patient_should_throw_ArgumentException()
     {
         Patient patient = new Patient(1, "Test1", new DateTime(2005));
-        Bill bill = new Bill(21, 3213, new Service());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         bill.assignPatientBill(patient);
         if (!bill.Patient.Equals(patient))
         {
@@ -231,7 +232,7 @@ public class Tests
     public void Trying_to_assign_Bill_to_Patient_and_change_to_same_Patient_should_throw_InvalidOperationException()
     {
         Patient patient = new Patient(1, "Test1", new DateTime(2005));
-        Bill bill = new Bill(21, 3213, new Service());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         bill.assignPatientBill(patient);
         if (!bill.Patient.Equals(patient))
         {
@@ -254,7 +255,7 @@ public class Tests
     [Test]
     public void Trying_to_assign_Bill_to_null_Patient_should_throw_ArgumentException()
     {
-        Bill bill = new Bill(21, 3213, new Service());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         try
         {
             bill.assignPatientBill(null);
@@ -273,7 +274,7 @@ public class Tests
     {
         Patient patient = new Patient(1, "Test1", new DateTime(2005));
         Patient patient2 = new Patient(2, "Test1", new DateTime(2005));
-        Bill bill = new Bill(21, 3213, new Service());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         bill.assignPatientBill(patient);
         try
         {
@@ -293,8 +294,8 @@ public class Tests
     public void Trying_to_add_Appointment_to_Bill_and_then_delete_it()
     {
         Appointment appointment = new Appointment(new DateTime(3000, 3, 12, 8, 30, 0),
-            Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
-        Bill bill = new Bill(21, 3213, new Service());
+            Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         bill.AddAppointmentToBill(appointment);
         if (bill.Appointments.Contains(appointment) && appointment.Bills.Contains(bill))
         {
@@ -316,8 +317,8 @@ public class Tests
     public void Trying_to_add_Appointment_to_Bill()
     {
         Appointment appointment = new Appointment(new DateTime(3000, 3, 12, 8, 30, 0),
-            Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
-        Bill bill = new Bill(21, 3213, new Service());
+            Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         bill.AddAppointmentToBill(appointment);
         if (bill.Appointments.Contains(appointment) && appointment.Bills.Contains(bill))
         {
@@ -332,15 +333,12 @@ public class Tests
     [Test]
     public void Trying_to_add_many_Appointments_to_Bill()
     {
-        Bill bill = new Bill(21, 3213, new Service());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         List<Appointment> appointments = new List<Appointment>
         {
-            new(new DateTime(3000, 3, 12, 8, 30, 0), Appointment.AppointmentType.FollowUp, new object(), new Bill(),
-                new Staff()),
-            new(new DateTime(3001, 3, 12, 8, 30, 0), Appointment.AppointmentType.FollowUp, new object(), new Bill(),
-                new Staff()),
-            new(new DateTime(3002, 3, 12, 8, 30, 0), Appointment.AppointmentType.FollowUp, new object(), new Bill(),
-                new Staff())
+            new(new DateTime(3000, 3, 12, 8, 30, 0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()}),
+            new(new DateTime(3001, 3, 12, 8, 30, 0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()}),
+            new(new DateTime(3002, 3, 12, 8, 30, 0), Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()})
         };
         foreach (var e in appointments)
         {
@@ -372,7 +370,7 @@ public class Tests
     public void Trying_to_add_null_Appointment_to_Bill_throws_ArgumentException()
     {
         Appointment appointment = new Appointment(new DateTime(3000, 3, 12, 8, 30, 0),
-            Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+            Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
         try
         {
             appointment.AddBillToAppointment(null);
@@ -390,8 +388,8 @@ public class Tests
         Trying_to_add_Appointment_to_Bill_and_then_try_to_add_same_Appointment_throws_InvalidOperationException()
     {
         Appointment appointment = new Appointment(new DateTime(3000, 3, 12, 8, 30, 0),
-            Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
-        Bill bill = new Bill(21, 3213, new Service());
+            Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         bill.AddAppointmentToBill(appointment);
         try
         {
@@ -411,9 +409,9 @@ public class Tests
     [Test]
     public void Trying_to_remove_Appointment_that_not_exist_in_list_from_Bill_should_throw_InvalidOperationException()
     {
-        Bill bill = new Bill(21, 3213, new Service());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         Appointment appointment = new Appointment(new DateTime(3000, 3, 12, 8, 30, 0),
-            Appointment.AppointmentType.FollowUp, new object(), new Bill(), new Staff());
+            Appointment.AppointmentType.FollowUp, new object(), new List<Bill>(){new Bill()}, new List<Staff>(){new Staff()});
         try
         {
             bill.RemoveAppointmentFromBill(appointment);
@@ -430,7 +428,7 @@ public class Tests
     [Test]
     public void Trying_to_add_Service_to_Bill_and_then_delete_it()
     {
-        Bill bill = new Bill(21, 3213, new Service());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         Service service = new Service("Test", 100d);
         bill.AddServiceToBill(service);
         if (bill.Services.Contains(service) && service.Bills.Contains(bill))
@@ -452,7 +450,7 @@ public class Tests
     [Test]
     public void Trying_to_add_Service_to_Bill()
     {
-        Bill bill = new Bill(21, 3213, new Service());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         Service service = new Service("Test", 100d);
         bill.AddServiceToBill(service);
         if (bill.Services.Contains(service) && service.Bills.Contains(bill))
@@ -468,7 +466,7 @@ public class Tests
     [Test]
     public void Trying_to_add_many_Services_to_Bill()
     {
-        Bill bill = new Bill(21, 3213, new Service());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         List<Service> services = new List<Service>
         {
             new("Test", 100d),
@@ -507,7 +505,7 @@ public class Tests
     [Test]
     public void Trying_to_add_null_Service_to_Bill_throws_ArgumentException()
     {
-        Bill bill = new Bill(21, 3213, new Service());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         try
         {
             bill.AddServiceToBill(null);
@@ -524,7 +522,7 @@ public class Tests
     [Test]
     public void Trying_to_add_Service_to_Bill_and_then_try_to_add_same_Service_throws_InvalidOperationException()
     {
-        Bill bill = new Bill(21, 3213, new Service());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         Service service = new Service("Test", 100d);
         bill.AddServiceToBill(service);
         try
@@ -545,8 +543,8 @@ public class Tests
     [Test]
     public void Trying_to_add_Prescription_to_Bill_and_then_delete_it()
     {
-        Bill bill = new Bill(21, 3213, new Service());
-        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new Bill());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
+        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new List<Bill>(){new Bill()});
         bill.assignPrescriptionToBill(prescription);
         if (bill.Prescriptions.Contains(prescription) && prescription.Bills.Contains(bill))
         {
@@ -567,8 +565,8 @@ public class Tests
     [Test]
     public void Trying_to_add_Prescription_to_Bill()
     {
-        Bill bill = new Bill(21, 3213, new Service());
-        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new Bill());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
+        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new List<Bill>(){new Bill()});
         bill.assignPrescriptionToBill(prescription);
         if (bill.Prescriptions.Contains(prescription) && prescription.Bills.Contains(bill))
         {
@@ -583,12 +581,12 @@ public class Tests
     [Test]
     public void Trying_to_add_many_Prescriptions_to_Bill()
     {
-        Bill bill = new Bill(21, 3213, new Service());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         List<Prescription> prescriptions = new List<Prescription>
         {
-            new(1, "Test", 0.3f, 4, false, new Bill()),
-            new(2, "Test", 0.3f, 4, false, new Bill()),
-            new(3, "Test", 0.3f, 4, false, new Bill())
+            new(1, "Test", 0.3f, 4, false, new List<Bill>(){new Bill()}),
+            new(2, "Test", 0.3f, 4, false, new List<Bill>(){new Bill()}),
+            new(3, "Test", 0.3f, 4, false, new List<Bill>(){new Bill()})
         };
         foreach (var e in prescriptions)
         {
@@ -619,7 +617,7 @@ public class Tests
     [Test]
     public void Trying_to_add_null_Prescription_to_Bill_throws_ArgumentException()
     {
-        Bill bill = new Bill(21, 3213, new Service());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
         try
         {
             bill.assignPrescriptionToBill(null);
@@ -635,8 +633,8 @@ public class Tests
     [Test]
     public void Trying_to_add_Prescription_to_Bill_and_then_try_to_add_same_Service_throws_InvalidOperationException()
     {
-        Bill bill = new Bill(21, 3213, new Service());
-        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new Bill());
+        Bill bill = new Bill(21, 3213, new List<Service>(){new Service()});
+        Prescription prescription = new Prescription(1, "Test", 0.3f, 4, false, new List<Bill>(){new Bill()});
         bill.assignPrescriptionToBill(prescription);
         try
         {
