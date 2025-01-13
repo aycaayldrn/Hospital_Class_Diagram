@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hospital_System.Models
 {
-    public abstract class Doctor 
+    public abstract class Doctor : Staff
     {
         protected int Id { get; set; }
         protected string Name { get; set; }
@@ -20,11 +20,7 @@ namespace Hospital_System.Models
 
         public Department? HeadedDepartment { get; private set; } // not all doctors are head of a department
        
-        public Doctor(int id, string name)
-        {
-            this.Id = id;
-            this.Name = name;
-        }
+        public Doctor(int id, string name,List<Shift> initialShifts) : base(id,name,"Doctor",initialShifts){}
         public Doctor(){}
         
         

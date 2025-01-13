@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Hospital_System.Models
 {
     [Serializable] 
-    public class Nurse
+    public class Nurse : Staff
 
     {
         private static List<Nurse> _nursesList = new List<Nurse>();
@@ -59,10 +59,8 @@ namespace Hospital_System.Models
 
 
         public Nurse(){}
-        public Nurse(int id, string name, List<string>? certifications = null)
+        public Nurse(int id, string name, List<Shift> initialShifts, List<string>? certifications = null) : base(id,name,"Nurse", initialShifts)
         {
-            Id = id;
-            Name = name;
             Certifications = certifications ?? new List<string>();
             addNurse(this);
         }
@@ -163,70 +161,70 @@ namespace Hospital_System.Models
             foreach (var nurse in containerNurses)
             {
 
-                new Nurse(nurse.Id, nurse.Name, nurse.Certifications);
+                new Nurse(nurse.Id, nurse.Name, nurse.GetShifts().ToList(), nurse.Certifications);
             }
         }
         //==================================================================================================================
         //Asspciation with attribute: nurse-Patient
 
-        public void AddPatient(Nurse_Shift shift, Patient patient, DateTime nurseShiftStart, DateTime nurseShiftEnd)
-        {
-            if (shift == null)
-                throw new ArgumentNullException(nameof(shift), "Shift cannot be null.");
+        //public void AddPatient(Nurse_Shift shift, Patient patient, DateTime nurseShiftStart, DateTime nurseShiftEnd)
+        //{
+        //    if (shift == null)
+        //        throw new ArgumentNullException(nameof(shift), "Shift cannot be null.");
 
-            if (patient == null)
-                throw new ArgumentNullException(nameof(patient), "Patient cannot be null.");
+        //    if (patient == null)
+        //        throw new ArgumentNullException(nameof(patient), "Patient cannot be null.");
 
-            bool alreadyExists = _nurseShifts.Any(ns => ns.Patient == patient);
-            if (alreadyExists)
-            {
-                throw new InvalidOperationException("This Patient is already assigned to this Nurse.");
-            }
+        //    bool alreadyExists = _nurseShifts.Any(ns => ns.Patient == patient);
+        //    if (alreadyExists)
+        //    {
+        //        throw new InvalidOperationException("This Patient is already assigned to this Nurse.");
+        //    }
 
-            bool hasOverlap = _nurseShifts.Any(ns => ns.Patient == patient && 
-            (
-                (nurseShiftStart < ns.EndTime && nurseShiftEnd > ns.StartTime) || 
-                (nurseShiftStart == ns.StartTime && nurseShiftEnd == ns.EndTime) 
-            ));
+        //    bool hasOverlap = _nurseShifts.Any(ns => ns.Patient == patient && 
+        //    (
+        //        (nurseShiftStart < ns.EndTime && nurseShiftEnd > ns.StartTime) || 
+        //        (nurseShiftStart == ns.StartTime && nurseShiftEnd == ns.EndTime) 
+        //    ));
 
-            if (hasOverlap)
-            {
-                throw new InvalidOperationException("Overlapping shift detected for this patient and nurse.");
-            }
+        //    if (hasOverlap)
+        //    {
+        //        throw new InvalidOperationException("Overlapping shift detected for this patient and nurse.");
+        //    }
 
-            if (!_nurseShifts.Contains(shift))
-            {
-                new Nurse_Shift(new List<Nurse> { this }, patient, nurseShiftStart, nurseShiftEnd);
-            }
-            else
-            {
-                throw new InvalidOperationException("The nurse already assigned to this patient-realated shift");
-            }
-        }
+        //    if (!_nurseShifts.Contains(shift))
+        //    {
+        //        new Nurse_Shift(new List<Nurse> { this }, patient, nurseShiftStart, nurseShiftEnd);
+        //    }
+        //    else
+        //    {
+        //        throw new InvalidOperationException("The nurse already assigned to this patient-realated shift");
+        //    }
+        //}
 
-        public void RemoveShiftFromNurseForPatient(Nurse_Shift shift)
-        {
-            if (shift == null)
-            { throw new ArgumentNullException(nameof(shift), "Shift cannot be null."); }
+        //public void RemoveShiftFromNurseForPatient(Nurse_Shift shift)
+        //{
+        //    if (shift == null)
+        //    { throw new ArgumentNullException(nameof(shift), "Shift cannot be null."); }
 
-            if (!_nurseShifts.Contains(shift))
-            {
-                throw new InvalidOperationException("This shift is not assigned to nurse");
-            }
+        //    if (!_nurseShifts.Contains(shift))
+        //    {
+        //        throw new InvalidOperationException("This shift is not assigned to nurse");
+        //    }
 
-            _nurseShifts.Remove(shift);
+        //    _nurseShifts.Remove(shift);
 
-            if (shift.Patient != null && shift.Patient.GetNurseShiftsInternal().Contains(shift))
-            {
-                shift.Patient.GetNurseShiftsInternal().Remove(shift);
-            }
-        }
+        //    if (shift.Patient != null && shift.Patient.GetNurseShiftsInternal().Contains(shift))
+        //    {
+        //        shift.Patient.GetNurseShiftsInternal().Remove(shift);
+        //    }
+        //}
 
-        public  IReadOnlyCollection<Nurse_Shift> GetNurseShifts(){
-            return _nurseShifts.AsReadOnly();
-        }
+        //public  IReadOnlyCollection<Nurse_Shift> GetNurseShifts(){
+        //    return _nurseShifts.AsReadOnly();
+        //}
 
-        public List<Nurse_Shift> GetNurseShiftsInternal() => _nurseShifts;
+        //public List<Nurse_Shift> GetNurseShiftsInternal() => _nurseShifts;
 
         //==================================================================================================================  
         //Helper methods
