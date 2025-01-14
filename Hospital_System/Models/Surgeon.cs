@@ -71,6 +71,7 @@ namespace Hospital_System.Models
             }
 
             _surgeonList.Remove(surgeon);
+            Staff.RemoveStaff(surgeon);
         }
         
         public static IReadOnlyList<Surgeon> GetSurgeons()

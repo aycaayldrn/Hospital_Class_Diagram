@@ -341,7 +341,7 @@ public class DepartmentTests
     public void Trying_to_add_Nurse_to_Department_and_then_delete_it()
     {
         Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
-        Nurse nurse = new Nurse(1,"Test2");
+        Nurse nurse = new Nurse(1,"Test2", new List<Shift>(){new Shift()});
         department.addNurseToDepartment(nurse);
         foreach (var e in department.GetNurses())
         {
@@ -367,7 +367,7 @@ public class DepartmentTests
     public void Trying_to_add_Nurse_to_Department()
     {
         Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
-        Nurse nurse = new Nurse(1,"Test2");
+        Nurse nurse = new Nurse(1,"Test2", new List<Shift>(){new Shift()});
         department.addNurseToDepartment(nurse);
         foreach (var e in department.GetNurses())
         {
@@ -384,10 +384,14 @@ public class DepartmentTests
     [Test]
     public void Trying_to_add_many_Nurses_to_Department()
     {
+        foreach (Nurse n in Nurse.GetNurses())
+        {
+            Nurse.removeNurse(n);
+        }
         Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
-        List<Nurse> nurses = new List<Nurse>{new (1,"Test2"),
-            new (2,"Test2"),
-            new (3,"Test2")};
+        List<Nurse> nurses = new List<Nurse>{new (4,"Test3", new List<Shift>(){new Shift()}),
+            new (5,"Test4", new List<Shift>(){new Shift()}),
+            new (6,"Test5", new List<Shift>(){new Shift()})};
         foreach (var e in nurses)
         {
             department.addNurseToDepartment(e);
@@ -455,7 +459,7 @@ public class DepartmentTests
         
         Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
         Department department2 = new Department("Test2", new Dictionary<int, Room>(){{1, new Room()}});
-        Nurse nurse = new Nurse(1,"Test2");
+        Nurse nurse = new Nurse(1,"Test2", new List<Shift>(){new Shift()});
         department.addNurseToDepartment(nurse);
         if (department.GetNurses().Contains(nurse))
         {
@@ -475,7 +479,7 @@ public class DepartmentTests
     public void Trying_to_add_Nurse_to_Department_and_then_change_it_to_the_same_physician_throws_InvalidOperationException()
     {
         Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
-        Nurse nurse = new Nurse(1,"Test2");
+        Nurse nurse = new Nurse(1,"Test2", new List<Shift>(){new Shift()});
         department.addNurseToDepartment(nurse);
         if (department.GetNurses().Contains(nurse))
         {
@@ -516,8 +520,12 @@ public class DepartmentTests
     [Test]
     public void Trying_to_add_Department_to_Nurse_and_then_try_to_add_same_Department_throws_InvalidOperationException()
     {
+        foreach (Nurse n in Nurse.GetNurses())
+        {
+            Nurse.removeNurse(n);
+        }
         Department department = new Department("Test", new Dictionary<int, Room>() { { 1, new Room() } });
-        Nurse nurse = new Nurse(1,"Test2");
+        Nurse nurse = new Nurse(1,"Test2", new List<Shift>(){new Shift()});
         department.addNurseToDepartment(nurse);
         try
         {
@@ -537,7 +545,7 @@ public class DepartmentTests
     public void Trying_to_add_Department_to_Nurse_and_then_remove_it()
     {
         Department department = new Department("Test", new Dictionary<int, Room>() { { 1, new Room() } });
-        Nurse nurse = new Nurse(1,"Test2");
+        Nurse nurse = new Nurse(1,"Test2", new List<Shift>(){new Shift()});
         department.addNurseToDepartment(nurse);
         foreach (var e in department.GetNurses())
         {
@@ -560,7 +568,7 @@ public class DepartmentTests
     public void Trying_to_remove_Nurse_that_not_exist_in_list_from_Department_should_throw_InvalidOperationException()
     {
         Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
-        Nurse nurse = new Nurse(1,"Test2");
+        Nurse nurse = new Nurse(1,"Test2", new List<Shift>(){new Shift()});
         try
         {
             department.removeNurseFromDepartment(nurse);
@@ -580,7 +588,7 @@ public class DepartmentTests
     public void Trying_to_add_Head_Doctor_to_Department_and_then_delete_it()
     {
         Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
-        Physician doctor = new Physician(1,"Test1","Test1");
+        Physician doctor = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         department.addDoctorToDepartment(doctor);
         doctor.becomeHeadOfDepartment(department);
         if (department.HeadOfDepaartment.Equals(doctor))
@@ -603,7 +611,7 @@ public class DepartmentTests
     public void Trying_to_add_Head_Doctor_to_Department()
     {
         Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
-        Physician doctor = new Physician(1,"Test1","Test1");
+        Physician doctor = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         department.addDoctorToDepartment(doctor);
         doctor.becomeHeadOfDepartment(department);
         if (department.HeadOfDepaartment.Equals(doctor))
@@ -618,7 +626,7 @@ public class DepartmentTests
     [Test]
     public void Trying_to_add_Head_Doctor_to_null_Department_throws_ArgumentNullException()
     {
-        Physician doctor = new Physician(1,"Test1","Test1");
+        Physician doctor = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         try
         {
             doctor.becomeHeadOfDepartment(null);
@@ -636,7 +644,7 @@ public class DepartmentTests
     {
         Department department = new Department("Test", new Dictionary<int, Room>() { { 1, new Room() } });
         Department department2 = new Department("Test2", new Dictionary<int, Room>() { { 1, new Room() } });
-        Physician doctor = new Physician(1,"Test1","Test1");
+        Physician doctor = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         department.addDoctorToDepartment(doctor);
         doctor.becomeHeadOfDepartment(department);
         try
@@ -657,7 +665,7 @@ public class DepartmentTests
     public void Trying_to_remove_Head_Doctor_that_not_exist_from_Department_should_throw_InvalidOperationException()
     {
         Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
-        Physician doctor = new Physician(1,"Test1","Test1");
+        Physician doctor = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         try
         {
             doctor.deleteDoctorFromBeingHead(department);
@@ -676,7 +684,7 @@ public class DepartmentTests
     public void Trying_to_add_Doctor_to_Department_and_then_delete_it()
     {
         Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
-        Physician doctor = new Physician(1,"Test1","Test1");
+        Physician doctor = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         department.addDoctorToDepartment(doctor);
         foreach (var e in department.GetDoctors())
         {
@@ -702,7 +710,7 @@ public class DepartmentTests
     public void Trying_to_add_Doctor_to_Department()
     {
         Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
-        Physician doctor = new Physician(1,"Test1","Test1");
+        Physician doctor = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         department.addDoctorToDepartment(doctor);
         foreach (var e in department.GetDoctors())
         {
@@ -720,9 +728,9 @@ public class DepartmentTests
     public void Trying_to_add_many_Doctors_to_Department()
     {
         Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
-        List<Physician> doctors = new List<Physician>{new (4,"Test1","Test1"),
-            new (5,"Test1","Test2"),
-            new (6,"Test1","Test3")};
+        List<Physician> doctors = new List<Physician>{new (4,"Test1","Test1", new List<Shift>(){new Shift()}),
+            new (5,"Test1","Test2", new List<Shift>(){new Shift()}),
+            new (6,"Test1","Test3", new List<Shift>(){new Shift()})};
         foreach (var e in doctors)
         {
             department.addDoctorToDepartment(e);
@@ -768,7 +776,7 @@ public class DepartmentTests
     {
         Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
         Department department2 = new Department("Test2", new Dictionary<int, Room>(){{1, new Room()}});
-        Physician doctor = new Physician(1,"Test1","Test1");
+        Physician doctor = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         department.addDoctorToDepartment(doctor);
         try
         {
@@ -790,7 +798,7 @@ public class DepartmentTests
         
         Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
         Department department2 = new Department("Test2", new Dictionary<int, Room>(){{1, new Room()}});
-        Physician doctor = new Physician(1,"Test1","Test1");
+        Physician doctor = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         department.addDoctorToDepartment(doctor);
         if (department.GetDoctors().Contains(doctor))
         {
@@ -810,7 +818,7 @@ public class DepartmentTests
     public void Trying_to_add_Doctor_to_Department_and_then_change_it_to_the_same_Department_throws_InvalidOperationException()
     {
         Department department = new Department("Test", new Dictionary<int, Room>(){{1, new Room()}});
-        Physician doctor = new Physician(1,"Test1","Test1");
+        Physician doctor = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         department.addDoctorToDepartment(doctor);
         if (department.GetDoctors().Contains(doctor))
         {
@@ -852,7 +860,7 @@ public class DepartmentTests
     public void Trying_to_add_Department_to_Doctor_and_then_try_to_add_same_Department_throws_InvalidOperationException()
     {
         Department department = new Department("Test", new Dictionary<int, Room>() { { 1, new Room() } });
-        Physician doctor = new Physician(1,"Test1","Test1");
+        Physician doctor = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         department.addDoctorToDepartment(doctor);
         try
         {
@@ -873,7 +881,7 @@ public class DepartmentTests
     {
         Console.Write(123);
         Department department = new Department("Test", new Dictionary<int, Room>(){{1,new Room()}});
-        Physician doctor = new Physician(1,"Test1","Test1");
+        Physician doctor = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         department.addDoctorToDepartment(doctor);
         foreach (var e in department.GetDoctors())
         {
@@ -896,7 +904,7 @@ public class DepartmentTests
     public void Trying_to_remove_Doctor_that_not_exist_in_list_from_Department_should_throw_InvalidOperationException()
     {
         Department department = new Department("Test", new Dictionary<int, Room>() { { 1, new Room() } });
-        Physician doctor = new Physician(1,"Test1","Test1");
+        Physician doctor = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         try
         {
             department.removeDoctorFromDepartment(doctor);

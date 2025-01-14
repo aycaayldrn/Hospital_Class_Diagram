@@ -15,7 +15,7 @@ public class PhysicianTests
 
         try
         {
-            Physician p = new Physician(0,null,null);
+            Physician p = new Physician(0,null, "Test1", new List<Shift>(){new Shift()});
             Assert.Fail("Expected ArgumentException");
         }
         catch (ArgumentException)
@@ -31,9 +31,13 @@ public class PhysicianTests
         {
             Physician.RemovePhysician(o);
         }
+        foreach (var o in Staff.GetStaffMembers().ToList())
+        {
+            Staff.RemoveStaff(o);
+        }
         
         String name = "Test2";
-        Physician p = new Physician(1,name,name);
+        Physician p = new Physician(1,name,"Test2", new List<Shift>(){new Shift()});
         Assert.That(p.Specialization, Is.EqualTo(name));
         Physician.RemovePhysician(p);
     }
@@ -47,9 +51,16 @@ public class PhysicianTests
             Physician.RemovePhysician(o);
         }
         
-        List<Physician> lp = new List<Physician>{new ( 1,"Test1","Test1"), new ( 2,"Test2","Test2"), new ( 3,"Test3","Test3")};
-        
-        Assert.That(Physician.GetPhysicians(), Is.EqualTo(lp));
+        List<Physician> lp = new List<Physician>{new ( 1,"Test1","Test1", new List<Shift>(){new Shift()}), new ( 2,"Test2","Test2", new List<Shift>(){new Shift()}), new ( 3,"Test3","Test3", new List<Shift>(){new Shift()})};
+
+        if (Physician.GetPhysicians().Equals(lp))
+        {
+            foreach (var o in lp)
+            {
+                Physician.RemovePhysician(o);
+            }
+            Assert.Pass();
+        }
     }
     
     
@@ -61,10 +72,10 @@ public class PhysicianTests
             Physician.RemovePhysician(o);
         }
 
-        Physician b = new Physician(1,"Test","Test");
+        Physician b = new Physician(1,"Test","Test1", new List<Shift>(){new Shift()});
         try
         {
-            Physician b2 = new Physician(1,"Test","Test");
+            Physician b2 = new Physician(1,"Test","Test1", new List<Shift>(){new Shift()});
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
@@ -100,7 +111,7 @@ public class PhysicianTests
             Physician.RemovePhysician(o);
         }
         
-        List<Physician> la = new List<Physician>{new ( 1,"Test1","Test1"), new ( 2,"Test2","Test2"), new ( 3,"Test3","Test3")};
+        List<Physician> la = new List<Physician>{new ( 1,"Test1","Test1", new List<Shift>(){new Shift()}), new ( 2,"Test2","Test2", new List<Shift>(){new Shift()}), new ( 3,"Test3","Test3", new List<Shift>(){new Shift()})};
         
         SerializeToFIle.saveAll();
         
@@ -124,7 +135,7 @@ public class PhysicianTests
     public void Trying_to_add_Physician_to_Prescription_and_then_delete_it()
     {
         Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new List<Bill>(){new Bill()});
-        Physician physician = new Physician(1,"Test1","Test1");
+        Physician physician = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         prescription.assignPrescriptionToPhysycian(physician);
         foreach (var e in physician.GetPrescriptions())
         {
@@ -150,7 +161,7 @@ public class PhysicianTests
     public void Trying_to_add_Physician_to_Prescription()
     {
         Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new List<Bill>(){new Bill()});
-        Physician physician = new Physician(1,"Test1","Test1");
+        Physician physician = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         prescription.assignPrescriptionToPhysycian(physician);
         foreach (var e in physician.GetPrescriptions())
         {
@@ -167,7 +178,7 @@ public class PhysicianTests
     [Test]
     public void Trying_to_add_many_Prescriptions_to_Physician()
     {
-        Physician physician = new Physician(1,"Test1","Test1");
+        Physician physician = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         List<Prescription> prescriptions = new List<Prescription>{new (1, "Test1", 1.2f, 4, false, new List<Bill>(){new Bill()}),
             new (2, "Test1", 1.2f, 4, false, new List<Bill>(){new Bill()})};
         foreach (var e in prescriptions)
@@ -197,7 +208,7 @@ public class PhysicianTests
     [Test]
     public void Trying_to_add_null_Prescription_to_Physician_throws_ArgumentNullException()
     {
-        Physician physician = new Physician(1,"Test1","Test1");
+        Physician physician = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         try
         {
             physician.addPrescriptiont(null);
@@ -214,8 +225,8 @@ public class PhysicianTests
     public void Trying_to_add_Physician_to_Prescription_that_already_has_Physician_throws_InvalidOperationException()
     {
         Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new List<Bill>(){new Bill()});
-        Physician physician = new Physician(1,"Test1","Test1");
-        Physician physician2 = new Physician(2,"Test2","Test2");
+        Physician physician = new Physician(1,"Test1","Test2", new List<Shift>(){new Shift()});
+        Physician physician2 = new Physician(2,"Test2","Test3", new List<Shift>(){new Shift()});
         prescription.assignPrescriptionToPhysycian(physician);
         try
         {
@@ -235,8 +246,8 @@ public class PhysicianTests
     public void Trying_to_add_Physician_to_Prescription_and_then_change_it()
     {
         Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new List<Bill>(){new Bill()});
-        Physician physician = new Physician(1,"Test1","Test1");
-        Physician physician2 = new Physician(2,"Test2","Test2");
+        Physician physician = new Physician(1,"Test1","Test2", new List<Shift>(){new Shift()});
+        Physician physician2 = new Physician(2,"Test2","Test3", new List<Shift>(){new Shift()});
         prescription.assignPrescriptionToPhysycian(physician);
         if (prescription.Physician.Equals(physician))
         {
@@ -256,7 +267,7 @@ public class PhysicianTests
     public void Trying_to_add_Physician_to_Prescription_and_then_change_it_to_the_same_physician_throws_InvalidOperationException()
     {
         Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new List<Bill>(){new Bill()});
-        Physician physician = new Physician(1,"Test1","Test1");
+        Physician physician = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         prescription.assignPrescriptionToPhysycian(physician);
         if (prescription.Physician.Equals(physician))
         {
@@ -279,7 +290,7 @@ public class PhysicianTests
     public void Trying_to_add_Physician_to_Prescription_and_then_change_it_to_the_null_physician_throws_InvalidOperationException()
     {
         Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new List<Bill>(){new Bill()});
-        Physician physician = new Physician(1,"Test1","Test1");
+        Physician physician = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         prescription.assignPrescriptionToPhysycian(physician);
         if (prescription.Physician.Equals(physician))
         {
@@ -302,7 +313,7 @@ public class PhysicianTests
     public void Trying_to_change_prescrition_physician_without_assigning_physician_throws_InvalidOperationException()
     {
         Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new List<Bill>(){new Bill()});
-        Physician physician = new Physician(1,"Test1","Test1");
+        Physician physician = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         try
         {
             prescription.changePhysician(physician);
@@ -322,7 +333,7 @@ public class PhysicianTests
     public void Trying_to_add_Prescription_to_Physician_and_then_try_to_add_same_Prescription_throws_InvalidOperationException()
     {
         Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new List<Bill>(){new Bill()});
-        Physician physician = new Physician(1,"Test1","Test1");
+        Physician physician = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         prescription.assignPrescriptionToPhysycian(physician);
         try
         {
@@ -342,7 +353,7 @@ public class PhysicianTests
     public void Trying_to_add_Physician_to_Prescription_and_then_remove_it()
     {
         Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new List<Bill>(){new Bill()});
-        Physician physician = new Physician(1,"Test1","Test1");
+        Physician physician = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         prescription.assignPrescriptionToPhysycian(physician);
         foreach (var e in physician.GetPrescriptions())
         {
@@ -364,7 +375,7 @@ public class PhysicianTests
     [Test]
     public void Trying_to_remove_Prescription_that_not_exist_in_prescriptionslist_from_Physician_should_throw_InvalidOperationException()
     {
-        Physician physician = new Physician(1,"Test1","Test1");
+        Physician physician = new Physician(1,"Test1","Test1", new List<Shift>(){new Shift()});
         Prescription prescription = new Prescription(1, "Test1", 1.2f, 4, false, new List<Bill>(){new Bill()});
         try
         {

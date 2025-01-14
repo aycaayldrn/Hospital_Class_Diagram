@@ -61,6 +61,8 @@ namespace Hospital_System.Models
         public Nurse(){}
         public Nurse(int id, string name, List<Shift> initialShifts, List<string>? certifications = null) : base(id,name,"Nurse", initialShifts)
         {
+            Id = id;
+            Name = name;
             Certifications = certifications ?? new List<string>();
             addNurse(this);
         }
@@ -126,9 +128,9 @@ namespace Hospital_System.Models
             }
            
 
-            if (_nursesList.Exists(a=>a.Equals(nurse)))
-            {
-                throw new InvalidOperationException("Nurse already added");
+            foreach (Nurse n in _nursesList){
+                if(n.Id == nurse.Id && string.Equals(n._name, nurse._name, StringComparison.OrdinalIgnoreCase))
+                    throw new InvalidOperationException(n.Id+" "+nurse.Id+"Nurse is already added");
             }
             _nursesList.Add(nurse);
         }
@@ -146,6 +148,7 @@ namespace Hospital_System.Models
                 throw new InvalidOperationException("Nurse not found!");
             }
             _nursesList.Remove(nurse);
+            Staff.RemoveStaff(nurse);
         }
         
         

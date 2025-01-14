@@ -14,7 +14,7 @@ public class NurseTests
 
         try
         {
-            Nurse n = new Nurse(1,null);
+            Nurse n = new Nurse(1,null, new List<Shift>(){new Shift()});
             Assert.Fail("Expected ArgumentException");
         }
         catch (ArgumentException)
@@ -31,7 +31,7 @@ public class NurseTests
             Nurse.removeNurse(o);
         }
 
-        Nurse n = new Nurse(1,"Test2");
+        Nurse n = new Nurse(1,"Test2", new List<Shift>(){new Shift()});
         
         n.DisplayNurseInfo();
         Assert.Pass();
@@ -46,7 +46,7 @@ public class NurseTests
             Nurse.removeNurse(o);
         }
 
-        Nurse n = new Nurse(1,"Test2");
+        Nurse n = new Nurse(1,"Test2", new List<Shift>(){new Shift()});
 
         try
         {
@@ -69,7 +69,7 @@ public class NurseTests
         }
 
         String name = "Test1";
-        Nurse n = new Nurse(2,name);
+        Nurse n = new Nurse(2,name, new List<Shift>(){new Shift()});
         Assert.That(n.Name, Is.EqualTo(name));
     }
     
@@ -82,7 +82,7 @@ public class NurseTests
             Nurse.removeNurse(o);
         }
         
-        List<Nurse> ln = new List<Nurse>{new ( 24,"Test1"), new ( 21,"Test2"), new ( 44,"Test3")};
+        List<Nurse> ln = new List<Nurse>{new ( 24,"Test1", new List<Shift>(){new Shift()}), new ( 21,"Test2", new List<Shift>(){new Shift()}), new ( 44,"Test3", new List<Shift>(){new Shift()})};
         
         Assert.That(Nurse.GetNurses(), Is.EqualTo(ln));
     }
@@ -95,10 +95,10 @@ public class NurseTests
             Nurse.removeNurse(o);
         }
 
-        Nurse b = new Nurse(1,"Test5");
+        Nurse b = new Nurse(1,"Test5", new List<Shift>(){new Shift()});
         try
         {
-            Nurse b2 = new Nurse(1,"Test5");
+            Nurse b2 = new Nurse(1,"Test5", new List<Shift>(){new Shift()});
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
@@ -134,7 +134,7 @@ public class NurseTests
             Nurse.removeNurse(o);
         }
         
-        List<Nurse> la = new List<Nurse>{new ( 24,"Test1"), new ( 21,"Test2"), new ( 44,"Test3")};
+        List<Nurse> la = new List<Nurse>{new ( 24,"Test1", new List<Shift>(){new Shift()}), new ( 21,"Test2", new List<Shift>(){new Shift()}), new ( 44,"Test3", new List<Shift>(){new Shift()})};
         
         SerializeToFIle.saveAll();
         

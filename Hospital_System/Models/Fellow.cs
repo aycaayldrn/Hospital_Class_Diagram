@@ -30,8 +30,6 @@ namespace Hospital_System.Models
         public Fellow(int id,string name,List<Shift> initialShifts,string specialization, string? researchProject = null)
             : base(id, name, initialShifts)
         {
-
-            
             Specialization = specialization;
             ResearchProject = researchProject;
             addFellow(this);
@@ -69,6 +67,7 @@ namespace Hospital_System.Models
                 throw new InvalidOperationException("Fellow not found!");
             }
             _fellowList.Remove(fellow);
+            RemoveStaff(fellow);
         }
         
         
@@ -87,7 +86,7 @@ namespace Hospital_System.Models
 
             Fellow a = (Fellow)obj;
 
-            return string.Equals(this.ResearchProject,a.ResearchProject,StringComparison.OrdinalIgnoreCase)&& 
+            return Id == a.Id && string.Equals(this.ResearchProject,a.ResearchProject,StringComparison.OrdinalIgnoreCase)&& 
                    string.Equals(this._specialization,a._specialization,StringComparison.OrdinalIgnoreCase);
         }
         

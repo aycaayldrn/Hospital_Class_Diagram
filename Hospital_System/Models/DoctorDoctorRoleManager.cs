@@ -12,11 +12,47 @@ public class DoctorDoctorRoleManager
         switch (newRole.ToLower())
         {
             case "resident":
-                return new Resident(doctor.Id, doctor.Name, new List<Shift>());
+                if (doctor is Fellow)
+                {
+                    Fellow.removeFellow((Fellow)doctor);
+                    
+                }else if (doctor is Physician)
+                {
+                    Physician.RemovePhysician((Physician)doctor);
+                }
+                else
+                {
+                    Doctor.RemoveStaff(doctor);
+                }
+                return new Resident(doctor.Id, doctor.Name, new List<Shift>(){new Shift()});
             case "fellow":
-                return new Fellow(doctor.Id, doctor.Name, new List<Shift>(), "New Research");
+                if (doctor is Fellow)
+                {
+                    Fellow.removeFellow((Fellow)doctor);
+                    
+                }else if (doctor is Physician)
+                {
+                    Physician.RemovePhysician((Physician)doctor);
+                }
+                else
+                {
+                    Doctor.RemoveStaff(doctor);
+                }
+                return new Fellow(doctor.Id, doctor.Name, new List<Shift>(){new Shift()}, "New Research");
             case "physician":
-                return new Physician(doctor.Id, doctor.Name,"", new List<Shift>());
+                if (doctor is Fellow)
+                {
+                    Fellow.removeFellow((Fellow)doctor);
+                    
+                }else if (doctor is Physician)
+                {
+                    Physician.RemovePhysician((Physician)doctor);
+                }
+                else
+                {
+                    Doctor.RemoveStaff(doctor);
+                }
+                return new Physician(doctor.Id, doctor.Name,"Smth", new List<Shift>(){new Shift()});
             default:
                 throw new ArgumentException("Invalid role.");
         }

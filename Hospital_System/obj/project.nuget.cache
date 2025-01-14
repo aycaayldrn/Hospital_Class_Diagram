@@ -1,20 +1,20 @@
 {
   "version": 2,
-  "dgSpecHash": "8OH1H3X/LQ8=",
+  "dgSpecHash": "7YIMB1GDP8w=",
   "success": true,
-  "projectFilePath": "/Users/jakubmordal/Documents/Sem5_2024_25/BYT/2025Associations/Hospital_System/Hospital_System.csproj",
+  "projectFilePath": "C:\\Users\\kerya\\Desktop\\hsm2\\Hospital_Class_Diagram\\Hospital_System\\Hospital_System.csproj",
   "expectedPackageFiles": [
-    "/Users/jakubmordal/.nuget/packages/microsoft.applicationinsights/2.22.0/microsoft.applicationinsights.2.22.0.nupkg.sha512",
-    "/Users/jakubmordal/.nuget/packages/microsoft.testing.extensions.telemetry/1.4.1/microsoft.testing.extensions.telemetry.1.4.1.nupkg.sha512",
-    "/Users/jakubmordal/.nuget/packages/microsoft.testing.extensions.trxreport.abstractions/1.4.1/microsoft.testing.extensions.trxreport.abstractions.1.4.1.nupkg.sha512",
-    "/Users/jakubmordal/.nuget/packages/microsoft.testing.extensions.vstestbridge/1.4.1/microsoft.testing.extensions.vstestbridge.1.4.1.nupkg.sha512",
-    "/Users/jakubmordal/.nuget/packages/microsoft.testing.platform/1.4.1/microsoft.testing.platform.1.4.1.nupkg.sha512",
-    "/Users/jakubmordal/.nuget/packages/microsoft.testing.platform.msbuild/1.4.1/microsoft.testing.platform.msbuild.1.4.1.nupkg.sha512",
-    "/Users/jakubmordal/.nuget/packages/microsoft.testplatform.objectmodel/17.11.1/microsoft.testplatform.objectmodel.17.11.1.nupkg.sha512",
-    "/Users/jakubmordal/.nuget/packages/nunit.analyzers/4.4.0/nunit.analyzers.4.4.0.nupkg.sha512",
-    "/Users/jakubmordal/.nuget/packages/nunit3testadapter/5.0.0-beta.5/nunit3testadapter.5.0.0-beta.5.nupkg.sha512",
-    "/Users/jakubmordal/.nuget/packages/system.diagnostics.diagnosticsource/5.0.0/system.diagnostics.diagnosticsource.5.0.0.nupkg.sha512",
-    "/Users/jakubmordal/.nuget/packages/system.reflection.metadata/1.6.0/system.reflection.metadata.1.6.0.nupkg.sha512"
+    "C:\\Users\\kerya\\.nuget\\packages\\microsoft.applicationinsights\\2.22.0\\microsoft.applicationinsights.2.22.0.nupkg.sha512",
+    "C:\\Users\\kerya\\.nuget\\packages\\microsoft.testing.extensions.telemetry\\1.4.1\\microsoft.testing.extensions.telemetry.1.4.1.nupkg.sha512",
+    "C:\\Users\\kerya\\.nuget\\packages\\microsoft.testing.extensions.trxreport.abstractions\\1.4.1\\microsoft.testing.extensions.trxreport.abstractions.1.4.1.nupkg.sha512",
+    "C:\\Users\\kerya\\.nuget\\packages\\microsoft.testing.extensions.vstestbridge\\1.4.1\\microsoft.testing.extensions.vstestbridge.1.4.1.nupkg.sha512",
+    "C:\\Users\\kerya\\.nuget\\packages\\microsoft.testing.platform\\1.4.1\\microsoft.testing.platform.1.4.1.nupkg.sha512",
+    "C:\\Users\\kerya\\.nuget\\packages\\microsoft.testing.platform.msbuild\\1.4.1\\microsoft.testing.platform.msbuild.1.4.1.nupkg.sha512",
+    "C:\\Users\\kerya\\.nuget\\packages\\microsoft.testplatform.objectmodel\\17.11.1\\microsoft.testplatform.objectmodel.17.11.1.nupkg.sha512",
+    "C:\\Users\\kerya\\.nuget\\packages\\nunit.analyzers\\4.4.0\\nunit.analyzers.4.4.0.nupkg.sha512",
+    "C:\\Users\\kerya\\.nuget\\packages\\nunit3testadapter\\5.0.0-beta.5\\nunit3testadapter.5.0.0-beta.5.nupkg.sha512",
+    "C:\\Users\\kerya\\.nuget\\packages\\system.diagnostics.diagnosticsource\\5.0.0\\system.diagnostics.diagnosticsource.5.0.0.nupkg.sha512",
+    "C:\\Users\\kerya\\.nuget\\packages\\system.reflection.metadata\\1.6.0\\system.reflection.metadata.1.6.0.nupkg.sha512"
   ],
   "logs": []
 }

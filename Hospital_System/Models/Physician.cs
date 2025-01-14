@@ -29,6 +29,7 @@ namespace Hospital_System.Models;
         public Physician(int id,string name,string specialization,List<Shift> initialShifts)
             :base(id,name,initialShifts)
         {
+            Id = id;
             Specialization = specialization;
             AddPhysician(this);
         }
@@ -143,7 +144,6 @@ namespace Hospital_System.Models;
         if (_patients.Contains(patient))
         {
             throw new InvalidOperationException("Patient is already assigned to this department");
-
         }
         _patients.Add(patient);
         if (patient.Physician != this)
@@ -205,6 +205,7 @@ namespace Hospital_System.Models;
                 throw new InvalidOperationException("Physician not found");
             }
 
+            RemoveStaff(physician);
             _physicianList.Remove(physician);
         }
 
@@ -223,7 +224,7 @@ namespace Hospital_System.Models;
 
             Physician other = (Physician)obj;
 
-            return string.Equals(this._specialization, other._specialization, StringComparison.OrdinalIgnoreCase);
+            return Id == other.Id;
         }
 
 

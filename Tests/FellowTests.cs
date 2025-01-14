@@ -13,7 +13,7 @@ public class FellowTests
 
         try
         {
-            Fellow f = new Fellow( 0,null,null);
+            Fellow f = new Fellow( 0,null,new List<Shift>(){new Shift()}, "Test1");
             Assert.Fail("Expected ArgumentNullException");
         }
         catch (ArgumentException)
@@ -32,25 +32,10 @@ public class FellowTests
 
         String name = "Test2";
         int id = 1;
-        Fellow f = new Fellow(1,name,name);
+        Fellow f = new Fellow(1,name,new List<Shift>(){new Shift()}, name);
         
         Assert.That(f.Specialization, Is.EqualTo(name));
         
-        Fellow.removeFellow(f);
-    }
-    
-    [Test]
-    public void Trying_to_create_Fellow_with_researchProject_name_of_specialization_and_check_if_it_assigned_correctly()
-    {
-        foreach (var o in Fellow.GetFellows().ToList())
-        {
-            Fellow.removeFellow(o);
-        }
-
-        String name = "Test";
-        Fellow f = new Fellow(1,"name",name,name);
-        
-        Assert.That(f.ResearchProject, Is.EqualTo(name));
         Fellow.removeFellow(f);
     }
     
@@ -63,7 +48,7 @@ public class FellowTests
             Fellow.removeFellow(o);
         }
 
-        List<Fellow> lf = new List<Fellow>{new (1,"Test1", "Test1"), new ( 2,"Test2","Test2"), new ( 3,"Test3","Test3")};
+        List<Fellow> lf = new List<Fellow>{new (1,"Test1", new List<Shift>(){new Shift()}, "Test1"), new ( 2,"Test2",new List<Shift>(){new Shift()}, "Test2"), new ( 3,"Test3",new List<Shift>(){new Shift()}, "Test3")};
         
         Assert.That(Fellow.GetFellows(), Is.EqualTo(lf));
     }
@@ -76,10 +61,10 @@ public class FellowTests
             Fellow.removeFellow(o);
         }
 
-        Fellow b = new Fellow(1, "Test1","Test1");
+        Fellow b = new Fellow(1, "Test1",new List<Shift>(){new Shift()}, "Test1");
         try
         {
-            Fellow b2 = new Fellow(2,"Test1","Test1");
+            Fellow b2 = new Fellow(1,"Test1",new List<Shift>(){new Shift()}, "Test1");
             Assert.Fail("Should throw InvalidOperationException");
         }catch(InvalidOperationException o)
         {
@@ -115,7 +100,7 @@ public class FellowTests
             Fellow.removeFellow(o);
         }
         
-        List<Fellow> la = new List<Fellow>{new (1,"Test1", "Test1"), new ( 2,"Test2","Test2"), new ( 3,"Test3","Test3")};
+        List<Fellow> la = new List<Fellow>{new (1,"Test1", new List<Shift>(){new Shift()}, "Test1"), new ( 2,"Test2",new List<Shift>(){new Shift()}, "Test2"), new ( 3,"Test3",new List<Shift>(){new Shift()}, "Test3")};
         
         SerializeToFIle.saveAll();
         
