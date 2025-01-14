@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Hospital_System.Models
 {
     [Serializable] 
-    public class Surgeon
+    public class Surgeon:Doctor
     {
         public Surgeon(){}
         private static List<Surgeon> _surgeonList = new List<Surgeon>();
@@ -27,7 +27,7 @@ namespace Hospital_System.Models
         }
         public static readonly int MaxSurgeriesPerShift = 2;
 
-        public Surgeon(List<string> surgeries = null)
+        public Surgeon(int id,string name,List<Shift> initialShifts,List<string> surgeries = null): base(id, name, initialShifts)
         {
             Surgeries = surgeries ?? new List<string>(); 
             AddSurgeon(this);
@@ -135,7 +135,7 @@ namespace Hospital_System.Models
           foreach (var surgeon in containerSurgeons)
           {
 
-              new Surgeon(surgeon.Surgeries);
+              new Surgeon(surgeon.Id,surgeon.Name,new List<Shift>(),surgeon.Surgeries);
           }
         }
     }

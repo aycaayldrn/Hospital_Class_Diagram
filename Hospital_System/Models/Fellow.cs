@@ -28,6 +28,7 @@ namespace Hospital_System.Models
         }
 
         public Fellow(int id,string name,List<Shift> initialShifts,string specialization, string? researchProject = null)
+            : base(id, name, initialShifts)
         {
 
             

@@ -26,7 +26,8 @@ namespace Hospital_System.Models;
             }
         }
 
-        public Physician(int id,string name,string specialization,List<Shift> initialShifts):base(id,name,initialShifts)
+        public Physician(int id,string name,string specialization,List<Shift> initialShifts)
+            :base(id,name,initialShifts)
         {
             Specialization = specialization;
             AddPhysician(this);

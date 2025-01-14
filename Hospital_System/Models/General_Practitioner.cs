@@ -8,7 +8,7 @@ using System.Xml.Linq;
 namespace Hospital_System.Models
 {
     [Serializable] 
-    public class General_Practitioner
+    public class General_Practitioner:Doctor
     {
         private string _primaryCareSpecialty;
 
@@ -25,7 +25,7 @@ namespace Hospital_System.Models
             }
         }
 
-        public General_Practitioner(string primaryCareSpecialty)
+        public General_Practitioner(int id,string name,List<Shift> initialShifts,string primaryCareSpecialty): base(id, name, initialShifts)
         {
             PrimaryCareSpecialty = primaryCareSpecialty;
         }
