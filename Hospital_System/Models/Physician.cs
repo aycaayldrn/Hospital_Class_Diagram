@@ -26,7 +26,7 @@ namespace Hospital_System.Models;
             }
         }
 
-        public Physician(int id,string name,string specialization):base(id,name)
+        public Physician(int id,string name,string specialization,List<Shift> initialShifts):base(id,name,initialShifts)
         {
             Specialization = specialization;
             AddPhysician(this);
@@ -294,7 +294,7 @@ namespace Hospital_System.Models;
             foreach (var physician in containerPhysicians)
             {
 
-                new Physician(physician.Id,physician.Name,physician.Specialization);
+                new Physician(physician.Id,physician.Name,physician.Specialization,new List<Shift>());
             }
         }
     }

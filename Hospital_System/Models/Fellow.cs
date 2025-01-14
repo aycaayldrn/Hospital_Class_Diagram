@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Hospital_System.Models
 {
     [Serializable] 
-    public class Fellow
+    public class Fellow:Doctor
     {
         private static List<Fellow> _fellowList = new List<Fellow>();
         public string? ResearchProject { get; set; }
@@ -27,7 +27,7 @@ namespace Hospital_System.Models
             }
         }
 
-        public Fellow(int id,string name,string specialization, string? researchProject = null)
+        public Fellow(int id,string name,List<Shift> initialShifts,string specialization, string? researchProject = null)
         {
 
             
@@ -112,7 +112,7 @@ namespace Hospital_System.Models
             foreach (var fellow in containerFellows)
             {
 
-                new Fellow(fellow.Id,fellow.Name,fellow.Specialization,fellow.ResearchProject);
+                new Fellow(fellow.Id,fellow.Name,new List<Shift>(),fellow.Specialization,fellow.ResearchProject);
             }
         }
     }

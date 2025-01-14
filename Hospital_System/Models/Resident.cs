@@ -7,8 +7,11 @@ using System.Threading.Tasks;
 namespace Hospital_System.Models
 {
     [Serializable] 
-    public class Resident
+    public class Resident: Doctor
     {
-
+        public Resident(int id, string name, List<Shift> initialShifts)
+            : base(id, name, initialShifts)
+        {
+        }
     }
 }
